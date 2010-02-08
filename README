@@ -382,9 +382,15 @@ Using what ever database tool you are comfortable with run the above sql file.
 Command line: mysql -u<user> -p<pass> -h mysqlserver.yourdomain.edu -D <your database> < /path/to/db/alaCarte_V1.4_update.sql
 PHPAdmin: Import  /db/alaCarte_V1.4_update.sql
 
+
+Step 1.1 Initialize database 
+
+	run: rake locals_update
+
 Step 2. Update your code base. 
 
 Note: Backup your environment.rb and database.yml configuration, as well as any local changes and files.
+
 
 Step 3. Configure Environments Variables
      Note: the configuration has changed, you will need to copy your values from environment.rb into new locations
