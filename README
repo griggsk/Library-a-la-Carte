@@ -1,0 +1,584 @@
+############################# Library a la Carte Requirements #####################################
+
+The Library a la Carte project is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License Version 3. Under Version 3 
+
+Thank you for your interest in our program.  
+
+This document assumes you are deploying under Unix or Linux and are using a MySql database. 
+This application has been developed for Rails 2.3.2 and Ruby 1.8
+and has not been tested with Ruby 1.9.
+
+This software requires that you have the following components installed:
+
+  Ruby (Version 1.8.7): 
+  	http://rubyonrails.org/download
+  Database (MySQL Assumed): 
+  	http://wiki.rubyonrails.org/start?redirect=1#database_support
+  Rails:
+  	 We have provided a frozen copy of Rails 2.2.3 with this application*
+  Ruby Gems (Version 1.3.1): 
+  	http://rubyonrails.org/download
+  Web Server (Nginx, Apache, Mongrel, Webbrick, FastCGI, Passenger): 
+  	http://rubyonrails.org/deploy
+  
+*freezing/thawing rails can be found here: http://support.tigertech.net/freeze-rails
+
+############## Required Gems #######################
+You must install these gems before attempting to start Library a la Carte
+
+  hpricot:
+  		gem install hpricot-0.8.2		
+ 		 
+  fastercsv:
+  		gem install fastercsv-1.5.0
+  		
+  active_youtube:
+  		gem install active_youtube-1.0.0
+  
+  flickr-fu:
+  		gem install flickr-fu-0.1.4
+  		
+  minme-type:
+  		gem install mime-types-1.16		
+  
+  
+####################### 3rd Party API Requirements #############################################
+
+The ala Carte tool uses 3rd party APIs to provide some of its Web 2.0 functionality. 
+For this reason you will need to acquire the required API KEYS
+
+Recaptcha API: http://recaptcha.net/whyrecaptcha.html
+
+The Recaptcha API provides a CAPTCHA for the comment module.
+You will need to sign up for an account to get the private and public key for your domain.
+
+Google API: http://code.google.com/apis/ajaxfeeds/signup.html
+
+The Google API provides a RSS reader for the RSS Module.
+You will need to sign up for an API key
+ 
+Flickr API: http://www.flickr.com/services/apps/create/apply/
+
+Flickr API provides a flickr search in the Image Module. 
+You will need to sign up for an API key:
+  
+########################### Library a la Carte Installation Instructions ##############################################
+
+ (If you or upgrading please see the upgrading documentation that follows.)
+  
+Step 1. Create the Databases.
+
+	1.1 Create the following databases in MySQL:
+	
+	    alacarte_development
+	    alacarte_test
+	    alacarte_production 
+	    
+	    (Be sure to use those names -or whichever names you choose in database.yml)
+	
+	1.2 Edit the file config/database.yml.example
+	
+	Copy config/database.yml.example to config/database.yml and edit to reflect your mysql databases and database settings.
+	 Verify that the names for database in database.yml match the databases you created in step 1.1
+	
+	1.3 In the root directory of your application, run the following command:
+	
+	    rake db:migrate
+	    This will run the initial migration to populate alacarte_development.
+	    Unless Library a la Carte is run in production mode the application uses the development database.
+	    
+	    OPTIONAL
+	    rake db:migrate RAILS_ENV=production 
+	    This will run the initial migration to populate alacarte_production
+	    
+	    rake db:migrate RAILS_ENV=test 
+	    This will run the initial migration to populate alacarte_test
+	
+	You *should* see messages scrolling by indicating tables have been created.
+    If you have any errors in your DB, you will see them now.
+
+Step 2. Configure Environments Variables
+
+	Open the configuration folder: config/
+	
+	2.1 Add Action Mailer variables
+	
+	 edit config/initializers/smpt_settings.rb
+	
+	 You will need to specify some additional configuration to tell ActionMailer which server will handle your outgoing e-mail.
+	
+	2.2 API Keys
+	
+	edit config/initializers/api_settings.rb
+	
+	Recapcha:
+	Add your recaptcha API keys to the #recaptcha variables section
+	
+	Google:
+	Add your Google API key to the #goggle variables section
+	
+	edit config/flick.yml
+	
+	Flickr Keys
+	Add your flickr api keys to the yml file. 
+	Be careful to keep the formatting of the file as is - with no space before variable and a tab between variable and value.
+	
+
+Step 3.OPTIONAL: Edit and Batch load course subjects and research department values:
+
+   Use this method to batch load data at install. Optionally, enter data by using Library a la Carte admin tools.
+   See this documentation on entering data in the tool. http://alacarte.library.oregonstate.edu/support
+   
+    OPTION 1: Edit and add data
+    
+    edit: lib/subjects.txt 
+
+	Edit the course subject codes to reflect the codes specific to your institution.  
+	The codes in subjects.txt by default are specific to Oregon State University 
+	courses.  The file format is subject code then tab then subject name, one per line; use subjects.txt as an example.
+	
+	edit: lib/masters.txt 
+	
+	Edit the master subjects to reflect the general subjects for your institution.  
+	The values in masters.txt by default are specific to Oregon State University 
+	departments.  The file format is one subject value per line; use masters.txt as an example.
+    
+    OPTION 2: Batch Load data
+	   
+	 run: script/batchload_data
+	  
+	 This will populate the subjects and masters table with the values found in lib/subjects.txt and lib/masters.txt and lib/dods.txt respectively.
+ 
+     OPTION 3: batch load database subscription data
+     Included is a list of open access databases selected by Oregon State University Librarians. 
+     Required for database module: Either run this script and/or enter information through the admin tool.
+     
+     run sql script: /db/dods.sql
+   
+     Command line: mysql -u<user> -p<pass> -h mysqlserver.yourdomain.edu -D carte_production < /path/to/db/dods.sql
+     PHPAdmin: Import  /db/dods.sql
+	    
+
+Step 4. OPTIONAL: Module Configuration
+
+    OPTION 1: Enable read/write access privileges for attachment folders: public/uploads, public/photos
+    Required if you plan on enabling the attachment module or the image manager to allow users to upload documents and images.
+    
+    Unix Command:
+       chmod -R g+w /path/to/public/uploads
+       chmod -R g+w /path/to/public/photos
+       
+    OPTION 2: Upgrade to image manager
+    Required for image manager which enables users to upload and share images.
+    
+    edit: controllers/application_controller.rb
+    
+    In the uses_tiny_mce instantiation find the parameter advimage and replace with advimage_uploader
+    
+    OPTION 3: Configure III OPAC Variables 
+    Required if you want to enable the Course Reserves and Catalog Books Module which provides a method to search for course reserves or
+    catalog records and embed the information directly in a guide.
+    
+    NOTE: These experimental modules can only be configured for III OPACs and may not work for you due to the many different configurations
+    available to III OPACS and versions of the software. 
+    
+    Course Reserves: 
+    
+    edit /lib/reserves_scraper.rb
+    
+    Edit the following variables, adding your own URLs and search parameters
+     
+     OASIS_DOMAIN = "oasis.library.oregonstate.edu" 
+        The base of the URL - no http or www
+     BASE_URI = "http://oasis.library.oregonstate.edu"
+         The full URL
+     SEARCH_URI = "http://oasis.library.oregonstate.edu/search~S13/r?SEARCH="
+         The complete search URL - tip: to get this string query your catalog course reserves and copy the URL carefully removing the search query.
+  
+    Catalog Search: 
+    
+    edit /lib/catalog_scraper.rb
+    
+    Edit the following variables, adding your own URLs and search parameters
+     
+     BASE_URI = "http://oasis.library.oregonstate.edu"
+       The full URL
+     SEARCH_URI = "http://oasis.library.oregonstate.edu/search/?searchtype=X&searcharg="
+     	The complete search URL - tip: to get this string query your catalog and copy the URL carefully removing everything after the search query.
+     SEARCH_SCOPE = "&searchscope=13&SORT=D"
+     	The searcg URL parameters - usually follows the query in the search URL
+ 
+Step 5. Run the install script.
+
+	In the root directory of the application, type:
+	
+	    script/install_admin
+	
+	This will  create the default admin user:
+	
+	    login: admin@your-domain.com 
+	    password: adm!n
+	          
+Step 6. Test Library ala Carte Tool
+
+	At this time the ala Carte tool should be installed. 
+	Navigate to the root of where you installed the code:  http://yourdomain.com/
+	
+    Login with the default admin account created above.
+	Once logged in, change the password and email address, by clicking "My Account"
+	
+	An admin should use the admin tools to further customize the application. Please see this documentation for more info:
+	Admin FAQ: http://alacarte.library.oregonstate.edu/support/admin_faq
+	Customize Content Types: http://alacarte.library.oregonstate.edu/support/content_types
+	Configure Module Types: http://alacarte.library.oregonstate.edu/support/enable_mods
+	Customize Template: http://alacarte.library.oregonstate.edu/support/tut_template_customization
+	Customization Map: http://alacarte.library.oregonstate.edu/support/tut_map_customization
+	Customize Search: http://alacarte.library.oregonstate.edu/support/search_customization
+	Manage Database Tables: http://alacarte.library.oregonstate.edu/support/config_db
+	
+	
+
+Step 7. OPTIONAL: Move to production and deploy
+
+
+7.1 If you have not already populated the production database:
+
+	rake db:migrate RAILS_ENV=production 
+	
+	Optionally, you can dump the development database into the production database or
+	edit database.yml and point the production environment variable to a populated database
+	
+7.2 Run in Production Mode
+
+	Option 1: Set the Environment in Your .bash_login File on the Server
+	The best way is to set the actual RAILS_ENV environment variable. Rails work best with the bash shell.
+	
+	 ~/.bashrc export RAILS_ENV="production"		
+		
+	Option 2: Set the Environment in Your Web Server Config File
+	If you can’t set the Rails environment variable in your shell, you must look for another way to do it. 
+	The next best place is in your web server configuration.	
+	
+	
+	Option 3: Edit environment.rb
+	The final way to set the environment for a shared host is to uncomment the following line at the top of environment.rb:
+	
+	ENV['RAILS_ENV'] ||= 'production'
+
+
+7.3 Deploy to production server
+
+	OPTION 1: Mongrel
+	
+	Mongrel
+	http://mongrel.rubyforge.org/
+	
+	Apache2, Mongrel Cluster on Fedora
+	http://nlakkakula.wordpress.com/2007/07/19/setting-up-rails-production-server-using-apache2-mongrel-cluster-on-fedora-core-5/
+	
+	Mongrel and Apache
+	http://tonyrose023.blogspot.com/2007/01/multiple-rails-apps-with-mongrel.html
+	http://blog.codahale.com/2006/06/19/time-for-a-grown-up-server-rails-mongrel-apache-capistrano-and-you/
+	
+	Mongrel and Nginx
+	http://itsignals.cascadia.com.au/?p=16
+	http://www.slideshare.net/addame/montreal-on-rails-5-rails-deployment-193082
+	
+	OPTION 2: Passenger
+	
+	Apache and Passenger on Fedora
+	http://fedoraphprails.blogspot.com/2009/08/how-to-use-apache-server-for-ruby-on.html
+	
+	Apache and Passenger 
+	http://www.modrails.com/documentation/Users%20guide%20Apache.html
+	
+	Nginx and Passenger 
+	http://www.modrails.com/documentation/Users%20guide%20Nginx.html
+	
+	Passenger Tips
+	http://www.rubyinside.com/28_mod_rails_and_passenger_resources-899.html
+	
+	OPTION 3: Windows
+	
+	Rails on Windows
+	http://hotgazpacho.org/2009/02/rails-230-iis7-fastcgi-rails-on-windows-ftw/
+	http://mvolo.com/blogs/serverside/archive/2007/02/18/10-steps-to-get-Ruby-on-Rails-running-on-Windows-with-IIS-FastCGI.aspx
+	http://ruslany.net/2008/08/ruby-on-rails-in-iis-70-with-url-rewriter/
+	
+################# Troubleshooting Checklist ################
+
+Look at the Web Server Error Logs 
+
+	One of the best places to start troubleshooting are the web server’s error logs, especially when you are initially debugging your configuration.	
+	
+	/log/development.log or /log/production.log
+	
+	Rails can’t start writing to .log files until it has launched, so Rails logging can’t help you if your initial setup has critical problems.
+	File permission problems and other errors will show up in the web server’s access_log and may give you clues about what is going wrong.
+
+Do Files Have the Correct Permissions?	
+
+	Here are a few important files and the permissions they must have:
+	• The log directory and files must be writable by the user running the FastCGI or Mongrel process. 
+	• The public directory must be writable by the user running the FastCGI or Mongrel process if you are using page caching. Rails will run if the public directory is not writable but will not use caching.
+	• dispatch.fcgi must be executable, but not writable by others.
+
+Are Current Versions of Necessary Files and Requirements Present?
+
+	Is database.yml present and correct
+	Are all the gems installed and the correct version
+	
+
+Has the Database Been Migrated to the Correct Version for Your
+Application?
+
+   If you are running in production mode check that you have run the migration or initialized the production database.
+ 
+Is the server started?
+  
+   You must start and stop the web server to make changes to the application
+      
+
+
+##########################Contact Us ########################
+  
+  Thanks again for using this software, and let us know what you think! 
+
+	Contact Us:
+	http://alacarte.library.oregonstate.edu/contact
+	
+	Bugs, Patches and Requests:
+	http://rubyforge.org/tracker/?group_id=6732
+	
+	Forums:
+	http://rubyforge.org/forum/?group_id=6732
+	http://alacarte.library.oregonstate.edu/forum
+	
+	FAQ and Documentation:
+	http://alacarte.library.oregonstate.edu/support
+	
+	Code: 
+	http://rubyforge.org/frs/?group_id=6732
+	
+	Roadmap and Tickets:
+	https://trac.library.oregonstate.edu/projects/ica/roadmap
+	https://trac.library.oregonstate.edu/projects/ica/report
+	
+
+################### Upgrading from V1.3 to V1.4 ############################
+
+Before upgrading the code you must first upgrade your databases. 
+Note: The upgrading instructions assume you are using a MySQL database. 
+
+Step 1. Upgrade databases
+
+Note: Back up your databases before running the update file. 
+    
+    /db/V1.4_update.sql
+
+Using what ever database tool you are comfortable with run the above sql file. 
+
+Command line: mysql -u<user> -p<pass> -h mysqlserver.yourdomain.edu -D <your database> < /path/to/db/alaCarte_V1.4_update.sql
+PHPAdmin: Import  /db/alaCarte_V1.4_update.sql
+
+Step 2. Update your code base. 
+
+Note: Backup your environment.rb and database.yml configuration, as well as any local changes and files.
+
+Step 3. Configure Environments Variables
+     Note: the configuration has changed, you will need to copy your values from environment.rb into new locations
+     
+	Open the configuration folder: config/
+	
+	3.1 Add Action Mailer variables
+	
+	 edit config/initializers/smpt_settings.rb
+	
+	 You will need to specify some additional configuration to tell ActionMailer which mail server will handle your outgoing e-mail.
+	
+	3.2 API Keys
+	
+	edit config/initializers/api_settings.rb
+	Recapcha:
+	Add your recaptcha API keys to the #recaptcha variables section
+	
+	Google:
+	Add your Google API key to the #goggle variables section
+	
+	edit config/flick.yml
+	
+	Flickr Keys
+	Add your flickr api keys to the yml file. 
+	Be careful to keep the formatting of the file as is - with no space before variable and a tab between variable and value.
+	
+	
+Step 4 Optional: Module Configuration
+
+    OPTION 1: Configure Uploads and Image Manager  
+	 
+	If you have been using the attachment module or image upload in the librarian module:
+	Copy over attachment folders: public/uploads, public/photos
+
+	Unix Command:
+	cp -a /path/to/orig/public/uploads /path/to/new/public/uploads
+	cp -a /path/to/orig/public/photos /path/to/new/public/photos
+	
+	Enable read/write access privileges for attachment folders: public/uploads, public/photos
+
+    Unix Command:
+       chmod -R g+w /path/to/public/uploads
+       chmod -R g+w /path/to/public/photos
+	
+	OPTION 2: Upgrade to Image Manager
+	   
+    edit controllers/application_controller.rb
+    In the uses_tiny_mce instantiation find the parameter advimage and replace with advimage_uploader
+
+	To upgrade alaCarte to use the Image_manager, run the rake task, move_to_image_manager.  The rake 
+	task move_to_image_manager is used to create sql insert commands which will move all previously
+	uploaded images from the librarian profiles into the image_manager.  The insert commands are added
+	to the sql file image_manger_update.sql.  Executing this rake task and then running the sql script
+	will import all of the previously uploaded images into the image_manager. 
+	
+	1.  run: rake move_to_image_manager
+    
+    2.  run: /db/image_manger_update.sql
+
+		Using what ever database tool you are comfortable with run the above sql file. 
+		
+		Command line: mysql -u<user> -p<pass> -h mysqlserver.yourdomain.edu -D carte_production < /path/to/db/image_manger_update.sql
+		PHPAdmin: Import  /db/image_manger_update.sql
+
+    
+    OPTION 3: Configure III OPAC Variables 
+    Required if you want to enable the Course Reserves and Catalog Books Module which provides a method to search for course reserves or
+    catalog records and embed the information directly in a guide.
+    
+    NOTE: These experimental modules can only be configured for III OPACs and may not work for you due to the many different configurations
+    available to III OPACS and versions of the software. 
+    
+    OPTION 3.1 Course Reserves 
+    
+    edit /lib/reserves_scraper.rb
+    
+    Edit the following variables, adding your own URLs and search parameters
+     
+     OASIS_DOMAIN = "oasis.library.oregonstate.edu" 
+        The base of the URL - no http or www
+     BASE_URI = "http://oasis.library.oregonstate.edu"
+         The full URL
+     SEARCH_URI = "http://oasis.library.oregonstate.edu/search~S13/r?SEARCH="
+         The complete search URL - tip: to get this string query your catalog course reserves and copy the URL carefully removing the search query.
+  
+    OPTION 3.2 Catalog Search 
+    
+    edit /lib/catalog_scraper.rb
+    
+    Edit the following variables, adding your own URLs and search parameters
+     
+     BASE_URI = "http://oasis.library.oregonstate.edu"
+       The full URL
+     SEARCH_URI = "http://oasis.library.oregonstate.edu/search/?searchtype=X&searcharg="
+     	The complete search URL - tip: to get this string query your catalog and copy the URL carefully removing everything after the search query.
+     SEARCH_SCOPE = "&searchscope=13&SORT=D"
+     	The searcg URL parameters - usually follows the query in the search URL    
+
+Step 5. OPTIONAL: Clean Unused Database Tables
+
+	This version has removed some module types. If you have been using Library a la Carte since V1.2 or have been using the Plagiarism, Recommended Resource,
+	Style Guides or Assignment Modules you should run this option to move the data into the Custom Content Module.
+	 
+	 To verify that you have these tables, use the following commands from the command line or use your favorite database tool:
+
+	Connect to mysql -u<user> -p -h mysqlserver.yourdomain.edu -D <database_name>
+
+	Once logged in, enter the following line:
+
+		SHOW TABLES IN <database_name> LIKE ‘%_resources’;
+
+	Check to see if the four tables (assign_resources, plag_resources, recom_resources,and style_resources) exist.  
+	If you don’t have these tables, then you can skip this step.
+	
+	If these tables exist, 
+	
+	Run: : rake resource_transfer
+	
+	Then Run: db/delete_old_resource_tables.sql
+	
+	Using what ever database tool you are comfortable with run the above sql file. 
+
+	Command line: mysql -u<user> -p -h mysqlserver.yourdomain.edu -D database_name < /path/to/db/delete_old_resource_tables.sql
+	PHPAdmin: Import  /db/delete_old_resource_tables.sql
+	
+	
+    
+Step 6. Customize 
+	Customization has changed.
+	
+	An admin should use the admin tools to further customize the application. Please see this documentation for more info:
+	Admin FAQ: http://alacarte.library.oregonstate.edu/support/admin_faq
+	Customize Content Types: http://alacarte.library.oregonstate.edu/support/content_types
+	Configure Module Types: http://alacarte.library.oregonstate.edu/support/enable_mods
+	Customize Template: http://alacarte.library.oregonstate.edu/support/tut_template_customization
+	Customization Map: http://alacarte.library.oregonstate.edu/support/tut_map_customization
+	Customize Search: http://alacarte.library.oregonstate.edu/support/search_customization
+	Manage Database Tables: http://alacarte.library.oregonstate.edu/support/config_db
+	
+
+Step 6. Test 
+
+
+#########################Older Upgrades########################
+	
+
+/**Upgrading to V1.2**/
+
+Before upgrading the code you must first upgrade your databases. Note: The upgrading instructions assume you are using a MySQL database. 
+
+Step 1. Upgrade databases
+    
+    /db/alaCarte_V1.2_update.sql
+
+Using what ever database tool you are comfortable with run the above sql file. 
+
+Command line: mysql -u<user> -p<pass> -h mysqlserver.yourdomain.edu -D ica_production < /path/to/db/alaCarte_V1.2_update.sql
+PHPAdmin: Import  /db/alaCarte_V1.2_update.sql
+
+Step 2. Update your code base. Note: Don't forget to copy your environment.rb and database.yml configuration over, as well as any local changes and files.
+
+Step 3. Enable read/write access privileges for attachment folders: public/uploads, public/photos
+
+Unix Command:
+       chmod -R g+w /path/to/public/uploads
+       chmod -R g+w /path/to/public/photos
+
+Step 4. Test        
+
+
+
+/**Upgrading to V1.3 from V1.2**/
+Step 1. Upgrade databases
+    
+    /db/alaCarte_V1.3_update.sql
+
+Using what ever database tool you are comfortable with run the above sql file. 
+
+Command line: mysql -u<user> -p<pass> -h mysqlserver.yourdomain.edu -D ica_production < /path/to/db/alaCarte_V1.3_update.sql
+PHPAdmin: Import  /db/alaCarte_V1.3_update.sql
+
+Step 2. Update your code base. Note: Don't forget to copy your environment.rb and database.yml configuration over, as well as any local changes and files.
+
+Step 3.  Copy over attachment folders: public/uploads, public/photos
+
+Unix Command:
+cp -a /path/to/orig/public/uploads /path/to/new/public/uploads
+cp -a /path/to/orig/public/photos /path/to/new/public/photos
+
+Step 4. Test 
+
+
+
+
+	
+	
