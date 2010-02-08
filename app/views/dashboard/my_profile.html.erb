@@ -1,0 +1,26 @@
+
+
+<fieldset>
+<h3>My Profile </h3> 
+<% if flash[:notice] -%>
+	 <div id="list_error" ><%= flash[:notice] %></div>
+<% end -%>
+<br />
+<div class = 'tip'> Your default contact module.  <span class = 'more_help'  onMouseover="fixedtooltip(PROFILE_MOD_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></div>
+	<br />
+	
+<div id="boxes">
+	<div class="item">
+		<div class ="item2">
+			<%= show_mod(@mod)%>
+		    <div class="bot"><div></div></div>
+		</div>
+	</div>
+</div>
+	<p>
+ <b><%= link_to 'Select New Profile', :action => 'edit_profile' %> | <%=link_to 'Edit Module', {:controller => 'module', :action => 'edit_content', :id => @mod, :type => @mod.class}%></b>
+</p>	
+<p>
+            <b><%= link_to 'Cancel', :action => 'index' %></b>
+         </p>   	    
+</fieldset>	

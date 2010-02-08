@@ -1,0 +1,26 @@
+<fieldset>
+	<h2> Customize Content Types</h2>
+	<% form_tag :action => 'customize_layout', :id => @local do%>
+	    <%= error_messages_for 'local' %>
+      <div id ="share">
+      	<fieldset>
+      		<h4>Guide Types</h4>
+			<div class='tip'>Select the types of guides authors can create. Admins will be able to create all types. </div>
+			 <%= select_tag 'local[guides][]', options_for_select(@guide_types, @selected_guides), {:multiple=>true, :class=>"share"} %>
+            </select>
+      	</fieldset>
+		
+		<fieldset>
+			<h4>Modules Types</h4>
+			<div class='tip'>Select the module types authors can create. Admins will be able to create all module types. <br />
+			Note: Some modules must be configured before they will be functional, see <a href="http://alacarte.library.oregonstate.edu/support/enable_mods">this documentation</a> before enabling any new modules. </div>
+			<%= select_tag 'local[types][]', options_for_select(@types, @selected), {:multiple=>true, :class=>"share"} %>
+		</fieldset>
+
+      </div>
+		
+	   <%= submit_tag 'Customize Types', :class => "submit"  %>
+	<%end%>	 
+	<%= link_to 'Cancel', :action => 'tools' %>
+		 
+</fieldset>

@@ -1,0 +1,12 @@
+	<h2><%=h @mod.module_title%></h2>
+	<div class="module">
+		<%unless @mod.information.blank?%><%= @mod.information%><%end%>
+		<%@mod.images.each do |image|%>
+			<% cache do %>
+			<a href="<%=image.url%>" title ="Go to original image"><img src="<%=image.url%>" alt="<%=image.alt%>" class = '<%=@class%>'/></a> 
+			<%end%> 
+			<%unless image.description.blank?%><p> <%=image.description%> <br /></p><%end%>
+		<%end%>
+
+	</div>
+	

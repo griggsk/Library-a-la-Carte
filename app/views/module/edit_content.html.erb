@@ -1,0 +1,16 @@
+ <fieldset> 
+  <%=render :partial => '/module/edit_top'%>
+	<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+	<%= error_messages_for 'mod' %>
+<%form_tag({:action => 'update', :id => @mod, :type =>@mod.class} , {:multipart => true})  do %>
+	 <%=render :partial => '/module/mod_title'%>  
+
+    <%= show_form(@mod.class.to_s)%>
+	<div id="submit_button">
+		<%= submit_tag 'Save', :class => "submit" %>  
+		<p><%= link_to 'Cancel', :action => 'index',:id => @mod, :type =>@mod.class, :list => 'mine', :sort => 'name' %></p>
+	</div>
+<% end %>
+</fieldset> 

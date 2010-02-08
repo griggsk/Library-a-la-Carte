@@ -1,0 +1,20 @@
+<div id="page_title">
+	<label for="mod_course_reserves" >Search Course Reserves
+	<span class = 'more_help' onMouseover="fixedtooltip('Please select a class to get course reserves for', this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%>
+	<%= image_tag "spinner.gif", :id => "spinner_search", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
+	</span></label>
+	<fieldset>
+		<label for="page_subject" class="form_float">Subject
+		<select id="page_subject" name="page_subject" class="page">
+			 <%= options_from_collection_for_select(@subj_list, 'subject_code', 'subject_code') %>
+		</select></label>
+		<label for="page_cnum" class="form_float">Course #
+		<%= text_field_tag 'page_cnum', '', :size => 5%></label>
+		<label for="button" class="form_float">
+	     <%=button_to_function("Search reserves", 
+							 remote_function(:update => "returns", :loading => "Element.show('spinner_search')", :complete => "Element.hide('spinner_search')",
+							 :url => { :action => 'update_reserves', :id => @mod}, :submit =>'page_title'))%>
+		</label>
+    </fieldset>
+</div>
+<div class="clearer"></div>	

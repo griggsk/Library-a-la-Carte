@@ -1,0 +1,41 @@
+<fieldset>
+   <h3 class='title'> 
+	<%=render :partial => 'title_actions'%>
+	</h3>
+	<h4>
+		Course Pages
+	</h4>
+		<div id="new_button" class="new">
+	    <a href= "/module/add_to_page/<%=@mod.id%>?type=<%=@mod.class%>&sort=name">
+        <span>
+	        <img src="/images/icons/add.png" alt="Add Tab" />
+	        Add to Course Pages
+	    </span></a>
+    	</div>
+	<div id="product-list" >
+		<% if !@course_pages.blank?%>
+			<table>
+				<thead>
+				<th>Course Pages for <%=@mod.label%> </th>
+			     <th></th>
+			    </thead>
+		   		<%@course_pages.each do |page|%>
+					<tr class="<%= cycle('list-line-odd', 'list-line-even') %>">
+						<td>
+							<b><%=h page.header_title%></b>
+						</td>
+						<td>
+							<%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this Page', :alt => 'Edit', :border => 0), {:controller =>'page', :action => 'edit',  :id => page }, :class=>'space'%>
+							|
+							<%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this Page', :alt => 'View Page', :border => 0), { :controller => "ica", :action => 'index', :id => page}, :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes'],:class=>'space'%>
+						
+						</td>
+					</tr>
+				<%end%>
+			</table>
+		<%else%>
+			<p>This Module is not used on any Course Pages.</p>
+		<%end%>
+		</div>
+  </fieldset> 
+ 

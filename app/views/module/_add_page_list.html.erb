@@ -1,0 +1,60 @@
+ 
+	<table>
+ 	<thead>
+ 	
+	<tr>
+	<th  class= '<%= sort_th_class_helper "name" %>'>
+        <%= sort_link_helper "Title", "name" %></th>
+		<th><%= image_tag "spinner.gif", :id => "spinner_sort", :class => 'image', :alt => "Spinner", :style => 'display:none;'%></th>
+	
+	<th  class= '<%= sort_th_class_helper "date" %>'>
+        <%= sort_link_helper "Last Update", "date" %></th>
+	<th  class= '<%= sort_th_class_helper "publish" %> center'>
+        <%= sort_link_helper "Published?", "publish" %></th>
+	<th  class= '<%= sort_th_class_helper "archive" %> center'>
+        <%= sort_link_helper "Archived?", "archive" %></th>
+	</tr>
+	</thead>
+  <% for page in @pages %>
+     <tr class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+        <td class= '<%= sort_th_class_helper "name" %>'  width ="40%">
+        	 <%= truncate(h(page.search_title),:length => 45) %> <br />
+         <%for tab in page.tabs%>
+			 <%= check_box_tag(tab.tab_name, tab.id,session[:page_tabs].include?(tab.id.to_s) , :onclick => remote_function( :url => {:action => 'add_page', :tid => tab.id})) %>
+		  	 <%=tab.tab_name%><br />
+   		  <%end%>
+		</td>
+	  <td  width ="15%"><%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this Page', :alt => 'View Page', :border => 0),{ :controller => "ica", :action => 'index', :id => page}, :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes'] %>
+	   </td>
+	   
+       <td class= '<%= sort_th_class_helper "date" %>'  width ="10%"> <%= page.updated_at.to_date%></td>
+		<td class= 'center'  width ="5%">
+           <% unless page.published? %>
+    
+            <%=  image_tag("/images/icons/Minus.png", :title => 'This page is not published', :alt => 'publish this page', :border => 0) %> 
+        <%else%> 
+            
+            <%=  image_tag("/images/icons/Plus.png", :title => 'This page is published', :alt => 'unpublish this page', :border => 0) %> 
+        <%end%>
+		</td>
+		<td class= 'center'  width ="5%">
+           <% unless page.archived? %>
+    
+            <%= image_tag("/images/icons/Minus.png", :title => 'This page is not archived', :alt => 'archive this page', :border => 0) %> 
+        <%else%> 
+            
+            <%= image_tag("/images/icons/archive.png", :title => 'This page is archived', :alt => 'remove from archive', :border => 0) %> 
+        <%end%>
+        </td>
+		
+   	 </tr>
+	 
+ 	<% end %>
+	</table>
+<div class="pagination">
+<%if @pages.total_pages > 1%>
+	<ul>
+		<li><%=will_paginate @pages, :params => params.merge({:sort=> @sort}).except(:authenticity_token)%></li>
+	</ul>	  	
+<%end%>
+</div>

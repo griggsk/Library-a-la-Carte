@@ -1,0 +1,22 @@
+	<h2><%=h @mod.module_title%></h2>
+	<div class="module">
+			<ul class="undeco">
+				<%unless @mod.info.blank?%><li><%=@mod.info%></li><%end%>
+				<%for db in @mod.database_dods
+					dod = db.dod 
+					if dod %>
+					<li>
+						<%if dod.proxy==0%>
+							<a href = "<%=@mod.proxy%><%=dod.url%>"><%=dod.title%></a>
+							<%=image_tag("/images/icons/lock.png", :title => 'Must login to access', :alt => 'locked database')%>
+						<%else%>
+						    <a href = "<%=dod.url%>"><%=dod.title%></a>
+							<%=image_tag("/images/icons/lock_off.png", :title => 'Open access', :alt => 'open database')%>
+						<%end%>
+						<br /><%=db.description%><br /> 
+						<% unless dod.coverage_label.blank? %>Coverage Dates: <%=dod.coverage_label%><%end%>
+					</li>
+			       <%end
+				end%>
+			</ul>
+		</div>

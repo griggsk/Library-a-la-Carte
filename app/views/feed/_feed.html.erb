@@ -1,0 +1,25 @@
+<div class="feeds"> 
+<fieldset>
+<label> RSS Feed <%= link_to_function  image_tag("/images/icons/remove.png", :alt => 'Remove', :title => 'Click to delete this feed', :border => 0), "$(this).up('.feeds').remove()" %>
+				</label> <br /> <br />
+<% new_or_existing = feed.new_record? ? 'new' : 'existing' %> 
+		<% prefix = "mod[#{new_or_existing}_feed_attributes][]" %> 
+		<% fields_for prefix, feed do |feed_form| -%> 
+		
+		   <div id="feed">
+				<div id="new_feed_<%=feed.id%>">
+				<label for="feed_label">Label <span class="required">*</span>
+				   <span class = 'more_help' onMouseover="fixedtooltip(ADD_FEED_LABEL_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+	              </label>
+				    <%= feed_form.text_field :label, "size" => 14 %>
+				 <label for="feed_label">URL <span class="required">*</span>
+				   <span class = 'more_help' onMouseover="fixedtooltip(ADD_FEED_URL_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+				</label>   
+					<%= feed_form.text_field :url, "size" => 40 %>
+					<div id="inline_error"> <%= error_message_on :feed, :label %></div>
+					<div id="inline_error"> <%= error_message_on :feed, :url %></div>
+		  </div>
+		
+ <% end -%> 
+ </fieldset>
+</div>

@@ -1,0 +1,12 @@
+<% content_for(:sidebar) do %> 
+
+
+<div id="my_menu" class="sdmenu blue_guide">
+      <div>
+			<%= link_to 'Title &amp; Metadata', {:controller => 'guide', :action => 'update',  :id => @guide.id }, :class => "top " + ( @ucurrent || "") %>
+		    <%= link_to 'Edit Guide', {:controller => 'guide', :action => 'edit',  :id => @guide.id} , :class =>@ecurrent%>
+			<%= link_to 'Add Modules', {:controller => 'tab', :action => 'add_modules',  :id => @guide.id, :sort => 'name'}, :class =>@amcurrent%> 
+		    <%= link_to 'Share Guide', {:controller => 'guide', :action => 'share',  :id => @guide.id }, :class =>@shcurrent%>
+	</div>  
+</div>  
+<%end%>

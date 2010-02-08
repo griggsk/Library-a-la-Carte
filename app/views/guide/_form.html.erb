@@ -1,0 +1,40 @@
+<%= error_messages_for 'guide' %>
+<div id ='share'>	
+<fieldset>
+	<h5>Guide Title &amp; Subject <span class = 'more_help'  onMouseover="fixedtooltip(GUIDE_NAME_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></h5>
+	 <%=render  :partial => "guide_title"%>
+	<div id="vertical_inputs">
+		
+		<span>
+			<label for="guide_type">Categorize Guide Under Subjects<span class="required more_help">*</span></label>
+			<select id="guide_type" name="types[]" multiple="multiple" class="page" size = 3>
+				<%= options_from_collection_for_select(@guide_types, 'id', 'value', @selected_types) %>
+		    </select>
+		</span>
+		
+		<br />
+   </div>
+   <div class = 'tip'>Guides are listed under their subject catergories and related to other guides in the catergories. (press Ctrl to select more than one item. press Ctrl to deselect an item.)</div>
+</fieldset>
+<fieldset>
+	<h5>Related Courses <span class = 'more_help'  onMouseover="fixedtooltip(GUIDE_CLASS_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></h5>
+<span>
+		<label for="guide_type">Relate Guide to Course Subjects</label>
+	  		<select id="guide_type" name="subjects[]" multiple="multiple" class="page" size = 3>
+	  			<%= options_from_collection_for_select(@subjects, 'id', 'subject_name', @selected_subjs)%>	<br />
+			</select>
+		</span>	
+		 <div class = 'tip'>Select course subjects that this guide would be useful for. 	(press Ctrl to select more than one item. press Ctrl to deselect an item.)</div>
+</fieldset>
+ <fieldset>
+ <h5> Guide Metadata </h5>
+  <label for="guide_guide_description">Description <span class = 'more_help' onMouseover="fixedtooltip(PAGE_DESC, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+   <%= text_area 'guide', 'description',"class" => 'mceNoEditor', :size => '40x2'  %>
+   <div class = 'tip'>Enter a short description about the guide.</div>
+   
+   <label for="tags">Tags <span class = 'more_help' onMouseover="fixedtooltip(PAGE_TAGS, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+   <%= text_area_tag 'tags', @tag_list, {"class" => 'mceNoEditor', :size => '40x2'}  %>
+   <div class = 'tip'>	example: anthropology, insects, caves</div>
+</fieldset>	
+
+</div>

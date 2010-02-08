@@ -1,0 +1,25 @@
+<%= error_messages_for 'mod' %>
+
+<!--[form:page]-->
+			<label for="name" >Instructor's Name 
+                <span class = 'more_help'  onMouseover="fixedtooltip(INST_NAME_MSSG, this, event, '300');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+              <%= text_field 'mod', 'instructor_name',"size" => 54    %></p>
+                
+                <label for="email" >Email Address 
+                <span class = 'more_help' onMouseover="fixedtooltip(INST_EMAIL_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+              <%= text_field 'mod', 'email',"size" => 54    %></p>
+              
+                <label for="office_loc" >Office Location 
+                <span class = 'more_help' onMouseover="fixedtooltip(INST_LOCATE_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+              <%= text_field 'mod', 'office_location',"size" => 54    %></p>
+            
+                <label for="office_hrs" >Office Hours 
+                <span class = 'more_help' onMouseover="fixedtooltip(INST_HOURS_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+              <%= text_field 'mod', 'office_hours',"size" => 54    %></p>
+            
+                <label for="web" >Website URL 
+                <span class = 'more_help'   onMouseover="fixedtooltip(INST_URL_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+              <%= text_field 'mod', 'website' ,"size" => 54   %></p>
+
+            
+          

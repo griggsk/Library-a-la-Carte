@@ -1,0 +1,14 @@
+<fieldset>
+	<div id="main">
+	<h3>Create New Tutorial</h3>
+	<%= error_messages_for 'page' %>
+	<% form_tag :action => 'new' do%>
+	<div id ='share'>
+		<%= render :partial => 'form' %>
+	</div>
+	<%end%>
+	
+	<p><%= link_to 'Cancel', :action => 'index' %></p>
+</div>
+ </fieldset>
+ 

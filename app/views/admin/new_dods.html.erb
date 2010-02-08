@@ -1,0 +1,51 @@
+<fieldset>
+	<h3>New Database</h3>
+	<% if flash[:error] -%>
+		<div id ="error_wrapper">    
+	  		<div id="list_error" >
+	  			<%= flash[:error] %>
+			</div>
+		</div>
+	<% end -%>
+	
+ 		<% form_tag :action => 'create_dods' do %>
+			<div id ='subjects'>
+ 				<% @dods.each_with_index do |dod, index| %>
+   					<% fields_for "dods[#{index}]", dod do |f| %>
+        				<%= error_messages_for :dod %>
+						<label for="title"><span class="required">*</span>Database Title</label>
+    					<%= f.text_field 'title'%><%= f.error_message_on "title" %>
+	
+						<label for="url"><span class="required">*</span>Database URL</label>
+    					<%=f.text_field 'url'%><%= f.error_message_on "url" %>
+		
+						<label for="startdate">Coverage Start Date</label>
+    					<%= f.text_field 'startdate'%><%= f.error_message_on "startdate" %>
+	
+						<label for="enddate">Coverage End Date</label>
+    					<%=f.text_field 'enddate'%><%= f.error_message_on "enddate" %>
+		
+						<label for="provider"><span class="required">*</span>Provider Name</label>
+    					<%= f.text_field 'provider'%><%= f.error_message_on "provider" %>
+	
+						<label for="providerurl">Provider URL</label>
+    					<%=f.text_field 'providerurl'%><%= f.error_message_on "providerurl" %>
+		
+						<label for="proxy"><span class="required">*</span>Requires Proxy (0 = false, 1 = true)</label>
+    					<%= f.text_field 'proxy'%><%= f.error_message_on "proxy" %>
+	
+						<label for="descr"><span class="required">*</span>Database Description</label>
+    					<%=f.text_area 'descr'%><%= f.error_message_on "descr" %>
+   					<% end %>
+ 				<% end %>
+ 			</div>
+	
+			<div id="submit_button">	
+    		<%= submit_tag 'Save Databases' ,:class =>"submit" %>  or
+			<%= submit_tag 'Save and Add 1 More' ,:class =>"submit" %>
+			</div>
+ 		<% end %>
+	<p>
+ 		<%= link_to 'Cancel', :action => 'dods' %>
+	</p>
+</fieldset>

@@ -1,0 +1,28 @@
+admin:
+  id: 1000000
+  name: admin
+  salt: VoUWiVKEpW
+  email: admin@your-domain.com
+  role: admin
+  hashed_psswrd: c31a359b4a96ae76bdecfb87c1d0219088b11f41
+
+bob:
+  id: 1000001
+  name: bob
+  salt: 1000
+  email: bob@mcbob.com
+  hashed_psswrd: 77a0d943cdbace52716a9ef9fae12e45e2788d39 # test
+
+existingbob:
+  id: 1000002
+  salt: 1000
+  name: existingbob
+  email: exbob@mcbob.com
+  hashed_psswrd: 77a0d943cdbace52716a9ef9fae12e45e2788d39 # test
+
+longbob:
+  id: 1000003
+  name: longbob
+  email: lbob@mcbob.com
+  hashed_psswrd: 00728d3362c26746ec25963f71be022b152237a9 # longtest
+  salt: 1000

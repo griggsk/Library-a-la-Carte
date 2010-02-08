@@ -1,0 +1,40 @@
+<fieldset>
+ <h3 class='title'> 
+	<%=render :partial => 'title_actions'%>
+	</h3>
+	<h4>
+		Subject Guides
+	</h4>
+	<div id="new_button" class="new">
+	    <a href= "/module/add_to_guide/<%=@mod.id%>?type=<%=@mod.class%>&sort=name">
+        <span>
+	        <img src="/images/icons/add.png" alt="Add Tab" />
+	        Add to Subject Guides
+	    </span></a>
+    </div>
+	
+<div id="product-list" >
+	<%if !@guides.blank?%>
+		<table>
+			<thead>
+			<th colspan=2>Guides Containing <%=@mod.label%> </th>
+			</thead>
+	   		<% @guides.each do |guide| %>
+			<tr class="<%= cycle('list-line-odd', 'list-line-even') %>">
+				<td>
+					<b><%= h guide.guide_name%></b>
+				</td>
+				<td>
+					<%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this Guide', :alt => 'Edit', :border => 0), {:controller =>'guide', :action => 'edit',  :id => guide}, :class=>'space'%>
+				|	<%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this Guide', :alt => 'View', :border => 0), { :controller => "srg", :action => 'index', :id => guide}, :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes'] , :class=>'space'%>
+				
+				</td>
+			</tr>
+			<%end%>
+		</table>
+	<%else%>
+	<p>This Module is not used on any Subject Guides</p>
+	<%end%>	
+</div>
+  </fieldset> 
+ 

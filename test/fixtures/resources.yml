@@ -1,0 +1,32 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+resource1:
+  id: 1
+  page_id: 1
+  user_id: 1000001
+  resource_id: 1
+  resource_type: AssignResource
+  position: 1
+  
+resource2:
+  id: 2
+  page_id: 2
+  user_id: 1000001
+  resource_id: 1
+  resource_type: RssResource
+  position: 2
+  
+resource4:
+  id: 4
+  page_id: 1
+  user_id: 1000001
+  resource_id: 1
+  resource_type: MiscellaneousResource
+  position: 3
+  
+resource3:
+  id: 3
+  page_id: 2
+  user_id: 1000003
+  resource_id: 2
+  resource_type: LibResource
+  position: 4

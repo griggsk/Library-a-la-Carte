@@ -1,0 +1,218 @@
+/*tag cloud*/
+.css1 {font-size: .9em; color:#6666FF !important; text-decoration: none;}
+.css2 {font-size: .99em; color:#1A1AFF !important; text-decoration: none;}
+.css3 {font-size: 1.1em; color:#0000FF !important; text-decoration: none;}
+.css4 {font-size: 1.1em; text-decoration: none; font-weight: bold; color: #0000FF !important;}
+
+
+/* classes toggled by javascript to hide/show (swap) divs */
+
+.hidden { display: none;}
+
+.shown { display: block;padding: 5px;}
+
+/* comment module related CSS */
+
+.comment_container {}
+
+
+.comment_title {padding: 3px;}
+
+.show_more{
+ text-align: right;
+ padding-right: 3px;
+}
+
+.pink{background: #E7DAE2;}
+.green{background: #D6DDCB;}
+.blue{background:#DAE2E7;	}
+.purple{background: #DFDAE7;	}
+.dk_pink{background: #DDCBD6;}
+.dk_green{background: #CAD3BB;}
+.dk_blue{background:#CBD6DD;	}
+.dk_purple{background: #D2CBDD;	}
+.required {color: #990000;}
+
+/*Course Reserves*/
+
+.reserves{
+	margin-bottom: 9px;
+}
+.title a{
+	font-weight: bolder;
+}
+.call_num {
+	display: block;
+}
+
+/*book*/
+#book_view{margin-bottom: 18px;}
+
+/*styles for the modules*/
+
+.right_space{padding-right:8px;}
+
+.module ul.indent-left{
+  	padding:0 0 0 15px;
+	font-size:14px;
+	list-style: none none;
+}
+
+.module ul.indent-left li{
+  	margin-top: 3px;
+	margin-bottom: 8px;
+	list-style: none none;
+}
+.module label.contacts{
+	display:block;
+	
+}
+.module ul.contacts{
+  	padding:0 0 0 15px;
+	list-style: none none;
+	margin:0;
+}
+
+.module ul.contacts li{
+	list-style: none none;
+}
+
+
+
+.module ul.undeco {
+padding: 0;
+list-style: none none;
+}
+.module ul.undeco li{
+margin-top: 3px;
+margin-bottom: 8px;
+list-style: none none;
+}
+.module ul.rss-items{
+list-style: none none;
+margin: 0 0 0 0;
+padding: 0;
+}
+.module li.rss-item{ 
+    list-style: none none;
+    margin-top: 1px;
+    margin-bottom: 8px;
+ }
+
+/*Quiz*/
+#questions fieldset label, #answers fieldset label{display:inline;}
+#quiz fieldset{background: none; padding: 0; margin: 0; border: none;}
+#quiz fieldset label{display: inline; font-weight: 600;}
+#quiz ul{margin:5px 0 8px 5px; padding: 5px 0 8px 5px; border-bottom: 1px solid #ccc;}
+#quiz ul li{list-style: none; margin: 0; padding:0;}
+#quiz h5 {font-size: 1em;}
+
+/*RSS module*/
+#boxes #feedcontrol {width: 100%; overflow: hidden;}
+ input.search-input {
+        width : 75%;
+        border: 1px solid #BCCDF0;
+        color: #9CADD0;
+        margin-bottom : 15px;
+		margin-left: 0;
+		padding: .5em .2em;
+      }
+
+      #feedControl { 
+        color: #6F6F6F;
+       }
+
+     #feedControl .gfc-title {
+        line-height : 1em;
+        overflow : hidden;
+        white-space : nowrap;
+        display : block;
+       }
+
+ #feedControl .gfc-resultsHeader {
+	border-bottom:1px solid #DBDBDB;
+	margin-bottom:4px;
+	width:100%;
+	}
+
+ #feedControl .gfc-title, .gfc-title * {
+		font-weight: bolder;
+       }
+
+  #feedControl  .gfc-results { margin-bottom: 15px;  color: #6F6F6F; }
+  
+  .feeds_class, .gf-snippet {color: #6F6F6F;}
+
+
+#feedControl .gfc-tabsArea{margin-top:0;
+}
+
+#feedControl .gfc-tabHeader{padding-top:3px;
+}
+
+
+#feedControl .gfc-tabData .gfc-resultsHeader .gfc-title{display:none;}
+
+.gfc-tabsArea{margin-top:16px; margin-bottom:6px;}
+.gfc-tabHeader.gfc-tabhInactive {background:#D1D1D1; color:#1C4753;}
+.gfc-resultsHeader {border-bottom:1px solid #D1D1D1;}
+.gfc-tabHeader.gfc-tabhActive {border-top:2px solid #1C4753;}
+/*images*/
+
+
+.thumbnail {
+	max-width: 250px;
+	width: 250px;
+}
+
+.full {
+  max-width: 95%;
+  width: 95%;
+}
+
+
+.super_thumbnail {
+	width: 150px;
+}
+
+.gbs-thumbnail{
+	float:left;
+	padding:3px;
+}
+
+.clearer {
+	clear:left;
+	height:1px;
+}
+
+.breadcrumbs{font-size:84.62%; margin: 2px 10px 0;}
+
+
+/*show modules*/
+
+.value{
+   font-weight:normal;
+}
+
+.value p{
+   font-weight:normal;
+}
+
+
+
+ul.undeco{
+   list-style: none outside;
+}
+
+ul.list li{
+	margin:4px 0;
+	padding: 4px 0;
+}
+
+
+ul.no_indent{
+   padding:0;
+   margin:0;
+}
+
+

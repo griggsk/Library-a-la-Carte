@@ -1,0 +1,18 @@
+<fieldset>
+	<h2> Customize Content Types</h2>
+	<% form_tag :action => 'customize_layout', :id => @local do%>
+	    <%= error_messages_for 'local' %>
+      <div id ="share">
+      	<fieldset>
+      		<h4>Guide Types</h4>
+			<div class='tip'>Select the types of guides authors can create. Admins will be able to create all types. </div>
+			 <%= select_tag 'local[guides][]', options_for_select(@guide_types, @selected_guides), {:multiple=>true, :class=>"share"} %>
+            </select>
+      	</fieldset>
+      </div>
+		
+	   <%= submit_tag 'Customize Types', :class => "submit"  %>
+	<%end%>	 
+	<%= link_to 'Cancel', :action => 'tools' %>
+		 
+</fieldset>

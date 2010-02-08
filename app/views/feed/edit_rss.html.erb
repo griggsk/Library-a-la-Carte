@@ -1,0 +1,89 @@
+ <script type='text/javascript'>
+
+// Attach an observer to the window
+Event.observe(window, 'load', function () {
+
+  // Create a function inside this scope for toggling the form
+  function toggleForm () {
+
+    var isFind =
+
+      // Grab the "#radios" div element
+      $('radios')
+
+        // Using a CSS selector, get an array of all the
+        // input elements where the "value" attribute is "yes"
+        .select('input[type=radio][value=find]')
+
+        // For each of the radio buttons found, pull the
+        // "checked" property
+        .pluck('checked')
+
+        // find out if any of those "checked" properties are true
+        .any();
+
+    // If we found any "add" checkboxes that were checked,
+    // show the right form
+    if (isFind) {
+		
+		$('find_feed').show();
+		$('add_feed').hide();
+		if(!document.rss.mod_style_nosearch.checked==true)
+		document.rss.mod_style_search.checked=true
+	}
+	else {
+		$('add_feed').show();
+		$('find_feed').hide();
+		if(!document.rss.mod_style_mixed.checked==true)
+		document.rss.mod_style_tabbed.checked=true
+	}
+  }
+
+  // Add an observer to the TBODY that will run the
+  // above toggleForm function. It will fire anytime someone
+  // clicks on one of the radio buttons inside of it
+  $('radios').observe('click', toggleForm);
+
+  // Run the toggleForm function to set
+  // the initial state of the form
+  toggleForm();
+
+});
+
+</script> 
+
+<fieldset>
+<%=render :partial => '/module/edit_top'%>
+	<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+	<%= error_messages_for 'mod' %>
+     <%form_tag({:controller => 'feed', :action => 'update_rss', :id => @mod} , {:multipart => true, :name=>'rss'})  do %>
+	       <%=render :partial => '/module/mod_title'%>  
+		  <label>General Information
+		    <span class = 'more_help' onMouseover="fixedtooltip(MOD_INFORMATION_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+	          <%= text_area 'mod', 'information',:class => "mceEditor" %>
+	<div id="rss_feeds">
+	 <fieldset>
+	 <h5>Get Started </h5>
+	 <div class='tip'>Select <b>Add Feeds</b> if you already know the Feed's URL or <b>Find Feeds</b> to search for feeds based on a topic. You can then customize how the feeds are displayed. </div>
+	  <div id='radios'> 
+			<input type='radio' name="option1"  id='optionAdd'  value='add' <%if @mod.style=="tabbed" || @mod.style=="mixed" || @mod.style.empty?%>checked='checked'<%end%> /> <label for="optionAdd">Add Feeds</label>	
+	        <input type='radio' name="option1"  id='optionFind' value='find' <%if @mod.style=="search" || @mod.style=="nosearch" %> checked='checked'<%end%>  /> <label for="optionFind">Find Feeds</label>
+	  </div>
+       <h5>Customize it</h5>
+	   <div id='find_feed'>
+	  	<%=render :partial => 'feed/find_feeds' %>
+	  </div>
+	  <div id='add_feed'>
+	  	<%=render :partial => 'feed/add_feeds'%>
+	  </div>
+	 </fieldset>	
+	</div>	 
+<div id="submit_button">
+  <%= submit_tag 'Save Module', :class => "submit" %>  
+  <p> <%= link_to 'Cancel', :controller => 'module', :action => 'index', :id => @mod, :type =>@mod.class, :list => 'mine', :sort => 'name' %></p>
+  </div>
+<%end%>
+</fieldset> 			  
+

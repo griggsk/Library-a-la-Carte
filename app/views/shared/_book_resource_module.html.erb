@@ -1,0 +1,9 @@
+	<h2><%=h @mod.module_title%></h2>
+	<div class="module">
+		<%unless @mod.information.blank?%><%= @mod.information%><%end%>
+		<% @mod.books.each do |book|%>
+			<div id ='book_view'>
+					<%=render :partial => '/book/view_book', :locals => {:book => book} %>
+			</div>
+		<%end%>
+	</div>

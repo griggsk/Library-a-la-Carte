@@ -1,0 +1,25 @@
+
+<div id="main">
+	<h1><%=@local.guide_page_title %> </h1>
+	<div id="main-inner"><div id="content">	
+	<a id="skip" name="skip"></a>	
+		<h1><%= Search Results %> </h1>
+			<div class="item">
+				<h2>Browse by Results</h2>
+				<div class="module">
+					<%= render :partial => '/shared/results'%>
+					<p><%=image_tag("/images/icons/back.png", :title => '', :alt => 'back', :border => 0)%> Back To: <a href ="/subject-guides/">Subject Guides</a> | 
+					<a href ="/course-guides/">Course Guides</a> | <a href ="/tutorials/"> Tutorials</a></p>
+				</div>
+		<div class="bot"><div></div></div>
+	</div>
+</div></div> <!-- end content, end main-inner -->
+</div> <!-- end main -->
+
+<div id="sidebar-right">
+	<%= render :partial => '/shared/right_side'%>
+</div> <!-- end sidebar-right -->
+
+<div id="sidebar-left"><div id="sidebar-left-inner">
+	<%= render :partial => '/shared/left_side'%>
+</div></div> <!-- end sidebar-left-inner, end sidebar-left -->

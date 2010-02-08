@@ -1,0 +1,12 @@
+	<h2><%=h @mod.module_title%></h2>
+	<div class="module">
+		<%unless @mod.information.blank?%><%= @mod.information%><%end%>
+		<ul class = 'undeco'> 
+		<% @mod.links.each do |link|%>
+			<li>
+			<a href = "<%=link.url%>"><%= link.label.blank? ? h(link.url) : h(link.label) %></a>
+			<%unless link.description.blank?%><br /> <%=h(link.description)%><%end%>
+			</li>
+		<%end%>
+		</ul>
+	</div>

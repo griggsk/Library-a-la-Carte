@@ -1,0 +1,110 @@
+WARNING: Please look at docs/README if you haven't already 
+AED	Agricultural Education
+AG	Agriculture General
+AHE	Adult Ed & Higher Ed Leadership
+ALS	Academic Learning Services
+AMS	American Studies
+ANS	Animal Sciences
+ANTH	Anthropology
+ARAB	Arabic
+AREC	Agricultural & Resource Economics
+ART	Art
+AS	Air Force Studies
+ATS	Atmospheric Sciences
+BA	Business Administration
+BB	Biochemistry and Biophysics
+BEE	Biological & Ecological Engr
+BI	Biology
+BIOE	Biological Engineering
+BOT	Botany and Plant Pathology
+BRR	Bioresource Research
+CE	Civil Engineering
+CEM	Construction Engineering Mngmt
+CH	Chemistry
+CHE	Chemical Engineering
+CHN	Chinese
+COMM	Communication
+CS	Computer Science
+CSS	Crop & Soil Science
+DHE	Design and Human Environment
+ECE	Electrical & Computer Engineer
+ECON	Economics
+ENG	English
+ENGR	Engineering Science
+ENSC	Environmental Sciences
+ENT	Entomology
+ENVE	Environemental Engineering
+ES	Ethnic Studies
+EXSS	Exercise and Sport Science
+FCSE	Family & Consumer Science Ed.
+FE	Forest Engineering
+FLL	Foreign Languages & Literature
+FOR	Forest Resources
+FR	French
+FS	Forest Science
+FST	Food Science and Technology
+FW	Fisheries and Wildlife
+GEN	Genetics
+GEO	Geosciences
+GER	German
+GPH	Geophysics
+GS	General Science
+H	Public Health
+HC	Honors College
+HDFS	Human Dev. and Family Sciences
+HHS	HHS - Lifetime Fitness
+HORT	Horticulture
+HST	History
+HSTS	History of Science
+IE	Industrial and Mfg Engineering
+INTL	International Degree
+IST	Interdisciplinary Programs
+IT	Italian
+JPN	Japanese
+LING	Linguistics
+LS	Liberal Studies
+MB	Microbiology
+MCB	Molecular & Cellular Biology
+ME	Mechanical Engineering
+MRM	Marine Resource Management
+MS	Military Science
+MTH	Mathematics
+MUED	Music Education
+MUP	Music (Studio)
+MUS	Music
+NE	Nuclear Engineering
+NUTR	Nutrition
+NMC	New Media Communication
+NR	Natural Resources
+NS	Naval Science
+OC	Oceanography
+OMSE	Oregon Master of Software Engineering
+PAC	Physical Activity Courses
+PAX	Peace Studies
+PED	Physical Education
+PH	Physics
+PHAR	Pharmacy
+PHL	Philosophy
+PS	Political Science
+PSY	Psychology
+RHP	Radiation Health Physics
+RNG	Rangeland Ecology & Management
+RUS	Russian
+SED	Science & Mathmatics Education
+SNR	Sustainable Natural Resource
+SOC	Sociology
+SPAN	Spanish
+ST	Statistics
+TA	Theatre Arts
+TCE	Teacher & Counselor Education
+TOX	Toxicology
+VMB	Veterinary Medicine Biomedical
+VMC	Veterinary Medicine Clinical
+WRE	Water Resources Engineering
+WRP	Water Resources Policy and Mgt
+WRS	Water Resources Science
+WR	Written English
+WS	Women Studies
+WSE	Wood Science and Engineering
+YDE	Youth Development Education
+Z	Zoology

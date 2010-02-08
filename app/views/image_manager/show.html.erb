@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Upload/insert/edit Image</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=8">
+	<script src="/javascripts/prototype.js" type="text/javascript"></script>
+	<script src="/javascripts/effects.js" type="text/javascript"></script>
+	<script type="text/javascript" src="/javascripts/tiny_mce/tiny_mce_popup.js"></script>
+	<script type="text/javascript" src="/javascripts/tiny_mce/utils/form_utils.js"></script>
+	<script type="text/javascript" src="/javascripts/tiny_mce/plugins/advimage_uploader/js/image.js"></script>
+	<link href="css/advimage.css" rel="stylesheet" type="text/css" />
+	<base target="_self" />
+	<%= js_to_be_included %>
+</head>
+<body id="advimage" style="display: none">
+	<%=render :partial => "flashmsg"%>
+	<div id="leftbox">
+		<div id="dynamic_select_panel" class="panel current">
+			<%=render :partial => "show_image_list"%>
+			<%=render :partial => "uploader"%>
+		</div>
+		<iframe id='upframe' name="upframe" src="about:blank"></iframe>
+	</div>	
+	<form id="insert-form" onsubmit="ImageDialog.insert();return false;" action="#"> 
+	<div id="rightbox">
+		<%=render :partial => "general_tab"%>
+		<div id="appearance_panel" class="panel">
+			<%=render :partial => "appearance_tab"%>
+		</div>
+	<div id="rightbottom">
+		<div class="mceActionPanel">
+			<div style="float: left">
+				<input type="submit" id="insert" name="insert" value="Insert" />
+			</div>
+			<div style="float: right">
+				<input type="button" id="cancel" name="cancel" value="Cancel" onclick="tinyMCEPopup.close();" />
+			</div>
+		</div>
+	</div>
+	</div>		
+    </form>
+</body> 
+</html>

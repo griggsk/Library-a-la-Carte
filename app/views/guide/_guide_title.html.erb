@@ -1,0 +1,5 @@
+	<span <%= %(class="required") if flash[:guide_title_error] %>>
+	<label for="guide_type">Title <span class="required more_help">*</span></label>
+   <%= text_field 'guide','guide_name',"size" => 50 %> 
+   </span>
+			

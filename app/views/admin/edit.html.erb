@@ -1,0 +1,13 @@
+<fieldset>
+<h3>Edit Account for <%=h @user.name%></h3>
+
+<% form_tag :action => 'update', :id => @user do %>
+ 
+        <%= render :partial => 'form' %>
+           
+ <%= submit_tag 'Edit Account', :class=>"submit"%> 
+<%end %>
+
+<p>
+ <b><%= link_to 'Cancel', :action => 'users' %></b></p>
+</fieldset>

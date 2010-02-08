@@ -1,0 +1,69 @@
+<% @reserves ||= reserves %>
+<% @course_title ||= @mod.course_title%>
+<% if @reserves and !@reserves.empty? %>
+	  <% if @reserves.first[:course] %>
+		  <div id="reserved_titles">
+		   <label for="mod_course_reserves" >Course Reserves
+		    <span class = 'more_help' onMouseover="fixedtooltip('Course Reserves Search results', this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+		    <%=link_to_remote('Select a different course',:update => "returns", :loading => "Element.show('spinner_select')", :complete => "Element.hide('spinner_select')",:url =>{ :controller => 'reserve', :action => 'edit_reserves', :id => @mod} , :update => "returns")%>
+			<%= image_tag "spinner.gif", :id => "spinner_select", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
+			</label>
+		      <div class="reserves_results">
+				 There is more than one course for  <%= @course_title%>
+				  <br />
+				Select the correct instructor/location.
+			   <%= image_tag "spinner.gif", :id => "spinner_ambig", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
+			
+			    <div id="ambiguous_reserved_titles">
+			      <ul class="undeco">
+			        <% @reserves.each do |r| %>
+			          <% course = r[:course].scan(/\>(.*?)\</) %>
+			          <li><%= link_to_remote course, :loading => "Element.show('spinner_ambig')", :complete => "Element.hide('spinner_ambig')", :url => {:controller => 'reserve', :action => :retrieve_reserves, :title => r[:course]}, :update => "reserved_titles" %></li>
+			        <% end %>
+			      </ul>
+			    </div>
+				
+		      </div>
+			</div>
+	  <% else %>
+		   <label for="mod_course_reserves" >Course Reserves
+		    <span class = 'more_help' onMouseover="fixedtooltip('Course Reserves Search results', this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+		    <%=link_to_remote('Select a different course', :update => "returns", :loading => "Element.show('spinner_select')", :complete => "Element.hide('spinner_select')",:url =>{:controller => 'reserve', :action => 'edit_reserves', :id => @mod} , :update => "returns")%>
+			<%= image_tag "spinner.gif", :id => "spinner_select", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
+			
+			</label>
+			<div class="reserves_results">
+				
+		      <p class="bolded">Reserves for <%= @course_title%> 
+			  	<span class = 'more_help' onMouseover="fixedtooltip(RESERVE_LIST_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+			 	 </p>
+		      <table class="reserves_table">
+			      	<tr>
+					 <th></th>
+			    	 <th> Title</th>  
+			     	 <th> Author</th> 
+			         <th> Call Number</th> 
+					</tr>
+			        <% @reserves.each do |r| %>
+				        <tr>
+				          <td><input type="checkbox" <% if @mod.library_reserves.blank? or @mod.library_reserves.include?(r) %>checked="checked"<% end %> name="reserves[]" value="<%= r[:id] %>" />  </td>  
+				            
+				          <td> <%= r[:title] %></td> 
+				          <td><%= r[:author] %></td> 
+				          <td><%= r[:availability] %></td> 
+				         </tr>
+			        <% end %>
+		     </table>
+		</div>
+	 <% end %>
+<% else %>
+	 <div id="results">  
+		 <label for="mod_course_reserves" >Course Reserves
+		 	<span class = 'more_help' onMouseover="fixedtooltip('Course Reserves Search results', this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+			<%=link_to_remote('Select a different course', :update => "returns", :loading => "Element.show('spinner_select')", :complete => "Element.hide('spinner_select')",:url =>{ :controller => 'reserve',:action => 'edit_reserves', :id => @mod} , :update => "returns")%>
+		 </label>
+		  <p class="reserves_results">There are currently no titles on reserve for <%= @course_title%> . <br /></p>
+	 </div>
+ 
+<% end %>
+     

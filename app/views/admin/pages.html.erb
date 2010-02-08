@@ -1,0 +1,32 @@
+<fieldset>
+<h3>Course Pages for <%=h @user.name%> </h3>
+<% if flash[:notice] -%>
+	   <div id="error_wrapper">   <div id="notice" ><%= flash[:notice] %></div></div>
+	<% end -%>
+<p>Total Pages: <%=@count%></p>
+<div id="product-list" >
+<table>
+ <tr valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+  
+    <th> Title </th>
+    <th> Last Update </th>
+    <th> Published </th>
+    <th> Actions </th>
+  </tr>
+  
+<% for page in @pages %>
+  <tr valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+    <td><%= link_to h(page.search_title), {:controller => "ica", :action => 'index', :id => page} %></td>
+    <td><%=h page.updated_at%></td>    
+    <td><%=h page.published %></td>
+    <td><%= link_to 'Assign', { :action => 'assign_page', :id => page} %> 
+         | <%= link_to 'Archive', { :action => 'archive_page', :id => page}, :confirm => 'Are you sure you want to archive this page?', :method => :post %>
+		 | <%= link_to 'Delete', {:action => 'destroy_page', :id => page}, :confirm => 'Are you sure you want to delete this page?', :method => :post %></td>
+  </tr>
+<% end %>
+</table>
+</div>
+
+<p>
+ <b><%= link_to 'Back to Users', :action => 'users' %></b></p>
+</fieldset>

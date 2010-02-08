@@ -1,0 +1,17 @@
+div.module{
+padding: 0px 20px;
+margin: 2px 0 10px 0;
+font-size: 14px;
+line-height: 21px;
+background: #ffffff;
+}
+
+* html div.module{ /* for IE 6 */
+padding: 1px 20px;
+}
+
+
+div.module ul.undeco {
+padding: 0;
+list-style: none outside;
+}

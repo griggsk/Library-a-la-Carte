@@ -1,0 +1,82 @@
+#src_list, #over_list, #out_list {width:280px;}
+.mceActionPanel {margin-top:7px;}
+.alignPreview {border:1px solid #000; width:140px; height:140px; overflow:hidden; padding:5px;}
+.checkbox {border:0;}
+.panel_wrapper div.current {height:305px;}
+
+#prev {
+	margin:0; 
+	border:1px solid #000; 
+	width:388px; 
+	height:225px; 
+	overflow:auto;
+	}
+#src,#alt,#title {width:280px}
+#align, #classlist {width:150px;}
+#width, #height {vertical-align:middle; width:50px; text-align:center;}
+#vspace, #hspace, #border {vertical-align:middle; width:30px; text-align:center;}
+#class_list {width:180px;}
+input {width: 280px;}
+#constrain, #onmousemovecheck {width:auto;}
+#id, #dir, #lang, #usemap, #longdesc {width:200px;}
+#thumb {margin:0; border:1px solid #000; width:50px; height:50px; overflow:auto; padding:1px;}
+    #leftbox {
+        position: absolute;
+        margin: 0 0 0 30px;
+        padding: 0;
+        width: 315px;
+        height: 150px;
+        }
+	#leftbottom{
+	    position: relative;
+	    top: 50px;
+        padding: 0;
+        width: 315px;
+        height: 150px;
+	}
+    #rightbox {
+        margin: 0 0 0 375px;
+        padding: 0;
+        width: 400px;
+        height: 150px;
+        }
+    #rightbottom{
+	    position: relative;
+	    top: 5px;
+        padding: 0;
+        width: 400px;
+        height: 150px;
+	}   
+#notice { background-color: #FF1F7C; border: 1px solid #26722D; }   
+#error { background-color: #c00; border: 1px solid #900; }   
+#notice, #error { width: 90%; margin: 0 auto 10px auto; padding: 5px; font-weight:bold; color: #fff;}   
+#notice p, #error p { margin-left: 20px; padding: 0;  font-size: 1.1em; color: #000; }   
+#notice a, #error a { text-decoration: none; padding: 0 3px; }   
+#notice a { border: 1px solid #26722D; color: #26722D; }   
+#error a { border: 1px solid #900; color: #900; }   
+#notice a:hover, #error a:hover { color: #333; border: 1px solid #333; }   
+#dynamic_select_panel{ height: 700px; overflow:auto; }
+#dynamic_images_list{overflow:auto;}
+#upframe{
+	width: 1px;
+	height: 1px;
+	visibility: hidden;
+	frameborder: 0;
+	vspace: 0;
+	hspace: 0;
+	marginwidth: 0;
+}
+#first_image{ float: left; margin: margin: 0 0 0 0px; }
+#second_image{ float: left; margin: margin: 0 0 0 110px; }
+#third_image{ float: left; margin: margin: 0 0 0 220px; }
+#fourth_image{ float: left; margin: margin: 0 0 0 330px; }
+#fifth_image{ float: left; margin: margin: 0 0 0 440px; }
+#upload_button{
+border:0; margin:0; padding:0;
+font-weight:bold;
+width:94px; height:26px;
+background:url(/javascripts/tiny_mce/themes/advanced/skins/default/img/buttons.png) 0 -26px;
+cursor:pointer;
+padding-bottom:2px;
+}
+#image_photo{ width: 300px; height: 20px; }

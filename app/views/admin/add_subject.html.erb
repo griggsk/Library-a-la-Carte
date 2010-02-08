@@ -1,0 +1,13 @@
+<fieldset>
+	<h3>Add Subject</h3>
+	<% form_tag :action => 'save_subject' do %>
+     	<%= render :partial => 'subject_form' %>
+      	<br /><br />
+		<%= submit_tag 'Add Subject' ,:class =>"submit" %> 
+		<%= submit_tag 'Save Subject and Add More' ,:class =>"submit" %> 
+		<br /><br />
+    <% end %>
+	<p>
+ 		<b><%= link_to 'Cancel', :action => 'subjects' %></b>
+	</p>
+</fieldset>

@@ -1,0 +1,5 @@
+<h1><%=@tutorial.name%></h1>
+<ul id="tabs">
+	<li class='<%=@icurrent%>'><%=link_to '<span>Home</span>', :controller => :ort, :action => :index, :id => @tutorial%></li>
+	<%if @student%><li class='<%=@qcurrent%>'><%=link_to '<span>My Quizzes</span>', :controller => :ort, :action => :quizzes, :id => @tutorial%></li><%end%>
+</ul>

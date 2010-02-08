@@ -1,0 +1,15 @@
+<div id="boxes">
+	<div class="item">
+		<div class ="item2">
+	        <h2><%=h @mod.module_title%></h2>
+			<div class="module">
+		        <%= @mod.topic %>
+				<br />
+				<%= render :partial => "comments", :locals => {:comments => @comments, :num_characters => 9999} %>
+			</div>	
+        <div class="bot"><div></div></div>
+		</div>
+	</div>
+</div>
+
+<%= javascript_include_tag 'template' %>

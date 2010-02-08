@@ -1,0 +1,44 @@
+	<div class="image"> 
+	 <%= error_messages_for "image" %>
+	 <% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+	<% new_or_existing = image.new_record? ? 'new' : 'existing' %> 
+		<% prefix = "mod[#{new_or_existing}_image_attributes][]" %> 
+		<% fields_for prefix, image do |image_form| -%> 
+		
+		   <div id="images">
+		   	<fieldset>
+				<div id="new_image_<%=image.id%>" style = <%=new_or_existing == 'new' ? "" : "display:none"%> >
+					<h5>Edit Images 
+				  <%= link_to_function image_tag("/images/icons/remove.png", :alt => 'Remove', :border => 0), "$(this).up('.image').remove()" %>
+				</h5>
+				<label for="mod_label">Image Alternative Label
+				   <span class = 'more_help' onMouseover="fixedtooltip(IMAGE_ALT_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+	              </label>
+				    <%= image_form.text_field :alt  %>
+					<label for="mod_label">Image URL
+				   <span class = 'more_help' onMouseover="fixedtooltip(IMAGE_URL_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+	              </label>
+				    <%= image_form.text_field :url, :value => image.url || "http://" %> 
+				<label for="mod_image_info" >Image Description  <span class = 'more_help' onMouseover="fixedtooltip(IMAGE_DESC_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+	            </label>  
+				    <%= image_form.text_area :description, {:class => 'mceNoEditor', :size => '40x2'} %>
+			    </div>
+				
+				<div id="ex_image_<%=image.id%>" style = <%=new_or_existing == 'existing' ? "" : "display:none"%> >
+			   	 <h5>Image Preview
+				    <%= link_to_function "edit", "$('ex_image_#{image.id}').toggle(); + $('new_image_#{image.id}').toggle();" %>
+					|
+				    <%= link_to_function image_tag("/images/icons/remove.png", :title => 'Click to remove this image', :alt => 'Remove', :border => 0), "$(this).up('.image').remove()" %>
+				</h5>
+			      <p> 
+				        <img src="<%=image.url%>" alt="<%=image.alt%>" class = 'super_thumbnail'/> 
+				       <%unless image.description.blank?%><p class = 'br_space'> <%=image.description%></p><%end%>
+				   </p>
+			   </div>	
+		  </fieldset>
+		  </div>
+		
+	   <% end -%> 
+   </div> 

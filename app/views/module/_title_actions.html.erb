@@ -1,0 +1,23 @@
+	
+	<%if !@page.blank? %>
+		 <%=render :partial => 'page/side_bar'%>
+		 <%=render :partial => '/page/title_actions'%>
+	<% elsif !@guide.blank? %>
+		<%=render :partial => 'guide/side_bar'%>
+	    <%=render :partial => 'guide/title_actions'%>
+	<% elsif !@tutorial.blank? %>
+		<%=render :partial => 'tutorial/side_bar'%>
+		 <%=render :partial => 'tutorial/title_actions'%>
+	<% else%>
+	   <%=render :partial => 'module/side_bar'%>
+		
+		<span>
+		<%= h@mod.module_title%>
+		</span>
+		<div class='actions'>
+			<%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this module', :alt => 'preview', :border => 0),{ :controller => "module", :action => 'view', :id => @mod, :type => @mod.class}, :popup => ['', 'height=400,width=480,toolbar=yes, scrollbars =yes,resizable=yes']%>
+			<%= link_to 'Preview', {:controller => 'module', :action => 'view',  :id => @mod, :type => @mod.class }, :popup => ['', 'height=400,width=480,toolbar=yes, scrollbars =yes,resizable=yes']%>
+		</div>	
+		
+	<%end%>
+

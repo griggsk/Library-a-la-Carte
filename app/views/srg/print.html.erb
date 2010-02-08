@@ -1,0 +1,61 @@
+<h1><%=h @guide.guide_name%></h1>
+
+<%if @mod%>
+			<div class="item"><div class="item2">
+			 <%=render :partial => 'shared/'+@mod.class.to_s.underscore+'_module',:object => @mod %>	
+		   </div></div>
+<%end%>
+
+<%unless @guide.description.blank?%>
+			<div class="item"><div class="item2">
+			<h2>About this Guide</h2>
+			<div class='module'>
+				<%= h @guide.description%>
+			</div>
+		   </div></div>
+<%end%>	
+
+<%@mods.each do |mod|%>
+		    <%=show_mod(mod)%> 
+<%end%>
+
+		
+<h2>Related Subject Guides</h2>
+			<div class='module'>
+				<ul class="undeco">
+				<%@related_guides.each do |guide|%>
+				<%guide_url = url_for :controller => 'srg', :action => 'index', :id => guide%>
+		   			<li><%= link_to h(guide.guide_name), guide_url, :title => "#{h(guide.description)}" %></li>  
+				<%end %>
+				<li><a href ="/subject-guides/"><%=@local.guide_page_title %> </a></li>
+				</ul>
+			</div>
+			<h2><span>Related Course Guides</span></h2>
+			<div class='module'>
+				<ul class="undeco">
+					<%@related_pages.each do |page|%>
+					  <%page_url = url_for :controller => 'ica', :action => 'index', :id => page%>
+			   			<li><%= link_to h(page.header_title), page_url, :title => "#{h(page.page_description)}" %></li>  
+					<%end %>
+					<li><a href ="/subject-guides/"><%=@local.ica_page_title %> </a></li>
+				</ul>
+			</div>
+		
+		   <div class='module'>
+			<%if @owner%>
+				<%=image_tag("/images/icons/comment.png", :title => 'Email Guide Owner', :alt => 'comment')%><%=mail_to @owner.email, "Comments", :encode => "javascript"%>
+				<br />
+			<%end%>
+		      <img src="/images/icons/rss.png" alt="Subscribe to RSS" /> <%= link_to "RSS Feed" , :action => 'feed', :id => @guide %>
+			  <br />
+			<!-- AddThis Bookmark Button BEGIN -->
+                <img src="/images/icons/add_big.png" alt="add to bookmark"  />  <a href="http://www.addthis.com/bookmark.php" onclick="window.open('http://www.addthis.com/bookmark.php?pub=K5BL6TCHWBD1PZUI&amp;url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title), 'addthis', 'scrollbars=yes,menubar=no,width=620,height=520,resizable=yes,toolbar=no,location=no,status=no'); return false;" title="Bookmark using any bookmark manager!">Bookmark This</a>
+            <!-- AddThis Bookmark Button END -->
+			
+		  </div>	
+	
+
+
+<p><%= if !@local.footer.blank? then @local.footer end %> </p>
+ 
+<p> <%= link_to "Go To Full Version" , {:action => 'index', :id => @guide} %> </p>

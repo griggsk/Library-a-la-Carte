@@ -1,0 +1,221 @@
+/***** BASIC STYLES *****/
+
+* {outline: 0;}
+
+body {color: #4d4d4d; font: .8125em/1.4 verdana, geneva, arial, sans-serif; margin: 0; padding: 0; min-width: 940px;}
+
+a:link {color: #00e;}
+a:visited {color: #551A8B;}
+a:hover {color: #c50; text-decoration: underline;}
+a img {border: 0;}
+
+h1{font-family: garamond, "palatino linotype", serif; color: #58732C; margin: 7px 0 17px 10px; font-size: 2.23em; letter-spacing: 1px; line-height: 29px;}
+h2 {color: #555; font-size: 1.15em; line-height: 33px; margin: 2em 0 1em -20px; padding-left: 20px; background: #f6f5f4 no-repeat url(/images/template/icons.png) 0 -198px;}
+h3 {font-size: 1.15em; border-bottom: 1px solid #d1d1d1;}
+h4 {font-size: 1.1em;}
+h5 {font-size: 1em;}
+
+p {margin: 1em 0;}
+
+ul, ol , dl{margin: 1em 0 1em 3em; padding: 0;}
+li ul, li ol {margin: 0 0 0 3em;}
+
+table {border-collapse: collapse; margin: 1em 0;}
+td {border: 1px solid #d1d1d1; padding: 4px;}
+
+dl {margin: 1em 0 1em 2em;}
+dt {font-weight: 900;}
+
+/* clearfix */
+.clearfix:after {content: "."; display: block; height: 0; clear: both; visibility: hidden;}
+.clearfix {display: inline-block;}
+/* Hides from IE-mac \*/
+.clearfix {display: block;}
+/* End hide from IE-mac */
+
+
+/***** FOOTER *****/
+html, body, #wrap {height: 100%;}
+body > #wrap {height: auto; min-height: 100%;}
+#wrap-inner {padding-bottom: 0px;}
+#footer-wrapper {position: relative; clear: both; color: #555;} 
+#footer {border-top: 1px solid #d1d1d1;}
+#footer p {margin: 5px 0 10px;}
+#footer {padding-left: 267px;}
+#footer img {margin: 0 0 -8px;}
+
+*+html #footer p {margin-bottom: 0;}
+
+/***** HEADER *****/
+#header {}
+#header #logo {background: no-repeat url();}
+#header #logo a {position: absolute; top: 0; left: 15px; display: block; height: 70px; width: 190px; color: #fff;}
+#header #top_links {position:absolute; right: 5px; top: 15%; color: #fff;}
+#header #top_links a {position: relative; top: 0; left: 0px; display: inline; height: 0px; width: 0px; color: #fff;}
+#logo { 
+height:90px;
+}
+
+/***** CONTENT *****/
+#content {margin: 38px 10px 20px; padding-top: 9px; background: #fff; border: solid #d1d1d1; border-width: 1px 1px 0; padding: 0 35px; zoom: 1; position: relative;}
+#item-corner {position: absolute; width: 12px; height: 12px; top: -1px; right: -1px; background: 100% 0 url(/images/template/mainBox.png);}
+#content .bot, #content .bot div {clear: both; position: relative; height: 9px; margin: 1em 0 0 -36px; background: 0 100% no-repeat url(/images/template/mainBox.png);}
+#content .bot div {margin: 0 -36px 0 10px; padding: 0; background-position: 100% 100%;}
+#content h1 {margin: 1em 0 0; line-height: 1em;color:#1C4753;}
+
+*+html #content {margin-top: -1px;}
+
+/*** CONTENT: columns ***/
+#content-column2 ul {margin-left: 20px;}
+
+/*** CONTENT: outline boxes ***/
+.outlineBox, .outlineBox-inner, .outlineBox h2, .outlineBox h2 span {background: 0 -42px no-repeat url(/images/template/content.png);}
+.outlineBox {background-position: 0 100%; margin: 0 0 2em; padding: 0 0 0 9px;}
+.outlineBox-inner {background-position: 100% 100%; margin: 0; padding: 0 0 9px;}
+.outlineBox .module {margin-left: -9px; padding: 25px 10px 1px 29px; background: #fff; border: solid #d1d1d1; border-width: 0 1px;}
+.outlineBox h2 {margin: 30px 0 0 -9px; height: 9px; padding: 0 0 0 29px;}
+.outlineBox h2 span {padding: 10px 9px 0 0; background-position: 100% -42px; display: block; height: 42px;}
+*+html .outlineBox h2 span {height: 25px;}
+
+
+/* CONTENT: columned layout */
+#content-column1 {margin-right: 250px;}
+#content-column1 img {max-width: 96%;}
+*+html #content-column2 .item {margin-bottom: 0;}
+
+#content-column2 {float: right; width: 230px; margin: 20px -5px 0 0;}
+#content-column2 .item, #content-column2 .item2{background: no-repeat url(/images/template/content-column2.png);}
+#content-column2 .item {background-position: 0 100%; padding-bottom: 9px; margin: 9px 0 25px;}
+#content-column2 .item2 {padding-top: 9px;}
+#content-column2 h2 {background: none; border-bottom: 1px solid #d1d1d1; margin: 0 0 20px; padding: 0;}
+#content-column2 .item3 {background: #fff; border: solid #d1d1d1; border-width: 0 1px; padding: 1px 20px;}
+
+#content-column2 .grey {background-position: 100% 100%;}
+#content-column2 .grey .item2 {padding-top: 41px;}
+#content-column2 .grey .item3 {background: #f3f3f3;}
+#content-column2 .grey h2 {margin-top: -35px; border: 0;}
+
+#content-column2 .current a {color: #1C4753; text-decoration: none; cursor: default;}
+#content-column2 .current li a {color: #0000EE; text-decoration: underline; cursor: pointer;}
+#content-column2 .current li a:visited {color: #551A8B;}
+
+/* CONTENT: start button */
+.start a {display: block; text-indent: -99999px; line-height: 78px; width: 142px; background: url(/images/template/start.png); margin: 0em 60px 0em auto;}
+.start a:hover {background-position: 0 -84px;}
+*+html .start a {margin-bottom: 1em;}
+
+/***** TABBED MENU *****/
+#tabs {margin: 0 0 0 10px; z-index: 999; zoom: 1; position: relative;}
+#tabs li {float: left; margin-right: 2px; font-size: 12px; font-weight: 900; list-style: none; line-height: 14px;}
+#tabs a, #tabs span {display: block; color: #1C4753; text-decoration: none; background: 100% 0 no-repeat url(/images/template/tabs.png);}
+#tabs span {padding: 4px 6px 3px; background: no-repeat url(/images/template/tabs.png);}
+#tabs a:hover {background-position: 100% -33px;}
+#tabs a:hover span {background-position: 0 -33px;}
+#tabs .current, #tabs .current span {position: relative;}
+#tabs li.current a {background-position: 100% -66px;}
+#tabs li.current span {background-position: 0 -66px; padding-bottom: 4px;}
+#tabs .current a:hover {cursor: default;}
+
+
+/***** EXPANDABLE LISTS (on portal and chapter pages) *****/
+#toc {margin: 1.5em 0 .5em 16px;}
+#toc ol {margin-left: 1em;}
+#toc ol ol {margin-left: 2em;}
+#toc li, #tutorialList li {list-style: none; padding-bottom: 1em;}
+#toc li li {padding: 0; list-style: circle; list-style-position: inside;}
+
+#toc span, #tutorialList span {display: block; height: 18px; width: 16px; float: left; margin-left: -16px; background: 0 5px no-repeat url(http://osulibrary.oregonstate.edu/images/closed.png);}
+#toc .expanded, #tutorialList .expanded {background-image: url(http://osulibrary.oregonstate.edu/images/open.png);}
+#toc ol span {background: none;}
+#toc ol .expanded {background: 0 -288px url(/images/template/icons.png);}
+#toc li li span {display: inline; height: 0; width: 0; float: none; margin: 0; background: none;}
+#toc a, #tutorialList a {font-weight: 900; text-decoration: none; color:#1C4753;}
+#toc ol a {font-weight: 400; text-decoration: underline;}
+#tutorialList {margin: 1em 0 0 30px;}
+#tutorialList ul {margin: 1em 0 0 17px;}
+#tutorialList ul li:last-child {padding: 0;}
+#tutorialList p {margin: 1em 0 0 0;}
+
+
+/***** LESSONS PAGES *****/
+
+#lesson #content-column2 {margin-top: -5.2em;}
+
+/* lessons: outlined boxes */
+#lesson .outlineBox h2 {background: url(icons.png) 0 -231px no-repeat; height: 42px; padding-left: 11px;}
+#lesson .outlineBox h2 span {background: #f3f3f3 url(content.png) 100% 0 no-repeat; padding: 5px 0 0 20px; height: 37px}
+#lesson .outlineBox .module {padding: 10px 30px 1px; margin-top: 0}
+
+/* lessons: nav links at top */
+#topNav {height: 1em; margin-top: 1.5em}
+#topNav a {display: block; float: left; text-decoration: none; font-size: 11px; position: relative;}
+#topNav .back, #topNav .next {background: url(/images/template/icons.png) 0 -108px; text-indent: -9999px; width: 15px; height: 15px; margin-top: -7px;}
+#topNav .next {background-position: 0 -123px;}
+
+#topNav p {margin: 0; height: 1em; border-top: 1px solid #aaa; float: left; padding: 0 5px; text-align: center; letter-spacing: -2px;}
+#topNav p a {line-height: 17px; margin: 0 10px; width: 16px; color: #4d4d4d; top: -9px; padding: 0 2px 1px 0; background: url(/images/template/icons.png) 0 -54px no-repeat;}
+#topNav p a:hover {background-position: 0 -72px; color: #fff;}
+#topNav p a.current {color: #fff; font-weight: 900; background-position: 0 -90px;}
+
+*+html #topNav p a {padding: 0 0 1px; width: 18px;}
+
+
+/* lessons: next/prev links at bottom */
+#botNav {margin: 3em 1em; line-height: 15px; height: 15px; clear: both;}
+#botNav a {float: left; display: block; width: 50px; text-decoration: none; font-weight: 900; color: #4d4d4d; background: url(/images/template/icons.png) 0 -138px no-repeat; padding-left: 25px;}
+#botNav a:hover {background-position: 0 -168px;}
+#botNav a.next {float: right; background-position: 100% -153px; text-align: right; padding: 0 26px 0 0;}
+#botNav a.next:hover {background-position: 100% -183px;}
+
+/***** PORTAL PAGE *****/
+#main {float: left; width: 100%;}
+#main #content {margin: 0 280px 0 235px; background: none; border: 0;}
+#main h1 {margin: 1em 0;}
+#portal #footer {padding-left: 267px;}
+
+#portal h2 {zoom: 1;}
+
+#main .item h2, #main .item {background: 100% 0 no-repeat url(/images/template/titleGrey.png);}
+#main .item {background-position: 0 0; margin-bottom: 20px;}
+#main h2 {line-height: 30px; font-size: 1.15em; margin: 0 -10px 0 20px; padding: 0;}
+#main .module {margin: 0 -10px 0 0; background: #fff; border: solid #d1d1d1; border-width: 0 1px; padding: 5px 20px 1px; zoom: 1;}
+#main .bot, #main .bot div {margin: 0; height: auto;}
+#main .bot div {height: 9px; margin-top: -5px; right: -10px; position: relative;}
+
+/* right sidebar */
+#sidebar-right {float: left; width: 280px; margin: 87px 0 20px -290px;}
+#sidebar-right .item, #sidebar-right .item2 {background: no-repeat url(/images/template/wideBox.png); zoom: 1;}
+#sidebar-right .item {margin-bottom: 10px; padding-top: 10px;}
+#sidebar-right .item2 {padding: 0 0 8px; background-position: 0 100%; margin: 0;}
+#sidebar-right .item3 {background: #fff; border: solid #d1d1d1; border-width: 0 1px; padding: 0 15px; margin: 0;}
+#sidebar-right h2 {margin: 0; padding: 0; height: 26px; border-bottom: 1px solid #d1d1d1; background: none;}
+.item3 label{display:block; font-weight:600;margin-top: 5px;}
+.submit {font-weight:bold;}
+/* left sidebar */
+#sidebar-left {float: left; width: 270px; margin: 0 0 10px -100%;}
+#sidebar-left h2 {background: none; padding: 0;}
+
+/*errors*/
+
+#notice_wrapper {
+	padding-top: 10px;
+	background:#F7F7F7;
+	margin: 0px 18px 0pt 12px;
+}
+#notice {
+    padding:.5em;
+	margin: 0px auto;
+	background-color: #FF1F7C;
+	font-weight:bold;
+	color:#fff;
+}
+
+.printer{ font-size: .8em; float: right;}
+
+.printer img { vertical-align: top;}
+
+.tip{font-size: smaller; font-weight: normal; margin: 0; padding: 0;}
+
+.module ul.indent-left{
+ 	padding:0 0 0 0px !important;
+}

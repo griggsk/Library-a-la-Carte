@@ -1,0 +1,85 @@
+<fieldset>
+	<h2> Customize Guide Templates</h2>
+	<% form_tag :action => 'customize_layout', :id => @local do%>
+	    <%= error_messages_for 'local' %>
+      <div id ="share">
+      	<fieldset>
+      		<h4>Layout</h4>
+			 <label for="local_banner_url">Banner URL</label>
+			 <div class = 'tip'>The banner is an image slice for the top of the templates.  </div> <br />
+             <%= text_field 'local', 'banner_url', :size => '63' %>
+       
+            <label for="local_logo_url">Logo URL</label>
+			<div class = 'tip'>The logo is an image that sits on top of the banner. </div> <br />
+            <%= text_field 'local', 'logo_url' , :size => '63'%>
+			 
+			<label for="local">Logo Image Map</label>
+			<div class = 'tip'>Enter the Url for the image map. You also need to enter the logo image size.</div> <br />
+            <%= text_field 'local','image_map',  :size => '63'%>
+			
+			<label for="local">Logo Width and Height</label>
+			<div class = 'tip'>Enter the width and height of the logo image to set the header height and the image map hot spot.</div> <br />
+            <%= text_field 'local','logo_width',  :size => '3'%> <%= text_field 'local','logo_height',  :size => '3'%> 
+			
+            <label for="local">Footer Text</label>
+			<div class = 'tip'>Enter text for a custom footer. (HTML OK) </div> <br />
+            <%= text_area 'local','footer',  :size => '48x5'%>
+       
+            <label for="user_email">CSS Stylesheet URL</label>
+			<div class = 'tip'> Enter the url to a custom CSS stylesheet. </div> <br />
+          <%= text_field 'local', 'styles' , :size => '63'%>
+      	</fieldset>
+		<fieldset>
+			<h4>Settings</h4>
+			<label for="user_email">Database Proxy</label>
+			<div class = 'tip'> Enter your proxy URL. Note: A proxy URL is required only if you have enabled the database module. </div> <br />
+          <%= text_field 'local', 'proxy' , :size => '63'%>
+		</fieldset>	
+		<fieldset>
+			<h4>Names &amp; Links</h4>
+			
+			<label for="local_logo_url"> Portal Title : Course Guides</label>
+			<div class = 'tip'>The page title for the course guides portal. </div> <br />
+            <%= text_field 'local', 'ica_page_title' , :size => '63'%>
+			
+			 <label for="local_logo_url">Portal Title : Subject Guides</label>
+			<div class = 'tip'>The page title for the subject guide portal. </div> <br />
+            <%= text_field 'local', 'guide_page_title' , :size => '63'%>
+			
+			<label for="local_logo_url">Portal Title : Tutorials</label>
+			<div class = 'tip'>The page title for the Tutorial portal. </div> <br />
+            <%= text_field 'local', 'tutorial_page_title' , :size => '63'%>
+			
+			 <label for="local_logo_url">Library Name &amp; Home URL</label>
+			<div class = 'tip'> Add your library name (i.e: OSU Libraries, Penn libraries) and home page URL. 
+			This is used in the header as links and in the metadata tags.</div> <br />
+           <p> Name: <%= text_field 'local', 'lib_name'%> URL: <%= text_field 'local', 'lib_url'%></p>
+             
+			<label for="local_logo_url">University Name &amp; Home URL</label>
+			<div class = 'tip'>Add your university name (i.e: OSU, Penn) and home page URL.
+			This is used in the header as links.</div><br />
+           <p> Name: <%= text_field 'local', 'univ_name'%> URL: <%= text_field 'local', 'univ_url'%></p>
+			
+			<label for="local_logo_url"> Librarian Help URL</label>
+			<div class = 'tip'>The url to a webpage that provides a way to get librarian help ( i.e: subject specialists). <br />This is disolayed in the right side of the guide's portals. </div> <br />
+            <%= text_field 'local', 'lib_help', :size => '63'%>
+			
+            <label for="local">Library General Chat or other contacts.</label>
+			<div class = 'tip'>Add a chat widget snippet or other ways to talk to your reference desk (HTML OK).</div> <br />
+            <%= text_area 'local','lib_chat',  :size => '40x5'%>
+			
+			<label for="local_logo_url">Library Quick Links</label>
+			<div class = 'tip'>Add a name and a URL for up to three library quick links, such as your library holdings, hours, etc. 
+			This is displayed at the top of the left side of the portals and the guides.  </div> 
+         <p>  Name 1: <%= text_field 'local', 'name_one'%> URL 1: <%= text_field 'local', 'link_one'%> <br />
+		   Name 2: <%= text_field 'local', 'name_two'%>    URL 2: <%= text_field 'local', 'link_two'%> <br />
+		  Name 3:  <%= text_field 'local', 'name_three'%>  URL 3: <%= text_field 'local', 'link_three'%> </p>
+       
+		</fieldset>
+      </div>
+		
+	   <%= submit_tag 'Customize Layout', :class => "submit"  %>
+	<%end%>	 
+	<%= link_to 'Cancel', :action => 'tools' %>
+		 
+</fieldset>

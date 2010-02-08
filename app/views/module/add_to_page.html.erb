@@ -1,0 +1,33 @@
+<fieldset>
+	 <h3 class='title'> 
+	<%=render :partial => 'title_actions'%>
+	</h3>
+	<h4>
+		<%=link_to "Course Pages", :controller => 'module', :action =>'course_pages', :id => @mod.id, :type => @mod.class %> >> Add to Course Pages
+	</h4>
+	<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+
+<p> Check the box next to the tabs on the pages you want to add the module to then click the button at the bottom of the list.</p>
+<%unless @pages.size <1%>
+	 	<% form_tag :action => 'add_to_page', :id => @mod.id, :type => @mod.class do%> 
+	        
+		<div id="product-list" >
+		
+		<div id="table">
+	   <%=render :partial => "add_page_list"%>
+		</div>
+		
+		</div>
+		
+		<div><%= submit_tag 'Add Module', :class=> "submit" %></div>
+		
+		<%end%>
+
+<%else%>
+	<p><b>You do not have any Course Pages to add to. </b></p>
+<%end%>
+
+</fieldset>
+

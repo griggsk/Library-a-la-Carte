@@ -1,0 +1,19 @@
+<%form_remote_tag :url => {:controller => "quiz", :action => "practice_quiz", :id => @mod.id}  do%>
+		<%@mod.questions.each do |question|%>
+				<fieldset>
+				<label><%=h question.question%></label> 
+					<ul>
+					<%question.answers.each do |answer|%>
+						<li>
+									<%=render :partial => '/quiz/view_answer_'+question.q_type,  :locals => {:answer => answer,:question => question} %>
+						</li>
+			       <%end%>
+				   <%if question.answers.blank? and question.q_type == "FW"%>
+				      <%=render :partial => '/quiz/view_answer_'+question.q_type,  :locals => {:question => question} %>
+				   <%end%>
+				   </ul>
+			   </fieldset>
+		<%end%>
+		<%= submit_tag 'Submit My Answers', :class => "submit" %>
+<%end%>
+

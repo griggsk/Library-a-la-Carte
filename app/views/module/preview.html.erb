@@ -1,0 +1,17 @@
+<fieldset>
+	 <%=render :partial => '/module/edit_top'%>
+<div id="boxes">
+	<div class="item">
+		<div class ="item2">
+			<div id ="mod">
+			<%unless @preview%>
+			  <%= show_mod(@mod)%>
+			<%else%>
+				<%= render :partial => 'shared/quiz_resource_module',:object => @mod, :preview =>@preview %>
+			<%end%>
+			</div>
+		    <div class="bot"><div></div></div>
+		</div>
+	</div>
+</div>
+ </fieldset>

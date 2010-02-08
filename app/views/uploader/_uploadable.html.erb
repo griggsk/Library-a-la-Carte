@@ -1,0 +1,38 @@
+	<div class="uploadable"> 
+	<% new_or_existing = uploadable.new_record? ? 'new' : 'existing' %> 
+		<% prefix = "mod[#{new_or_existing}_uploadable_attributes][]" %> 
+		<% fields_for prefix, uploadable do |uploadable_form| -%> 
+		
+		   <div id="upload">
+		   	<fieldset>
+		   		<h5>Attachment 
+				  <%= link_to_function image_tag("/images/icons/remove.png", :alt => 'Remove', :border => 0), "$(this).up('.uploadable').remove()" %>
+				</h5>
+				<div id="new_upload_<%=uploadable.id%>" style = <%=new_or_existing == 'new' ? "" : "display:none"%> >
+				<label for="mod_upload">Link Text and Upload
+				   <span class = 'more_help' onMouseover="fixedtooltip(NEW_UPLOAD_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+	              </label>
+				    <%= uploadable_form.text_field :upload_link,"size" => 24  %>
+				    <%= uploadable_form.file_field :upload,"size" => 24  %> 
+					 <div id="inline_error"> <%= error_message_on :uploadable, :upload %></div>
+				<label for="mod_upload_info" >Attachment Information  <span class = 'more_help' onMouseover="fixedtooltip(UPLOAD_INFO_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+	            </label>  
+				    <%= uploadable_form.text_area :upload_info, {:class => 'mceNoEditor', :size => '40x2'} %>
+			    </div>
+				<div id="ex_upload_<%=uploadable.id%>" style = <%=new_or_existing == 'existing' ? "" : "display:none"%> >
+			    <label for="mod_upload">Attachment Preview
+				    <%= link_to_function "edit", "$('ex_upload_#{uploadable.id}').toggle(); + $('new_upload_#{uploadable.id}').toggle();" %>
+					|
+					 <span class = 'more_help' onMouseover="fixedtooltip(UPLOAD_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+		            |
+				    <%= link_to_function image_tag("/images/icons/remove.png", :title => 'Click to remove this attachment', :alt => 'Remove', :border => 0), "$(this).up('.uploadable').remove()" %>
+				</label>
+				  <a href = "<%=uploadable.upload.url()%>"><%= uploadable.upload_link.blank? ? h(uploadable.upload_file_name) : h(uploadable.upload_link) %></a>
+				   <%unless uploadable.upload_info.blank?%><br /> <%=h(uploadable.upload_info)%><%end%>
+				   </p>
+			   </div>	
+		  </fieldset>
+		  </div>
+		
+	   <% end -%> 
+   </div> 

@@ -1,0 +1,20 @@
+<ol id="toc" class="nohover">
+	<%@tutorial.unitizations.each do |uz| 
+				unit = uz.unit%>
+			<%resources = unit.resourceables%>
+			<%if (@unit and unit.id == @unit.id) || @quizes || @left%><li class='current'><%else%><li><%end%><%=link_to unit.title, {:controller => 'ort', :action => 'unit', :id =>@tutorial, :uid => unit.id}%>
+			<%unless @mod || @unit || @quizes || @left%><p><%=unit.description%></p><%end%>
+				<% unless resources.blank?  %>
+					<ol>
+						 <%resources.each do |resable|
+										res = resable.resource
+										mod = res.mod
+										%>
+						     <li><%=link_to_unless_current mod.module_title, :controller => 'ort', :action => 'lesson', :id =>@tutorial, :uid =>unit.id,  :mid => mod, :type => mod.class%></li>
+						 <%end%>
+				   </ol>
+				 <%end%>
+	 <%end%>
+ </ol> 
+ <%if @student%>  <p>Logged in as <%=@student.name%> | <%=link_to 'Sign out', :controller => 'ort', :action => 'log_out', :id =>@tutorial %></p>	<%end%>
+				 

@@ -1,0 +1,35 @@
+<fieldset>
+	 <h3 class='title'> 
+	<%=render :partial => 'title_actions'%>
+	</h3>
+	<h4>
+		<%=link_to "Subject Guides", :controller => 'module', :action =>'subject_guides', :id => @mod.id, :type => @mod.class %> >> Add to Subject Guides
+		
+	</h4>
+	<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+<p> Check the box next to the guide's tab you want to add the module to.</p>
+
+
+<%unless @guides.size <1%>
+	 	<% form_tag :action => 'add_to_guide', :id => @mod.id, :type => @mod.class do%> 
+	        
+		<div id="product-list" >
+		
+		<div id="table">
+	   <%=render :partial => "add_guide_list"%>
+		</div>
+		
+		</div>
+		
+		<div><%= submit_tag 'Add Module', :class=> "submit" %></div>
+		
+		<%end%>
+
+<%else%>
+	<p><b>You currently have no Guides. Create a new guide to get started.</b></p>
+<%end%>
+
+</fieldset>
+

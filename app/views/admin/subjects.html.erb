@@ -1,0 +1,44 @@
+<fieldset>
+	<h3>Listing Subjects</h3>
+	<% if flash[:notice] -%>
+	   <div id="error_wrapper">   <div id="notice" ><%= flash[:notice] %></div></div>
+	<% end -%>
+	<div id="new_button" class="new">
+		    <a href="#" onclick="$('new').toggle();$('new_button').toggle();; return false;">
+	    <span>
+	        <img src="/images/icons/add.png" alt="Create New Subject" />
+	        Create New Subject
+	    </span></a>
+	</div>
+	<div id="new" style="display:none">
+	 <% form_tag :action => 'new_subjects' do%>
+		<div id="vertical_inputs" class="index">
+			<label for="num">Number of Subjects to Add</label>
+  			<%= select('subject','num', [[1,1],[2,2],[3,3],[4,4],[5,5],[10,10]],:selected => 1, :size => 5) %>
+			<%= submit_tag 'Add New Subject' %><br /><br />
+			<%= link_to_function 'cancel', "$('new').toggle();$('new_button').toggle();; return false;" %>
+			<br />
+		</div>	
+	 <%end%>
+	</div> 
+	<div id="product-list" >
+		<table>
+		   	<tr valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+		  		<th> Subject Code </th>
+		    	<th> Subject Name </th>
+		 		<th > Actions </th>
+			</tr>
+		  	<% for sub in @subjects %>
+			  	<tr valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+			    	<td><%=h sub.subject_code %></td>
+			    	<td><%=h sub.subject_name %></td>
+			 		<td>
+			        	<%= link_to 'Edit', :action => 'edit_subject', :id => sub %> | 
+			        	<%= link_to 'Delete', { :action => 'destroy_subject', :id => sub }, :confirm => 'Are you sure you want to delete this subject?', :method => :post %>
+					</td>
+				</tr>
+			<% end %>
+		</table>
+	</div>
+	<%=will_paginate @subjects%>
+</fieldset>

@@ -1,0 +1,45 @@
+	<div class="link"> 
+	 <%= error_messages_for "link" %>
+	 <% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+	<% new_or_existing = link.new_record? ? 'new' : 'existing' %> 
+		<% prefix = "mod[#{new_or_existing}_link_attributes][]" %> 
+		<% fields_for prefix, link do |link_form| -%> 
+		
+		   <div id="links">
+		   	<fieldset>
+				<div id="new_link_<%=link.id%>" style = <%=new_or_existing == 'new' ? "" : "display:none"%> >
+					<h5>Web Link 
+				  <%= link_to_function image_tag("/images/icons/remove.png", :alt => 'Remove', :border => 0), "$(this).up('.link').remove()" %>
+				</h5>
+				<label for="mod_label">Link Text
+				   <span class = 'more_help' onMouseover="fixedtooltip(NEW_LINK_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+	              </label>
+				    <%= link_form.text_field :label  %>
+					<label for="mod_label">Link URL
+				   <span class = 'more_help' onMouseover="fixedtooltip(NEW_URL_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+	              </label>
+				    <%= link_form.text_field :url, :value => link.url || "http://" %> 
+				<label for="mod_link_info" >Link Description  <span class = 'more_help' onMouseover="fixedtooltip(LINK_INFO_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+	            </label>  
+				    <%= link_form.text_area :description, {:class => 'mceNoEditor', :size => '40x2'} %>
+			    </div>
+				<div id="ex_link_<%=link.id%>" style = <%=new_or_existing == 'existing' ? "" : "display:none"%> >
+			    <h5>Link Preview
+				    <%= link_to_function "edit", "$('ex_link_#{link.id}').toggle(); + $('new_link_#{link.id}').toggle();" %>
+					|
+					 <span class = 'more_help' onMouseover="fixedtooltip(LINK_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+		            |
+				    <%= link_to_function image_tag("/images/icons/remove.png", :title => 'Click to remove this link', :alt => 'Remove', :border => 0), "$(this).up('.link').remove()" %>
+				</h5>
+			      <p> 
+						<a href = "<%=link.url%>"><%= link.label.blank? ? h(link.url) : h(link.label) %></a>
+				       <%unless link.description.blank?%><br /> <%=h(link.description)%><%end%>
+				   </p>
+			   </div>	
+		  </fieldset>
+		  </div>
+		
+	   <% end -%> 
+   </div> 

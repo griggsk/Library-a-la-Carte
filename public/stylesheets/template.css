@@ -1,0 +1,158 @@
+/*** BASIC STYLES ***/
+
+* {outline: 0;}
+
+body {margin: 0; padding: 0; color: #4d4d4d; font: .8125em/1.3846 verdana, geneva, arial, sans-serif; background: #f6f5f4; min-width: 940px;}
+
+a:link {color: #00e;}
+a:visited {color: #551A8B;}
+a:hover {color: #c50; text-decoration: underline;}
+a img {border: 0;}
+a.selected {font-weight: 900; text-decoration: none;}
+
+h1 {font-family: garamond, "palatino linotype", serif;  margin: 1em 0 1em 275px; font-size: 2.23em;}
+h2 {color: #4d4d4d; font-size: 1.15em; line-height: 33px;}
+h3 {font-size: 1.15em; border-bottom: 1px solid #d1d1d1;}
+h4 {font-size: 1.1em;}
+h5 {font-size: 1em;}
+
+p {margin: 1em 0;}
+
+
+/*** HEADER ***/
+#header {background: repeat-x url(); position: relative;}
+#header #skipLink {position: absolute; text-indent: -9999px;}
+#header #logo {background: no-repeat url();}
+#header #logo a {position: absolute; top: 0; left: 15px; display: block; height: 70px; width: 190px; color: #fff;}
+#header #top_links {position:absolute; right: 5px; top: 70%; color: #fff;}
+#header #top_links a {position: relative; top: 0; left: 0px; display: inline; height: 0px; width: 0px; color: #fff;}
+#logo { 
+height:90px;
+}
+
+/*** FOOTER ***/
+#footer-wrapper {clear: both; color: #4d4d4d; border-top: 1px solid #d1d1d1;}
+#footer {margin: 0 0 0 295px; line-height: 1.7;}
+#footer img {margin: 0 0 -8px; position: relative;}
+#footer #ada:target {font-weight: 900;}
+
+
+/*** TABBED MENU AND PORTAL SEARCH BOX ***/
+#tabs, #tabs ul, #search, #search ul {margin: 0 10px 0 275px; background: #d1d1d1 url(/images/template/titleGrey.png);}
+#tabs ul, #search ul {padding: 12px 10px 33px 0; margin: 0 0 0 15px; background-position: 100% 0; font-weight: 900; line-height: 33px;}
+#tabs li, #search li {float: left; margin-right: 6px; list-style: none; position: relative; z-index: 10;}
+#tabs a, #tabs span, #search a, #search span {float: left; display: block; text-decoration: none; color: #1C4753; background: #e8e8e8 no-repeat url(/images/template/tabs.png); cursor: pointer;}
+#tabs span, #search span {margin-left: 10px; padding-right: 10px; background-position: 100% 0;}
+#tabs a:hover, #search a:hover {background-position: 0 -34px; background-color: #f3f3f3;}
+#tabs a:hover span, #search a:hover span {background-position: 100% -34px; background-color: #f3f3f3;}
+#tabs #current a, #search .selected a {background-position: 0 -68px !important; background-color: #fff !important;}
+#tabs #current span, #search .selected span {background-position: 100% -68px !important; background-color: #fff !important;}
+#current a:hover , #search .selected a:hover {cursor: default;}
+
+
+/*** CONTENT ***/
+#main {float: left; width: 100%;}
+#main-inner {margin: 0 10px 20px 275px;}
+#main-inner.no-tabs {padding-top: 9px; background: 100% 0 url(/images/template/mainBox.png);}
+#topLeft {height: 9px; width: 9px; float: left; margin-left: 0px; background: #f6f5f4 url(/images/template/mainBox.png);}
+#content {background: #fff; border: solid #d1d1d1; border-width: 0 1px; padding: 25px 35px 0;}
+#content .bot, #content .bot div {clear: both; margin-left: -36px; text-align: center; background: 0 100% #fff url(/images/template/mainBox.png);}
+#content .bot div {margin: 0 -36px 0 10px; padding-bottom: 5px; background-position: 100% 100%;}
+#content h2 {margin: 0 25px 10px -15px; padding: 0 5px 0 120px; text-indent: -105px; background: #e8e8e8 no-repeat url(/images/template/textH1.png);}
+#content .module {margin: 0 25px 20px 0;}
+#content .module img {max-width: 96%;}
+
+/* content: left inner column */
+#leftColumn {margin-right: 48.5%;}
+.full #leftColumn, .full h2, .full .module {margin-right: 0 !important;}
+
+/* content: right inner column */
+#boxes {float: right; width: 48.5%;}
+#boxes .item, #boxes .item2 {background: #f3f3f3 no-repeat url(/images/template/rightBox.png);}
+#boxes .item {margin: 0 10px 25px 0;}
+#boxes .item2 {margin: 0 -20px 0 10px; padding: 10px 0 0; background-position: 100% 0;}
+#boxes h2 {text-indent: 0; margin: 0 0 0 -10px; padding: 0 15px 5px; background: #fff; border: solid #d1d1d1; border-width: 0 1px; line-height: 25px;}
+#boxes .module {margin: 0 0 0 -10px; padding: 5px 15px 1px; background: #f3f3f3; border: solid #d1d1d1; border-width: 0 1px;}
+#boxes .module h2 {margin: 5px 0; padding: 0;}
+#boxes .bot, #boxes .bot div {height: 9px; margin: 0; padding: 0; background-image: url(/images/template/greyBox.png); background-color: #f3f3f3;}
+#boxes .bot {padding-left: 10px; margin-left: -10px;}
+
+
+/*** LEFT SIDEBAR ***/
+#sidebar-left {float: left; width: 275px; margin: -80px 0 10px 0;}
+#sidebar-left ul {padding: 0; margin: 0; list-style: none;}
+#sidebar-left .item, #sidebar-left .item2 {background: 0 100% #fff url(/images/template/leftBox.png); margin: 25px 15px 10px;}
+#sidebar-left .item2 {background-position: 0 0; position: relative; padding-top: 10px; top: -10px; margin: 0;}
+#sidebar-left .item h2 {margin: 0 15px 8px; padding: 0; font-size: 1.05em; color: #4d4d4d; background: none; font-weight: 900; font-family: verdana, geneva, arial, sans-serif;}
+#sidebar-left .module {background: #fff; border: solid #d1d1d1; border-width: 0 1px; padding: 1px 5px 5px 15px; width: 223px;}
+#sidebar-left .module h2 {margin: 15px 0 0;}
+#sidebar-left .item img{float: none; vertical-align: middle; margin: 0 2px 5px 0;}
+
+
+/*** PORTAL PAGE ***/
+#browse #content {background: none; border: 0; margin-right: 270px; padding: 0 35px 0 0;}
+#browse #sidebar-left h2 {background: none; padding: 0; border-color: #d1d1d1;}
+#browse #sidebar-left {float: left; width: 275px; margin: 20px 0 10px -100%;}
+
+/* portal: main content column */
+#browse #main .item h2, #browse #main .item {background: 100% 0 #d1d1d1 no-repeat url(/images/template/titleGrey.png);}
+#browse #main .item {background-position: 0 0; margin-bottom: 20px;}
+#browse #main h2 {margin: 0 -10px 0 20px; padding: 0; text-indent: 0;}
+#browse #main .module {margin: 0 -10px 0 0; background: #fff; border: solid #d1d1d1; border-width: 0 1px; padding: 5px 20px 1px;}
+#browse #main .bot, #browse #main .bot div {margin: 0; height: auto;}
+#browse #main .bot div {height: 9px; margin-top: -5px; right: -10px; position: relative;}
+
+/* portal: search box, see also tabbed menu above */
+#browse .search .tabcontent {margin-bottom: 1em;}
+#search {margin: -25px 0 0 0;}
+#search ul {padding: 10px 0 25px; text-align: center; line-height: 25px;}
+#search span{margin-left: 15px; padding-right: 15px;}
+#browse .search label {font-weight: 900;}
+
+/* portal: overview */
+#overview {font-size: 12px;}
+#overview a:link {color: #1C4753;}
+#overview a:visited {color: #1C4753;}
+#overview a:hover {color: #c50;}
+
+/* portal: right sidebar */
+#sidebar-right {float: left; width: 280px; margin: 109px 0 20px -290px;}
+#sidebar-right .item, #sidebar-right .item2 {background: no-repeat #fff url(/images/template/wideBox.png);}
+#sidebar-right .item {margin-bottom: 15px; padding-top: 10px;}
+#sidebar-right .item2 {padding: 0 0 8px; background-position: 0 100%; margin: 0;}
+#sidebar-right .module {background: #fff; border: solid #d1d1d1; border-width: 0 1px; padding: 0 15px; margin: 1em 0;}
+#sidebar-right h2 {margin: 0; padding: 0; height: 26px; border-bottom: 1px solid #d1d1d1; background: none;}
+
+/* portal: right sidebar link styles */
+#browse_by a:link {color: #1C4753;}
+#browse_by a:visited {color: #1C4753;}
+#browse_by a:hover {color: #c50;}
+
+
+/*** MISC ***/
+#update {margin: 2em 0 0; clear: right; text-align: center; color: #4d4d4d;}
+#tl {position: absolute; margin-top: 40px;}
+/* #tl, x:-moz-any-link, x:default {margin-top: 23px;} targets Firefox 3 */
+.filter {font-weight: 900; margin: 15px 0;}
+.list {margin: 15px;}
+#middle {min-height:525px;}
+
+/* error pages*/
+#error_container {margin: 25px 25px 55px 270px;}
+#error_container h2 {color:#58732C;}
+#goog-wm ul li {list-style: none; padding-bottom: 8px;}
+#goog-wm li.search-goog {display: block; padding: 8px 0;}
+
+small {font-size:12px;}
+img[align] {float: none;}
+.center{text-align: center;}
+.iconspan img {margin: 0 2px -2px 0; cursor: pointer;}
+.title {font-weight: 900;}
+.expandable {margin-bottom: 8px;}
+
+
+/*tag cloud*/
+.css1 {text-decoration: none; color: #6666FF !important; font-size: .923em;}
+.css2 {text-decoration: none; color: #1A1AFF !important; font-size: 1em;}
+.css3 {text-decoration: none; color: #0000FF !important; font-size: 1.07em;}
+.css4 {text-decoration: none; color: #0000FF !important; font-size: 1.15em; font-weight: bold;}

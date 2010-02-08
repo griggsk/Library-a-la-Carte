@@ -1,0 +1,51 @@
+<fieldset>
+ <h3>Assign <%=h@guide.guide_name%></h3>
+ <% if flash[:notice] -%>
+	   <div id="error_wrapper">   <div id="notice" ><%= flash[:notice] %></div></div>
+	<% end -%>
+<div id="share">
+ <div id="share_left">
+ <fieldset>
+ <%form_tag({:action=> 'guide_update',:id =>@guide}) do %>
+        <h5>Add Editor</h5>
+		<div class = 'tip'>By sharing this guide you are giving editing rights to the people you select.</div>
+       <select id="users" name="users[]" multiple="multiple" class="share" >
+        <%= options_from_collection_for_select(@user_list, 'id', 'name') %>
+       </select>
+      <br /><div class = "tip">(press Ctrl+Alt to select mutiple users)</div>
+  <%= submit_tag "Share Guide",:class => "submit"%> 
+  
+ <%end%>
+</fieldset>
+<p>
+ <b><%= link_to 'Back to Users', :action => 'users' %></b>
+</p>
+</div>
+
+<div id="share_right">
+	<fieldset>
+ <h4>Guide Editors</h4>
+ <div class = 'tip'>Removing someone revokes their editing rights.</div>
+ 
+ <div id="editor-list" >
+ <table>
+ <% for user in @guide_owners %>
+      <tr class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+        <td width = "70%"><span class="list-title" ><%= h user.name %></span></td>
+		<td>
+		<%unless @guide_owners.size == 1%>
+			<%= link_to image_tag("/images/icons/user_remove.png", :title => 'Remove this user from editor list', :alt => 'remove user', :border => 0), {:action => 'remove_user_from_guide', :id => @guide, :uid => user.id}, :confirm => 'Are you sure you want to remove this user from the editor list?', :method => :post %>
+		<%end%>
+		</td>
+		</td>
+      </tr>
+ <%end%>  
+ </table>
+ </div>
+ </fieldset>
+</div>
+  
+
+ </div>     
+</fieldset>
+ 

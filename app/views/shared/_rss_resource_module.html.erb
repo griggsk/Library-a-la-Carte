@@ -1,0 +1,20 @@
+<h2><%= @mod.module_title%></h2>
+    <div class="module">
+	<%unless @mod.information.blank?%> <%= @mod.information%> <%end%>
+    <script type="text/javascript" src="<%=@mod.reader%>"></script>
+	<% if @mod.style=="tabbed" || @mod.style=="mixed"%>
+		<%= render :partial => '/feed/feed_added' %>
+	<%else%>
+		<%= render :partial => '/feed/feed_finder' %>
+	<%end%>
+	
+	
+	
+<noscript> For best results you must have javasript enabled to see the RSS feeds. <br />
+You can find similar information by using this link to a
+<a href="http://www.google.com/search?result&cd=1&q=rss+feeds%3A<%=@mod.topic%>">google search results page</a>.
+</noscript>
+
+    <p> **Links open in a new window** </p>
+   
+</div>

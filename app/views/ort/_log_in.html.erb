@@ -1,0 +1,31 @@
+<div class="item grey"><div class="item2"><div class="item3">
+			<h2>Sign In</h2>
+			<div id="message" >
+			<% if flash[:notice] -%>
+          		 <div id="notice" ><%= flash[:notice] %></div>
+   			<% end -%>
+			</div>
+			<p>
+				This Tutorial is for <b><%=@tutorial.full_name%></b>. <br />
+				Sign In with your Onid and email and select the section you're in.
+	        </p>
+			<p>
+			<% form_tag :controller =>"ort", :action=>'student_signin', :id =>@tutorial.id do%>
+				<label for="email">Section #</label>
+	            <%= select "student","sect_num",@sections, :size =>15, :prompt => 'Select' %>
+				<label for="name">Full Name</label>
+	            <%= text_field "student","name", :size =>25 %> 
+				<div class='tip'>e.g. Jane Smith</div>
+				<label for="onid">Username</label>
+	            <%= text_field "student","onid", :size =>25 %>
+				<div class='tip'>e.g. smithj</div>
+	            <label for="email">Email</label>
+	            <%= text_field "student","email", :size =>25 %>
+				<div class='tip'>e.g. smithj@email.edu</div>
+	            <br /><br />
+	            <%= submit_tag 'Sign in', :class => 'submit' %>
+	       <% end %>
+		  <p><%=link_to 'Sign in Help', :controller => 'ort', :action => 'forgot', :id => @tutorial%></p> 
+			</p>
+			
+		</div></div></div>

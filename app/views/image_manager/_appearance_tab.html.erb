@@ -1,0 +1,61 @@
+<fieldset>
+					<legend>Appearance</legend>
+
+					<table border="0" cellpadding="4" cellspacing="0">
+						<tr> 
+							<td class="column1"><label id="alignlabel" for="align">Alignment</label></td> 
+							<td><select id="align" name="align" onchange="ImageDialog.updateStyle('align');ImageDialog.changeAppearance();"> 
+									<option value="">-- not set --</option> 
+									<option value="baseline">Baseline</option>
+									<option value="top">Top</option>
+									<option value="middle">Middle</option>
+									<option value="bottom">Bottom</option>
+									<option value="text-top">Text top</option>
+									<option value="text-bottom">Text bottom</option>
+									<option value="left">Left</option>
+									<option value="right">Right</option>
+								</select> 
+							</td>
+
+						</tr>
+
+						<tr>
+							<td class="column1"><label id="widthlabel" for="width">Dimensions</label></td>
+							<td nowrap="nowrap">
+								<input name="width" type="text" id="width" value="" size="5" maxlength="5" class="size" onchange="ImageDialog.changeHeight();" /> x 
+								<input name="height" type="text" id="height" value="" size="5" maxlength="5" class="size" onchange="ImageDialog.changeWidth();" /> px
+							</td>
+						</tr>
+
+						<tr>
+							<td>&nbsp;</td>
+							<td><table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td><input id="constrain" type="checkbox" name="constrain" class="checkbox" /></td>
+										<td><label id="constrainlabel" for="constrain">Constrain proportions</label></td>
+									</tr>
+								</table></td>
+						</tr>
+
+						<tr>
+							<td class="column1"><label id="vspacelabel" for="vspace">Vertical space</label></td> 
+							<td><input name="vspace" type="text" id="vspace" value="" size="3" maxlength="3" class="number" onchange="ImageDialog.updateStyle('vspace');ImageDialog.changeAppearance();" onblur="ImageDialog.updateStyle('vspace');ImageDialog.changeAppearance();" />
+							</td>
+						</tr>
+
+						<tr> 
+							<td class="column1"><label id="hspacelabel" for="hspace">Horizontal space</label></td> 
+							<td><input name="hspace" type="text" id="hspace" value="" size="3" maxlength="3" class="number" onchange="ImageDialog.updateStyle('hspace');ImageDialog.changeAppearance();" onblur="ImageDialog.updateStyle('hspace');ImageDialog.changeAppearance();" /></td> 
+						</tr>
+
+						<tr>
+							<td class="column1"><label id="borderlabel" for="border">Border</label></td> 
+							<td><input id="border" name="border" type="text" value="" size="3" maxlength="3" class="number" onchange="ImageDialog.updateStyle('border');ImageDialog.changeAppearance();" onblur="ImageDialog.updateStyle('border');ImageDialog.changeAppearance();" /></td> 
+						</tr>
+
+						<tr>
+							<td class="column1"><label id="stylelabel" for="style">Style</label></td> 
+							<td colspan="2"><input id="style" name="style" type="text" value="" onchange="ImageDialog.changeAppearance();" /></td> 
+						</tr>
+					</table>
+				</fieldset>

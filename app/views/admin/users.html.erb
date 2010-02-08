@@ -1,0 +1,47 @@
+<fieldset>
+<h3>Listing Users</h3>
+<% if flash[:notice] -%>
+	   <div id="error_wrapper">   <div id="notice" ><%= flash[:notice] %></div></div>
+	<% end -%>
+<div class="new">
+    <a href="/admin/register">
+    <span>
+        <img src="/images/icons/add.png" alt="Add New User" />
+        Add New User
+    </span></a>
+</div>
+<div id="product-list" >
+<table>
+   <tr valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+  
+    <th> Name </th>
+    <th> Email </th>
+    <th> Role </th>
+    <th > Actions </th>
+	<th > Guides </th>
+ 
+  </tr>
+  
+<% for author in @users %>
+  <tr valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+    <td><%=h author.name %></td>
+    <td><%=h author.email %></td>
+    <td><%=h author.role %></td>
+    <td>
+        <%= link_to 'Edit', :action => 'edit', :id => author %> | 
+        <%= link_to 'Delete', { :action => 'destroy', :id => author }, :confirm => 'Are you sure you want to delete this user?', :method => :post %></td>
+		<td>
+			<%= link_to 'Pages', :action => 'pages', :id => author %> |
+	       <%= link_to 'Guides', :action => 'guides', :id => author %> |
+		   <%= link_to 'Tutorials', :action => 'tutorials', :id => author %> 
+		</td>
+  </tr>
+<% end %>
+</table>
+</div>
+<%=will_paginate @users%>
+
+
+</fieldset>
+
+

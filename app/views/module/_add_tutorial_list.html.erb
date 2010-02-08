@@ -1,0 +1,53 @@
+<table>
+ 	<thead>
+ 	<tr>
+	<th class= '<%= sort_th_class_helper "name" %>'  >  
+        <%= sort_link_helper "Title", "name" %>
+    </th>
+	
+ 	<th><%= image_tag "spinner.gif", :id => "spinner_sort", :class => 'image', :alt => "Spinner", :style => 'display:none;'%></th>
+	
+	<th  class= '<%= sort_th_class_helper "date" %>'>
+        <%= sort_link_helper "Last Update", "date" %></th>
+	<th  class= '<%= sort_th_class_helper "publish" %> center'>
+        <%= sort_link_helper "Published?", "publish" %></th>
+	
+	</tr>
+	</thead>
+  <% for tutorial in @tutorials %>
+    
+	 <tr class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+	   <td class= '<%= sort_th_class_helper "name" %>'  width ="45%">
+   		  <%= truncate(h(tutorial.full_name),:length => 65) %> 
+		  <div class ="check_box">
+		  <%for unit in tutorial.units%>
+			 <%= check_box_tag(unit.title, unit.id, session[:units].include?(unit.id.to_s) , :onclick => remote_function( :url => {:action => 'add_tutorial', :tid => unit.id})) %>
+		  	 <%=unit.title%><br />
+   		  <%end%>
+		  </div>
+	   </td>
+	    <td  width ="10%">
+       	 	<%= link_to image_tag("/images/icons/document_preview.png", :title => 'View this tutorial', :alt => 'View tutorial', :border => 0),{ :controller => "ort", :action => 'index', :id => tutorial}, :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes'],:class =>'right_space'  %>
+	    </td>
+	     <td class= '<%= sort_th_class_helper "date" %>'  width ="15%">
+	     	 <%= tutorial.updated_at.to_date%>
+	    </td>
+        <td class="center"  width ="5%">
+        <% unless tutorial.published == 0 %>
+    		<%= image_tag("/images/icons/Minus.png", :title => 'This tutorial is not published', :alt => 'published guide', :border => 0)%> 
+        <%else%> 
+            <%= image_tag("/images/icons/Plus.png", :title => 'This tutorial is published', :alt => 'unpublished guide', :border => 0) %> 
+        <%end%>
+		</td>	
+    </tr>
+	 
+ <% end %>
+</table>
+
+<div class="pagination">
+<%if @tutorials.total_pages > 1%>
+	<ul>
+		<li><%=will_paginate @tutorials, :params => params.merge({:sort=> @sort}).except(:authenticity_token)%></li>
+	</ul>	  
+<%end%>
+</div>

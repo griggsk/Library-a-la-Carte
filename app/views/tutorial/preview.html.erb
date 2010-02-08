@@ -1,0 +1,26 @@
+<fieldset>
+	 <h3 class='title'> 
+	<%=render :partial => 'title_actions'%>
+	</h3>
+	<h4>
+		Preview
+	</h4>
+<div id="boxes">
+	<div class="item">
+		<div class ="item2">
+			<%=render :partial => 'view'%>
+		    <div class="bot"><div></div></div>
+		</div>
+	</div>
+</div>
+			<p>
+			Tagged with: <% @tutorial.tag_list.each do |tag|%> <%= tag %><%end%>
+			</p>
+           
+			<p>
+			Course Data: <%=@tutorial.course%><br />
+			Graded? <%=@tutorial.graded == 1 ? 'Yes' : 'No'%>
+			</p>
+
+<%=render :partial => 'side_bar'%>
+ </fieldset>

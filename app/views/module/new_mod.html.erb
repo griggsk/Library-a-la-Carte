@@ -1,0 +1,18 @@
+<fieldset>
+<h3>Create New Module</h3>
+<div id ='share'>
+ <%= error_messages_for 'mod' %>
+ <% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+<% form_tag :action => 'new_mod' do%>
+<fieldset>
+	<h4 for="mod_type">Content Type<span class="required more_help">*</span></h4>
+		<%= select('mod','type', @types, {:selected => @selected , :prompt => "Select"}, {}) %>
+</fieldset>
+	<%=render :partial => "mod_title"%> 
+	<span><label>&nbsp;</label><%= submit_tag 'Create Module' %></span>
+<%end%>
+<p><%= link_to 'Cancel', :action => 'index' %></p>
+</div>
+ </fieldset>

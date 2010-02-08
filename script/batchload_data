@@ -1,0 +1,75 @@
+#!/usr/bin/env ruby
+#
+#Install script to populate the subjects, masters table of the database.
+#By default, this script looks in lib/subjects.txt, lib/masters.txt and uses the
+#abbreviations that work for Oregon State University Libraries.
+
+
+require File.dirname(__FILE__) + '/../config/boot'
+#require 'environment'
+require File.dirname(__FILE__) + '/../config/environment'
+
+#Load the subjects file, so we can populate the subjects table
+fileName = RAILS_ROOT + '/lib/subjects.txt'
+
+File.open(fileName) do |f|
+  begin
+    line = f.readline
+    if line =~ /^(WARNING)/
+      puts line
+      puts "Continue? [yes/no]"
+      unless gets.chomp =~ /yes/
+        f.close
+        exit
+      end
+    else
+      f.rewind
+    end
+    while line = f.readline
+      #Due to attr_protected being set on subjects in the model,
+      #we have to indirectly assign the subject code then save
+      values = line.split(/\t/)
+      sub = Subject.new
+      sub.subject_code = values[0]
+      sub.subject_name = values[1]
+      sub.save
+    end
+  rescue EOFError
+    f.close
+  end
+end
+
+puts "\nLoaded subjects successfully!\n"
+
+
+#Load the masters file to populate the master table
+fileName = RAILS_ROOT + '/lib/masters.txt'
+
+File.open(fileName) do |f|
+  begin
+    line = f.readline
+    if line =~ /^(WARNING)/
+      puts line
+      puts "Continue? [yes/no]"
+      unless gets.chomp =~ /yes/
+        f.close
+        exit
+      end
+    else
+      f.rewind
+    end
+    while line = f.readline
+      #Due to attr_protected being set on subjects in the model,
+      #we have to indirectly assign the subject code then save
+      sub = Master.new
+      sub.value = line.chomp
+      sub.save
+    end
+  rescue EOFError
+    f.close
+  end
+end
+
+puts "\nLoaded master subjects successfully!\n"
+
+

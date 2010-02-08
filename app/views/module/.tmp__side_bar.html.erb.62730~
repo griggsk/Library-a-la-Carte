@@ -1,0 +1,35 @@
+<% content_for(:sidebar) do %> 
+<div id="my_menu" class="sdmenu blue_mod">
+      <div>
+		<%= link_to 'Edit Module', {:controller => 'module', :action => 'edit_content',  :id => @mod, :type => @mod.class }, :class => "top " + ( @ecurrent || "")%>
+		
+		<%if @local.guides.include?('pages')%><%= link_to 'Course Pages', {:controller => 'module', :action => 'course_pages',  :id => @mod, :type => @mod.class, :sort =>'name' }, :class =>@cpcurrent%>
+		<%end%>
+		<%if @local.guides.include?('guides')%><%= link_to 'Subject Guides', {:controller => 'module', :action => 'subject_guides',  :id => @mod, :type => @mod.class, :sort =>'name' }, :class =>@sgcurrent%>
+		<%end%>
+		<%if @local.guides.include?('tutorials')%><%= link_to 'Tutorials', {:controller => 'module', :action => 'tutorials',  :id => @mod, :type => @mod.class, :sort =>'name' }, :class =>@tgcurrent%>
+		<%end%>
+		<%= link_to 'Tags', {:controller => 'module', :action => 'edit_tags',  :id => @mod, :type => @mod.class }, :class => @etcurrent%>
+		<%= link_to 'Share Module', {:controller => 'module', :action => 'share',  :id => @mod , :type => @mod.class}, :class =>@shcurrent%>
+	  <br />
+	  <span>Create New Module</span>
+	   <% form_tag :controller => 'module', :action => 'menu_new' do%>
+      	  <ul>
+      		<li <%= %(class="required") if flash[:mod_title_error] %>>
+				<label for="page_course_name">1. Module Name<span id="required">*</span></label>
+  				 <%= text_field_tag 'name',nil,"size" => 18, :value => flash[:mod_title]  %>
+			</li>
+			<li <%= %(class="required") if flash[:mod_type_error] %>> 
+			   <label for="mod_type">2. Content Type<span id="required">*</span></label>
+  				<%= select_tag('type',  %{<option value="">Select</option>} + options_for_select(@types), {:selected => flash[:mod_type], 'style'=>"width: 143px"}) %>
+			</li>
+			
+			<li>
+				<b>3.</b>  <%= submit_tag 'Create' %>
+			</li>
+      	</ul>	
+	  <%end%>
+	  </div>
+ </div>
+	
+<%end%>

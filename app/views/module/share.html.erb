@@ -1,0 +1,53 @@
+ <fieldset>
+ <h3 class='title'> 
+	<%=render :partial => 'title_actions'%>
+	</h3>
+	<h4>
+		Share Module
+	</h4>
+	 <% if flash[:notice] -%>
+	  <div id ="error_wrapper">    <div id="notice" ><%= flash[:notice] %></div></div>
+	<% end -%>
+	
+ <div id="share">
+ <div id="share_left">
+ 	<fieldset>
+        <h5>Add Editor</h5>	
+		 <div class = 'tip'>By sharing this module you are giving editing rights to the people you select.</div>
+ <%form_tag({:action=> 'share_update', :id =>@mod.id, :type=> @mod.class}) do%>
+       <select id="users" name="users[]" multiple="multiple" class="share" >
+        <%= options_from_collection_for_select(@user_list, 'id', 'name') %>
+       </select>
+      <br /><div class = "tip">(press Ctrl+Alt to select mutiple users)</div>
+    <br />
+	<%= submit_tag "Share", :class => "submit"%> 
+    <p>	
+	 <br />
+      <b><%= link_to 'Cancel', :action => 'index',:id => @mod, :type =>@mod.class, :list => 'mine', :sort => 'name' %></b>
+	</p>
+ <%end %>
+</fieldset>
+</div>
+
+<div id="share_right">
+	<fieldset>
+ <h5>Module Editors</h5>
+<div class = 'tip'> Removing someone revokes their editing rights. The module's owner can not be removed from the list. </div>
+ <div id="editor-list" >
+ <table>
+ <% for user in @mod_owners %>
+      <tr class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+        <td><%= h user.name %></td>
+		<td>
+		<% unless user.name == @mod.created_by %>
+           <%= link_to image_tag("/images/icons/user_remove.png", :title => 'Remove this user from editor list', :alt => 'remove user', :border => 0), {:action => 'remove_user_from_mod', :id => @mod.id, :type => @mod.class, :user => user.id}, :confirm => 'Are you sure you want to remove this user form the editor list?', :method => :post %>
+		 <%end%>	
+		</td>
+      </tr>
+ <%end%>  
+ </table>
+ </div>
+ </fieldset>
+</div>
+</div>
+ </fieldset>

@@ -1,0 +1,23 @@
+<fieldset>
+	<h3>Edit <%=h @subject.subject_name%></h3>
+	<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+	<%= error_messages_for 'subject' %>
+	<% form_tag :action => 'edit_subject' ,:id => @subject do %>
+ 	   <div id="vertical_inputs">
+ 	   <span><label for="subject_code"><span class="required">*</span>Subject Code</label>
+    	<%= text_field 'subject', 'subject_code', :size => 10%></span>
+	
+		<span><label for="subject_name"><span class="required">*</span>Subject Name</label>
+    	<%=text_field 'subject','subject_name'%></span>
+	 </div>	
+	 <br class="clearer" />
+	 <div id="submit_button">
+      <%= submit_tag 'Save Subject', :class=>"submit"%> 
+	<%end %>
+	<p>
+ 	 <%= link_to 'Cancel', :action => 'subjects' %>
+	</p>
+	</div>
+</fieldset>

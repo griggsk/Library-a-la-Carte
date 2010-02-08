@@ -1,0 +1,28 @@
+
+<fieldset>
+<div id="main">
+<h3 class='title'> 
+<%=render :partial => 'title_actions'%>
+</h3>
+<h4>Send URL</h4>
+ <% if flash[:notice] -%>
+	    <div id="error_wrapper">    <div id="notice" ><%= flash[:notice] %></div></div>
+	<% end -%>
+	<div id='share'>
+  <label > Page URL: <%= @page_url  %>  </label>
+ <div class = 'tip'>Enter the recipient's address and edit the message, if needed, than click on the EMAIL URL button and the message will be sent.</div>
+	
+    <% form_tag :action=>'send_url', :id => @page do%>
+    <label for="email"> Email Address<span class="required">*</span></label> <%= text_field_tag "email", nil, :size =>54 %> 
+	<label for="body"> Email Message</label> <%= text_area_tag "body", @message, :rows => 10, :cols => 3, :class => "mceNoEditor"%> 
+       <br />
+	   <div id ="submit_button">
+     <%= submit_tag 'Email URL', :class=> "submit"  %>
+	 </div>
+    <% end%>
+     <p><b><%= link_to 'Cancel', :action => 'index' %></b></p>
+    </div>
+	</div>
+	 </fieldset>
+	 
+	  <%=render :partial => 'side_bar'%>

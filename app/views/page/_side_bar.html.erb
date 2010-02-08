@@ -1,0 +1,13 @@
+<% content_for(:sidebar) do %> 
+
+
+<div id="my_menu" class="sdmenu green_page">
+      <div>
+		<%= link_to 'Title &amp; Metadata', {:controller => 'page', :action => 'update',  :id => @page.id }, :class => "top " + ( @ucurrent || "") %>
+		 <%= link_to 'Edit Page', {:controller => 'page', :action => 'edit',  :id => @page.id }, :class =>@ecurrent%>
+	     <%= link_to 'Add Modules', {:controller => 'tab', :action => 'page_add_modules',  :id => @page.id, :sort => 'name'}, :class =>@amcurrent%> 
+		 <%= link_to 'Share Page', {:controller => 'page', :action => 'share',  :id => @page.id }, :class =>@scurrent%>
+		 <%= link_to 'Send URL', {:controller => 'page', :action => 'send_url',  :id => @page.id }, :class =>@sucurrent%>
+   </div>
+</div>  
+<%end%>

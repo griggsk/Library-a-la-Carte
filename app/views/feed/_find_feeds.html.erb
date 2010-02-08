@@ -1,0 +1,20 @@
+
+
+
+<label>Style <span class="required">*</span>
+<span class = 'more_help' onMouseover="fixedtooltip(FIND_FEED_STYLE_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+	 <%= radio_button 'mod', 'style','search' %> Add RSS Search Box
+      <%= radio_button 'mod', 'style','nosearch' %> No Search Box
+<label>Result Set Size
+<span class = 'more_help' onMouseover="fixedtooltip(FIND_FEED_NUM_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+ <select name="num" id="num" class="page">
+		      <%= options_for_select([2,4,6,8], @mod.num_feeds) %>
+</select>
+		    
+<div id="find_feeds">
+	<label for="mod_topic" >Feeds Search Topic  <span class="required">*</span>
+	<span class = 'more_help' onMouseover="fixedtooltip(FEED_QUERY_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+	 <%= text_field 'mod', 'topic',"size" => 54  %> 
+	 <div class='tip'>Note: These can be keywords such as <b>Biology News</b> or you can specify a website to search: <b> site:yahoo.com Biology News </b></div>
+</div>
+

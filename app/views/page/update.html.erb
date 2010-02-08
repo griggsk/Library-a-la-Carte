@@ -1,0 +1,45 @@
+<fieldset>
+<div id="main">
+<h3 class='title'> 
+<%=render :partial => 'title_actions'%>
+</h3>
+<h4>Title &amp; Metadata</h4>
+<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+<% form_tag :action => 'update', :id => @page do%>
+<%= error_messages_for 'page' %>
+<%= error_messages_for 'new_page' %>
+
+<!--[form:page]-->
+<div id ='share'>
+<fieldset>
+<h5 <%= %(class="required") if flash[:error] %>>Page Title</h5>
+<div class = 'tip'>A course page title must be unique. Press Ctrl to select or deselect multiple subjects. <span class = 'more_help'  onMouseover="fixedtooltip(PAGE_TITLE_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label></div>
+  <div id="vertical_inputs">
+  <%=render  :partial => "page_title"%> 
+  </div>
+ </fieldset>
+ <fieldset>
+ <h5> Page Metadata</h5>
+  <label for="page_page_description">Description <span class = 'more_help' onMouseover="fixedtooltip(PAGE_DESC, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+  <%= text_area 'page', 'page_description',"class" => 'mceNoEditor', :size => '40x2'  %>
+   <div class = 'tip'>Enter a short description about the page.</div>
+   <label for="tags">Tags <span class = 'more_help' onMouseover="fixedtooltip(PAGE_TAGS, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+   <%= text_area_tag 'tags', @page.tag_list, {"class" => 'mceNoEditor', :size => '40x2'}  %>
+    <div class = 'tip'>	example: anthropology, insects, caves</div>
+</fieldset>
+<fieldset>
+
+</fieldset>
+</div>
+<!--[eoform:page]-->
+
+<%= submit_tag 'Save Page', :class => "submit"  %>
+
+<%end%>
+<p><%= link_to 'Cancel', :action => 'index' %></p>
+</div>
+ </fieldset>
+
+ <%=render :partial => 'side_bar'%>

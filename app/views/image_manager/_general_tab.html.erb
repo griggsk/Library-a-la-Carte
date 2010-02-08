@@ -1,0 +1,40 @@
+<div id="general_panel" class="panel"> 	
+	<fieldset>
+		<legend>General</legend>
+			<table class="properties">
+				<tr>
+					<td class="column1"><label id="srclabel" for="src">Image URL / Path</label></td>
+					<td colspan="2">
+				<table border="0" cellspacing="0" cellpadding="0">
+				<tr> 
+					<td><input name="src" type="text" id="src" value="<%=@path%>" class="mceFocus" onchange="ImageDialog.showPreviewImage(this.value);" /></td> 
+					<td id="srcbrowsercontainer">&nbsp;</td>
+				</tr>
+			</table>
+			</td>
+				</tr>
+				<tr> 
+								<td class="column1"><label id="altlabel" for="alt">Image Description</label></td> 
+								<td colspan="2"><input id="alt" name="alt" type="text" value="<%=@desc%>" /></td> 
+							</tr> 
+							<tr> 
+								<td class="column1"><label id="titlelabel" for="title">Title</label></td> 
+								<td colspan="2"><input id="title" name="title" type="text" value="<%=@title%>" /></td> 
+							</tr>
+						</table>
+				</fieldset>
+
+				<fieldset>
+					<legend>Preview</legend>
+					<div id="prev"></div>
+				</fieldset>
+
+			<script>
+				ImageDialog.showPreviewImage("<%=@path%>"," ");
+			</script>
+</div>
+
+
+					
+							
+							

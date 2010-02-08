@@ -1,0 +1,14 @@
+<fieldset>
+ <h3>Add User</h3>
+<% if flash[:notice] -%>
+	   <div id="error_wrapper">   <div id="notice" ><%= flash[:notice] %></div></div>
+	<% end -%>
+    <% form_tag :action => 'register' do %>
+      <%= render :partial => 'form' %>
+      <br /><br /><%= submit_tag 'Add User' ,:class =>"submit" %> <br /><br />
+    <% end %>
+
+<p>
+ <b><%= link_to 'Cancel', :action => 'tools' %></b></p>
+
+</fieldset>

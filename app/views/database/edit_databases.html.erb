@@ -1,0 +1,62 @@
+<fieldset>
+	<%=render :partial => '/module/edit_top'%>
+	<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+	<%= error_messages_for 'mod' %>
+	<div id="mo" style="">
+	
+     <% form_for :mod, :url => { :action => :update_databases , :id => @mod.id} do |form| %>
+		 <%=render :partial => '/module/mod_title'%>  
+		
+		 <label>General Information
+		 <span class = 'more_help'  onMouseover="fixedtooltip(DB_INFO_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></lable>
+		             <%= text_area 'mod', 'info', :class => "mceEditor" %><br />
+					
+		<div id="link" style=""><label><%= link_to_function image_tag("/images/icons/add.png", :title => 'Click to add databases', :alt => 'add databases', :border => 0)+" Add Databases", "$('db').toggle(); + $('mo').toggle(); + $('link').toggle(); " %></label></div>
+ 	
+		
+		 <label>Selected Databases <span class = 'more_help'  onMouseover="fixedtooltip(DB_MSSG, this, event, '260');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%> 
+		 </span></label>
+		 <table id="db_list" cellspacing="0" cellpadding="0">	
+		 
+		 		<tr>
+			 		<th>Order</th>
+					<th>Description</th>
+					<th>Remove</th>
+				</tr>
+	
+		
+		 <% for @database_dod in  @mod.database_dods
+			dod = @database_dod.dod  %>
+			<tr>
+			<% fields_for "database_dod[]" do |d| %>
+				<td><%= d.text_field(:location, :size => 1) %></td>
+				<td><strong><%=truncate(dod.title,:length => 47)%> </strong><br />
+				   <%= d.text_area(:description, :class => 'mceNoEditor', :size => '40x5') %>
+				 </td>
+				 <td><%= check_box_tag("db_remove_list[]", dod.id ,false, {}) %><%= image_tag("/images/icons/remove.png", :title => 'Remove this database', :alt => 'remove', :border => 0)%>
+				</td>
+		     <%end%>
+			</tr>
+		<%end%>
+	  </table>  
+  <div id="submit_button">
+  <%= submit_tag 'Save Module', :class => "submit" %>  
+ <p> <%= link_to 'Cancel', :controller => 'module', :action => 'index',:id => @mod, :type =>@mod.class, :list => 'mine', :sort => 'name' %></p>
+  </div>
+<%end%>
+</div>
+
+ <%= render :partial => "/database/db_list" %>
+</fieldset> 
+
+
+
+ 
+
+
+
+
+
+ 

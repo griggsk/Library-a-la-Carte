@@ -1,0 +1,52 @@
+	<div class="video"> 
+	 <% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+	<%= error_messages_for "video" %>
+	<% new_or_existing = video.new_record? ? 'new' : 'existing' %> 
+		<% prefix = "mod[#{new_or_existing}_video_attributes][]" %> 
+		<% fields_for prefix, video do |video_form| -%> 
+		
+		   <div id="videos">
+		   	<fieldset>
+				<div id="new_video_<%=video.id%>" style = <%=new_or_existing == 'new' ? "" : "display:none"%> >
+					<h5>Embed YouTube Video 
+				    <%= link_to_function image_tag("/images/icons/remove.png", :alt => 'Remove', :border => 0), "$(this).up('.video').remove()" %>
+				    </h5>
+					
+				   <label for="mod_label">Video URL
+				   <span class = 'more_help' onMouseover="fixedtooltip(VIDEO_URL_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+	               </label>
+				    <%= video_form.text_field :url, :value => video.url || "http://" %> 
+				
+								 
+				<label for="mod_video_info" >Video Description  <span class = 'more_help' onMouseover="fixedtooltip(VIDEO_DESC_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+	            </label>  
+				    <%= video_form.text_area :description, {:class => 'mceNoEditor', :size => '40x2'} %>
+			    </div>
+				<div id="ex_video_<%=video.id%>" style = <%=new_or_existing == 'existing' ? "" : "display:none"%> >
+			    
+			    <h5>Video Preview
+				    <%= link_to_function "edit", "$('ex_video_#{video.id}').toggle(); + $('new_video_#{video.id}').toggle();" %>
+					|
+					 <span class = 'more_help' onMouseover="fixedtooltip(VIDEO_PREVIEW_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+		            |
+				    <%= link_to_function image_tag("/images/icons/remove.png", :title => 'Click to remove this video', :alt => 'Remove', :border => 0), "$(this).up('.video').remove()" %>
+				</h5>
+			      <p> 
+				        
+					<% @vid = video.retrieve_video
+					unless @vid.blank?%>
+						<%= render :partial => "video/player" %>
+					 <% else %>
+						<p> No Video Found. </p>
+					<% end %>	
+						
+				       <%unless video.description.blank?%><br /> <%=h(video.description)%><%end%>
+				   </p>
+			   </div>	
+		  </fieldset>
+		  </div>
+		
+	   <% end -%> 
+   </div> 

@@ -1,0 +1,23 @@
+       
+	    <h2><%=h @mod.module_title%></h2>
+		<div class="module">
+				<%=@mod.content%>
+				<%unless @mod.more_info.blank?%>
+				<%=link_to_function("Read more", nil, :id => 'more_link_'+@mod.id.to_s) do |page|
+								   page.visual_effect(:toggle_blind,"more_#{@mod.id}")
+								   page << "if($('more_#{@mod.id}').visible()){"
+								   page.replace_html 'more_link_'+@mod.id.to_s, "Read more"
+								   page << '}else{'
+								   page.replace_html 'more_link_'+@mod.id.to_s,  "Read less"
+								   page << '}'
+								  end
+								%>
+					
+				    <div id="more_<%=@mod.id%>" style="display:none"><%= @mod.more_info%></div>
+					<noscript>
+						<div id="more_<%=@mod.id%>"><%= @mod.more_info%></div>
+					</noscript>
+				<%end%>
+		</div>
+		
+		

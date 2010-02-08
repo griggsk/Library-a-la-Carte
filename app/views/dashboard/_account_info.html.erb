@@ -1,0 +1,10 @@
+      
+      <% form_tag :action => 'account_info' do%>
+           <label for="user_password">Full Name</label>
+            <%= text_field "user", "name", :size => 54 %>
+            
+            <label for="user_password">Email</label>
+            <%= text_field "user", "email", :size => 54 %>
+            <br />  <br />
+            <%= submit_tag "Edit Account", :class => "submit"  %>
+        <% end%>

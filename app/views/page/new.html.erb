@@ -1,0 +1,67 @@
+<fieldset>
+	<div id="main">
+<h3>Create New Page</h3>
+<% form_tag :action => 'new' do%>
+<%= error_messages_for 'page' %>
+
+<!--[form:page]-->
+<div id ='share'>
+<fieldset>
+<h4 <%= %(class="required") if flash[:error] %>>Page Title</h4>
+<div class = 'tip'>A course page title must be unique. Press Ctrl to select or deselect multiple subjects. <span class = 'more_help'  onMouseover="fixedtooltip(PAGE_TITLE_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label></div>
+  <div id="vertical_inputs">
+		<span>
+		  <label for="page_subject">Subject</label>
+		  <div <%= %(class="fieldWithErrors") if flash[:course_subj_error] %>>
+	  		  <select id="subject" name="subjects[]"  multiple="multiple" class="page" size = 2 >
+	  			<%= options_from_collection_for_select(@subj_list, 'id', 'subject_code', (flash[:course_subj] || @selected))%>
+			</select>
+		</div>	
+		</span>	
+		 <span>
+		   <label for="page_course_num">Course #</label>
+		   <%= text_field 'page', 'course_num',"size" => 5, :tabindex=>"2" %>
+		</span>
+		 <span>
+		  <label for="page_course_name">Course Name</label>
+		   <%= text_field 'page', 'course_name',"size" => 30 , :tabindex=>"3" %>
+		</span>
+		 <span>
+		   <label for="page_term">Term</label>
+		   <%= select('page','term',@terms,  {}, {:class => 'page', :tabindex=>"4"}) %>
+		</span>
+		 <span>
+		  <label for="page_year">Year</label>
+		  <%= select('page','year',@years, {}, {:class => 'page', :tabindex=>"5"}) %>
+		</span>
+		 
+		 <span>
+		  <label for="page_sect_num">Section#</label>
+		  <%= text_field 'page', 'sect_num',"size" => 5 , :tabindex=>"6"  %>
+		</span>
+		<span>
+		  <label for="page_campus">Campus</label>
+		  <%= select('page','campus',@campus, {}, {:class => 'page', :tabindex=>"7"}) %>
+		</span>	
+  </div>
+ </fieldset>
+ <fieldset>
+ <h4> Page Metadata</h4>
+  <label for="page_page_description">Description <span class = 'more_help' onMouseover="fixedtooltip(PAGE_DESC, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+  <%= text_area 'page', 'page_description',"class" => 'mceNoEditor', :size => '40x2'  %>
+  
+   <label for="tags">Tags <span class = 'more_help' onMouseover="fixedtooltip(PAGE_TAGS, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+   <%= text_area_tag 'tags','', {"class" => 'mceNoEditor', :size => '40x2'}  %>
+</fieldset>
+
+</div>
+<!--[eoform:page]-->
+
+
+
+<%= submit_tag 'Create Page', :class => "submit"  %>
+
+<%end%>
+<p><%= link_to 'Cancel', :action => 'index' %></p>
+</div>
+ </fieldset>

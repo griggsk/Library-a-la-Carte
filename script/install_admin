@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+#
+#Install script to populate the user table of the database with an admin account.
+
+require File.dirname(__FILE__) + '/../config/boot'
+#require 'environment'
+require File.dirname(__FILE__) + '/../config/environment'
+
+#Create the default admin user
+user = User.new :name => "Admin",
+                :password => "adm!n",
+                :password_confirmation => "adm!n",
+                :email => "admin@your-domain.com",
+                :role => "admin"
+user.role = "admin" #attr_protected is set, so assigning indirectly
+user.save
+
+#Create the localization 
+local = Local.new 
+local.save
+
+
+puts "Created default administrator.\n  Username: #{user.email}\n  Password: adm!n\nPlease change the password and email address immediately!\n"

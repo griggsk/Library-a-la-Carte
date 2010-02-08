@@ -1,0 +1,15 @@
+
+			<div id='boxes'>
+			 <%@mods_right.each do |mod|%>
+				<div class="item"><div class="item2">
+			    	<%=show_mod(mod)%> 
+				    <div class="bot"><div></div></div>	
+			   </div> </div>
+			 <%end %>
+			</div>
+			<div id="leftColumn">
+			   <%@mods_left.each do |mod|%>
+			     <%=show_mod(mod)%> 
+			  <%end %>
+		  </div> <!-- end leftColumn -->
+   

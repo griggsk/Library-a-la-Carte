@@ -1,0 +1,27 @@
+<%if !@page.blank? %>
+		 <%=render :partial => 'page/side_bar'%>
+		 <h3 class='title'> <%=render :partial => '/page/title_actions'%></h3>
+		 <h4><%=link_to "Edit Page", :controller => 'page' , :action =>'edit', :id => @page %> >> Edit <%=@mod.module_title%></h4>
+	<% elsif !@guide.blank? %>
+		<%=render :partial => 'guide/side_bar'%>
+		 <h3 class='title'> <%=render :partial => 'guide/title_actions'%></h3>
+		 <h4><%=link_to "Edit Guide", :controller => 'guide', :action =>'edit', :id => @guide %> >> Edit <%=@mod.module_title%></h4>
+	<% elsif !@tutorial.blank? %>
+		<%=render :partial => 'tutorial/side_bar'%>
+		 <h3 class='title'> <%=render :partial => 'tutorial/title_actions'%></h3>
+		 <h4><%=link_to "Units", :controller => 'unit', :action =>'units', :id => @tutorial %> >> Edit <%=@mod.module_title%></h4>
+	<% else%>
+	   <%=render :partial => 'module/side_bar'%>
+		<h3 class='title'> 
+		<span>
+		<%= h@mod.module_title%>
+		</span>
+		<div class='actions'>
+			<%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this module', :alt => 'preview', :border => 0),{ :controller => "module", :action => 'view', :id => @mod, :type => @mod.class}, :popup => ['', 'height=400,width=480,toolbar=yes, scrollbars =yes,resizable=yes']%>
+			<%= link_to 'Preview', {:controller => 'module', :action => 'view',  :id => @mod, :type => @mod.class }, :popup => ['', 'height=400,width=480,toolbar=yes, scrollbars =yes,resizable=yes']%>
+		</div>	
+		</h3>
+		<h4>
+			Edit Module
+		</h4>	
+	<%end%>

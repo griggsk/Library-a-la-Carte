@@ -1,0 +1,60 @@
+<fieldset>
+<h3>Assign <%=h@tutorial.full_name%></h3>
+<% if flash[:notice] -%>
+	  <div id ="error_wrapper">    <div id="notice" ><%= flash[:notice] %></div></div>
+	<% end -%>
+<div id="share">
+	<fieldset>
+	  <%form_tag({:action=> 'tutorial_update',:id =>@tutorial}) do %>
+		 <div id="share_left">
+		 	 <h5>Add People </h5>
+			 <div class="tip">Select people you want to share with.</div>
+		       <select id="users" name="users[]" multiple="multiple" class="share" >
+		        <%= options_from_collection_for_select(@user_list, 'id', 'name') %>
+		       </select>
+		      <br /><div class = "tip">(press Ctrl+Alt to select mutiple users)</div>
+		</div>
+		
+		<div id="share_right">
+			<label for = "copy">Share Tutorial or Share Copy? <br />
+			 <div class="tip">Select original to give people editing rights. <br /> Sharing a copy does not give people editing rights to the original. </div>
+	          <%= radio_button_tag('copy', 2, true)%>    Original <br />
+			  <%= radio_button_tag('copy', 1, false)%>  Copy
+	           </label>
+		</div>
+		<br />
+		
+		<div class ='clearer'></div>
+		
+		
+				
+	<p><%= submit_tag "Share Tutorial",:class => "submit"%> </p>
+  <%end%>
+ </fieldset>
+<div>
+	<fieldset>
+		<h5>Tutorial Colaborators</h5>
+		 <div class = 'tip'>Removing someone revokes their editing rights. The tutorial's creator can not be removed from the list. </div>
+		 
+		 <div id="editor-list" >
+		 <table>
+		 <% for user in @owners %>
+		      <tr class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+		        <td width = "70%"><span class="list-title" ><%= h user.name %></span></td>
+				<td>
+				<%unless @owners.size == 1%>
+					<%= link_to image_tag("/images/icons/user_remove.png", :title => 'Remove this user from editor list', :alt => 'remove user', :border => 0), {:action => 'remove_user_from_tutorial', :id => @tutorial, :uid => user.id}, :confirm => 'Are you sure you want to remove this user from the editor list?', :method => :post %>
+				<%end%>
+				</td>
+				</td>
+		      </tr>
+		 <%end%>  
+		 </table>
+		 </div>
+		
+	</fieldset>
+</div>
+<p> <b><%= link_to 'Back to Users', :action => 'users' %></b></p>
+</div>
+ </fieldset>
+ 

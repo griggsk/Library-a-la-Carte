@@ -1,0 +1,34 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+page1:
+  id: 1
+  template: 2
+  published: F
+  subject: ALS
+  sect_num: "001"
+  course_num: 201
+  course_name: College Reading
+  term: W
+  year: "07"
+  
+page2:
+  id: 2
+  template: 2
+  published: F
+  subject: ANTH
+  sect_num: "012"
+  course_num: 230
+  course_name: Introduction to Cultural Anthropology
+  term: W
+  year: A
+  
+page3:
+  id: 3
+  template: 2
+  published: F
+  subject: AG
+  sect_num: "011"
+  course_num: 301
+  course_name: General Chemistry
+  term: A
+  year: A
+

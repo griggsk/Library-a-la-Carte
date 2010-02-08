@@ -1,0 +1,16 @@
+   <span>
+   	<%=h(@guide.guide_name)%>
+   </span>
+<div class='actions'>
+	<%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this guide', :alt => 'preview', :border => 0),{ :controller => "srg", :action => 'index', :id => @guide}%> 
+	<%= link_to 'Preview', { :controller => "srg", :action => 'index', :id => @guide, :tab => session[:current_tab]}, :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes'], :title =>"Preview " + @guide.guide_name%>
+ 	| 
+	<% unless @guide.published? %>
+    
+            <%= link_to "Publish", {:controller => 'guide', :action => 'publish', :id => @guide.id}, :confirm => 'Are you sure you want to publish this guide?', :method => :post %> 
+      <%else%> 
+            
+            <%= link_to "Unpublish", {:controller => 'guide', :action => 'publish', :id => @guide.id}, :confirm => 'Are you sure you want to unpublish this guide?', :method => :post %> 
+     <%end%>
+</div>		
+		

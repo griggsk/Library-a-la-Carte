@@ -1,0 +1,53 @@
+<h1><%=h @page.header_title%></h1>
+<%if @mod%>
+			<div class="item"><div class="item2">
+			 <%=show_mod(@mod)%> 
+		   </div></div>
+<%end%>	
+
+<%unless @page.page_description.blank?%>
+			<div class="item"><div class="item2">
+			<h2>About this Guide</h2>
+			<div class='module'>
+				<%= h @page.page_description%>
+			</div>
+		   </div></div>
+<%end%>	
+				
+<%@resources.each do |mod|%>
+		    <%=show_mod(mod)%> 
+<%end%>
+
+      
+		
+		
+			<h2>Related Guides</h2>
+			<div class='module'>
+				<ul class="undeco">
+				<%@related_guides.each do |guide|%>
+					<%guide_url = url_for :controller => 'srg', :action => 'index', :id => guide%>
+		   			<li><%= link_to h(guide.guide_name), guide_url, :title => "#{h(guide.description)}" %></li>  
+				<%end %>
+					<li><a href ="/subject-guides/"><%=@local.guide_page_title %> </a></li>
+					<li><a href ="/course-guides/"><%=@local.ica_page_title %> </a></li>
+				</ul>
+			</div>
+		
+		   <div class='module'>
+			<%if @owner%>
+				<%=image_tag("/images/icons/comment.png", :alt => 'Email Guide Owner')%><%=mail_to @owner.email, "Comments?", :encode => "javascript"%>
+				<br />
+			<%end%>
+		    <img src="/images/icons/rss.png" alt="Subcribe to RSS" /> <%= link_to "RSS Feed" , :action => 'feed', :id => @page %>
+			<br />
+			<!-- AddThis Bookmark Button BEGIN -->
+                <img src="/images/icons/add_big.png" alt="add to bookmark"  />  <a href="http://www.addthis.com/bookmark.php" onclick="window.open('http://www.addthis.com/bookmark.php?pub=K5BL6TCHWBD1PZUI&amp;url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title), 'addthis', 'scrollbars=yes,menubar=no,width=620,height=520,resizable=yes,toolbar=no,location=no,status=no'); return false;" title="Bookmark using any bookmark manager!">Bookmark This</a>
+            <!-- AddThis Bookmark Button END -->
+			
+		  </div>	
+	
+
+ 
+<p> <%= if !@local.footer.blank? then @local.footer end %> </p>
+ 
+<p> <%= link_to "Go To Full Version" , {:action => 'index', :id => @page}%> </p>

@@ -1,0 +1,15 @@
+	<h2><%=h @mod.module_title%></h2>
+	<div class="module">
+		<%unless @mod.info.blank?%><%= @mod.info%><%end%>
+		<ul class = 'undeco'> 
+		<% @mod.uploadables.each do |uploadable|
+		logo, title, link = uploadable.logo
+		%>
+			<li>
+				<a href = "<%=uploadable.upload.url()%>"  title ="Click to download"><%= uploadable.upload_link.blank? ? h(uploadable.upload_file_name) : h(uploadable.upload_link) %></a>
+			 	<a href = "<%=link%>" title = "<%=title%>"> <img src= '<%=logo%>' alt="<%=title%>" /></a>
+			    <%unless uploadable.upload_info.blank?%><br /> <%=h(uploadable.upload_info)%><%end%>
+			</li>
+		<%end%>
+		</ul>
+	</div>

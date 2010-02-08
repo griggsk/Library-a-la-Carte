@@ -1,0 +1,12 @@
+<fieldset>
+ <% form_tag do%>
+    <h3 class = "form">Please Log In</h3>
+    <label for="email">Email</label>
+        <%= text_field_tag :email, params[:email], :size =>54%>
+     <label for="password">Password</label>
+         <%= password_field_tag :password, params[:password], :size =>54%>
+     <br /><br />
+         <%= submit_tag "Login", :class =>"submit"%> &nbsp; <%= link_to 'Forgot My Password', :action => 'forgot_password' %> 
+  <% end%>
+     <br />   
+</fieldset>

@@ -1,0 +1,11 @@
+<% if results and !results.empty? %>
+  <% results.each do |r| %>
+  <div class="results">
+     <span class="item_title"><%= r[:title] %></span> 
+     <span class="call_num">Author: <%= r[:author] %> </span> 
+     <span class="call_num">Call #: <%= r[:availability] %> </span> 
+	 <%=image_tag("/images/icons/add.png", :title => 'Add this video', :alt => 'preview', :border => 0) %>
+	 <%=link_to_remote('Add Book',:update => "books", :loading => "Element.show('add_spinner_search')", :complete => "Element.hide('add_spinner_search')",:url =>{:controller => :book,  :action => 'save_book', :id => @mod, :results => @results, :isbn => r[:isbn]} , :update => "books")%>
+  </div>
+  <% end %>
+ <% end %>

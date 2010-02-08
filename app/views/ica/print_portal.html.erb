@@ -1,0 +1,29 @@
+	<h1><%=@local.ica_page_title %> </h1>
+		
+			<h2>Browse Course Guides</h2>
+			 <div class="list">
+					<%@pages.each do |page|%>
+						        <%page_url = url_for :controller => 'ica', :action => 'index', :id => page%>
+						        <ul class = 'indent-left undeco'>
+						            <li class = 'undeco'><%= link_to page.search_title, page_url, :title => "#{h page.page_description}" %> </li>
+						        </ul>
+					<%end%>
+			  </div>
+              <p>Didn't find what you were looking for? Try the  <%= link_to "Archived Course Guides", :action =>'archived' %>.</p>
+			  <p> Need help with your discipline, topic or format? Try the <%= link_to "Subject Research Guides", :controller => 'srg', :action =>'published_guides' %> </p>
+
+
+
+	
+        <h2>Browse by Tags</h2>
+		 <div class="list">
+		   <ul class = 'indent-left undeco'>
+			<% tag_cloud @tags, %w(css1 css2 css3 css4) do |tag, css_class| %>
+   			<li><%= link_to tag.name, { :action => :tagged, :id => tag.name }, :class => css_class %></li> 
+ 		   <% end %>	
+		   </ul>
+		</div>
+		
+		 <%= if !@local.footer.blank? then @local.footer end %>
+ 
+         <p><%= link_to "Go To Full Version" , {:action => 'published_pages'}%></p>

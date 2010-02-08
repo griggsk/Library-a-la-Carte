@@ -1,0 +1,53 @@
+<% unless @page.tabs.length == 1%>
+<div id="guide_tabs">
+<ul id="drag">
+ <% for tab in @tabs%>
+	<%unless tab.id == @tab.id%>
+		<li id = "item_<%=tab.id%>">
+		 <span class='tabs'><%= link_to_remote h(tab.tab_name), {:update => 'tab_content', :url => {:controller =>'tab', :action => 'page_show', :id => tab.id}},{:title => 'Edit This Tab',:href => url_for({:controller =>'tab', :action => 'page_show', :id => tab.id})} %>
+		 <span class="hand"><%=image_tag("/images/icons/move.png", :title => 'Drag and Drop', :alt => 'Drag and Drop', :border => 0)%></span>  </span>
+		 </span>
+		 </li>
+	 <%else%>
+	    <li id = "item_<%=tab.id%>" class ="editable">
+	    <span class="tabs">
+		 <%= in_place_editor_field :tab, 'tab_name', {}, :rows => 1 %> 
+		 <%= link_to image_tag("/images/icons/remove.png", :title => 'Delete tab', :alt => 'Delete tab', :border => 0), {:controller =>'tab', :action => 'page_delete', :id => tab }, :confirm => 'This will delete the tab and all modules on this tab from the page. Are you sure you want to delete this tab from the page?', :method => :post %>
+	   <span class='hand'> <%=image_tag("/images/icons/move.png", :title => 'Drag and Drop', :alt => 'Drag and Drop', :border => 0)%></span>   </span>
+	   </span>
+	   </li>
+	 <%end%>  
+ <%end%> 
+
+</ul>
+ 
+</div>
+<%= sortable_element 'drag', 
+                :url => {:controller => 'tab', :action => "sort_tabs" }, 
+                :complete => visual_effect(:highlight, 'hightlight'), 
+                :handle => 'hand',
+                :containment => ['drag'], 
+                :constraint => false %>
+<%end%>
+
+<div id="mock_content" class="clear_left">
+	<div class="tab_actions">
+	 <%= link_to image_tag("/images/icons/add.png", :title => 'Add Modules', :alt => 'add modules', :border => 0)+'Add Modules', {:controller => 'tab', :action => 'page_add_modules',  :id => @page.id,:sort => 'name'}%> 
+	 | <%= link_to 'Toggle Columns',:controller => 'tab',  :action => 'toggle_columns' %> 
+	</div>
+
+	<div id="mock_left" class="left_bar">
+	<ul class="no_indent">
+		<li class = "list-item">
+			 <%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this Module', :alt => 'Edit', :border => 0)+ ' Contact Module', {:controller => 'page', :action => 'edit_contact', :id => @page} %> 
+		</li>
+		<li class = "list-item">
+			 <%= link_to image_tag("/images/icons/edit.png", :title => 'Edit Related Subjects', :alt => 'Edit', :border => 0)+ ' Related Guides', {:controller => 'page', :action => 'edit_relateds', :id => @page} %> 
+		</li>
+	</ul>
+</div>
+<%unless @mods%>
+   <%=render :partial => 'tab/two_column_tab' %> 
+<%else%>
+    <%=render :partial => 'tab/one_column_tab' %> 
+<%end%>

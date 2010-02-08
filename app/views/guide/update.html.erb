@@ -1,0 +1,17 @@
+<fieldset>
+<h3 class = 'title'><%=render :partial => 'title_actions'%></h3>
+<h4>Title &amp; Metadata</h4>
+<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+<% form_tag :action => 'update', :id => @guide.id do%>
+  <%= render :partial => 'form' %>
+
+<%= submit_tag 'Save Guide', :class => "submit"  %>
+
+<%end%>
+<p><%= link_to 'Cancel', :action => 'index' %></p>
+
+ </fieldset>
+ <%=render :partial => 'side_bar'%>
+ 

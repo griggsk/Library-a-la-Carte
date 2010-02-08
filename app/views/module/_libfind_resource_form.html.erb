@@ -1,0 +1,12 @@
+
+<%= error_messages_for 'mod' %>
+   <label for="mod_module_title" > Module Title<span class="required">*</span>
+  <label>Select Groups to Search 
+   <span class = 'more_help' onMouseover="fixedtooltip(LF_GROUPS_MSSG, this, event, '');" onMouseout="delayhidetip()"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+   <%=render :partial => 'module/lf_targets' %>     
+
+<label for="description">Search Information 
+ <span class = 'more_help' onMouseover="fixedtooltip(LF_INFO_MSSG, this, event, '');" onMouseout="delayhidetip()"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+	 <%= text_area('mod', 'information', :class => "mceEditor") %>
+
+ 

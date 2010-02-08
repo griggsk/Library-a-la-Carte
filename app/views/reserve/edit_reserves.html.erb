@@ -1,0 +1,33 @@
+<fieldset>
+   <%=render :partial => '/module/edit_top'%>
+	<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+	<%= error_messages_for 'mod' %>
+<% form_for :mod, :url => { :action => :update_reserves , :id => @mod} do |form| %>
+    <%=render :partial => '/module/mod_title'%>  
+   
+   <label for="reserves" >Reserves Information 
+   <span class = 'more_help' onMouseover="fixedtooltip(RESERVES_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label> 
+              <%= text_area 'mod', 'reserves', :class => "mceEditor" %>
+   <br />
+    <div id="returns">
+	    <% if @course_title%>
+		   <%= render :partial => "/reserve/reserved_titles", :locals => {:reserves => @reserves} %>	
+	    <%else%>
+		 <%= render :partial => "/reserve/add_reserves" %>
+	   <%end%>
+   </div>
+
+   
+	<div id="submit_button">
+		  <%= submit_tag 'Save Module', :class => "submit" %>  
+		  <p> <%= link_to 'Cancel', :controller => 'module', :action => 'index',:id => @mod, :type =>@mod.class, :list => 'mine', :sort => 'name' %></p>
+	</div>
+<%end%>	
+
+</fieldset>
+	  
+
+
+	

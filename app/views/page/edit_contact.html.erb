@@ -1,0 +1,48 @@
+<fieldset>
+<div id="main">
+	<h3 class='title'> 
+		<%=render :partial => 'title_actions'%>
+	</h3>	
+   	<% if flash[:notice] -%>
+	    <div id="error_wrapper">    <div id="notice" ><%= flash[:notice] %></div></div>
+	<% end -%>
+	<h4><%=link_to 'Edit Page', :controller => 'page', :action => 'edit',  :id => @page%> >> Contact Module</h4>
+
+	<div id="hide" <% if @page.resource%> style="display:none" <%end%> >
+		<% form_tag :action => 'edit_contact'  do%>
+				<label>Contact Module <span class = 'more_help'  onMouseover="fixedtooltip(CONTACT_MOD_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+						<select id="page_type" name="contact">
+							   <option>Select</option>
+		  				       <%for resource in @resources %>
+							 		<option value=<%=resource.id%> <%if resource.id == @selected%> selected='selected' <%end%>><%=h resource.mod.label%></option>
+		  						<%end%>
+							</select>	
+			<div id="submit_button">
+				<%= submit_tag 'Update', :class => "submit"  %>		
+				
+			</div>	
+		<%end%>
+	</div>
+
+	<%if @page.resource%>
+		   <div id="boxes">
+			<div class="item">
+				<div class ="item2">
+					<%= show_mod(@mod)%>
+				    <div class="bot"><div></div></div>
+				</div>
+			</div>
+	</div>
+	<div id="actions">
+			<%=link_to 'Edit Contact Module', {:controller => 'module', :action => 'edit_content', :id => @mod, :type => @mod.class}%>
+			|
+			<a href="#" onclick="$('hide').toggle(); $('actions').toggle();$('boxes').toggle();; return false;">Select New Contact Module</a> 
+					<span class = 'more_help'  onMouseover="fixedtooltip(NEW_CONTACT_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+			</div>	
+	<%end%>
+
+		<div id="submit_button">
+        	<%= link_to 'Cancel', :action => 'edit',:id => @page %>
+		</div>
+</fieldset>
+ <%=render :partial => 'side_bar'%>

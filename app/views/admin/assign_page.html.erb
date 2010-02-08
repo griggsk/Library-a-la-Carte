@@ -1,0 +1,51 @@
+<fieldset>
+ <h3>Assign <%=h@page.header_title%></h3>
+ <% if flash[:notice] -%>
+	   <div id="error_wrapper">   <div id="notice" ><%= flash[:notice] %></div></div>
+	<% end -%>
+<div id="share">
+ <div id="share_left">
+ <fieldset>
+ <%form_tag({:action=> 'page_update',:id =>@page}) do %>
+        <h5>Add Editor</h5>
+		<div class = 'tip'>Sharing a page with others gives them editing rights to the page and the module's on the page.</div>
+
+       <select id="users" name="users[]" multiple="multiple" class="share" >
+        <%= options_from_collection_for_select(@user_list, 'id', 'name') %>
+       </select>
+      <br /><div class = "tip">(press Ctrl+Alt to select mutiple users)</div>
+  <%= submit_tag "Share Page",:class => "submit"%> 
+  
+ <%end %>
+</fieldset>
+<p>
+ <b><%= link_to 'Back to Users', :action => 'users' %></b>
+</p>
+</div>
+
+<div id="share_right">
+	<fieldset>
+ <h4>Page Editors</h4>
+ 
+ 
+ <div id="editor-list" >
+ <table>
+ <% for user in @page_owners %>
+      <tr class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+        <td width = "70%"><span class="list-title" ><%= h user.name %></span></td>
+		<td>
+		 	<%unless @page_owners.size == 1%>
+				<%= link_to image_tag("/images/icons/user_remove.png", :title => 'Remove this user from editor list', :alt => 'remove user', :border => 0), { :action => 'remove_user_from_page',:id => @page, :uid => user.id}, :confirm => 'Are you sure you want to remove this user from the editor list?', :method => :post %>
+	    <%end%>
+		</td>
+      </tr>
+ <%end%>  
+ </table>
+ </div>
+ </fieldset>
+</div>
+  
+
+ </div>     
+</fieldset>
+ 

@@ -1,0 +1,385 @@
+*****Release 1.1***************
+Database Module changes
+- Changed workflow of adding databases. 
+- Checked dbs persist across letter selection. 
+- Selected dbs display checked if selected or already added
+- added proxy url to locked dbs in display
+
+Fixed Library and Instructor Module Display
+-bug in conditional displays
+
+Removed OSU reference
+-removed OSU from hover messages
+
+Altered config file
+-added proxy URL variable
+
+Altered environment file
+- added code to use recapthca plugin from vendor folder
+
+Altered customization pieces
+- fixed conditional bugs for when instance has not been customized 
+
+Related Course Page bug
+-fixed code for related course page bug 
+
+Fixed comments bug
+-added include to application.rb for new version of recaptcha
+
+Fixed Add modules sort order
+-fixed bugs for sort order of modules when adding to page/guide
+
+Fixed modules/page/guide list order
+-fixed sort order to sort lower case and uppercase the same
+
+CSS Changes
+-text color and font changes to tool 
+-firefox 3 display bug on SRG
+
+Image Changes
+- changed green tabs to grey
+
+******************Release 1.15********************************************
+
+Refactor / DRY Code
+Dryed up create reserves and databases, removed from multiple controllers
+added to application, deleted multiple views added partials to shared.
+DRYED up sorted lists and pagination - moved from controllers into application
+Module controller
+- changed create, edit and added update
+- removed preview global
+- removed unglobalize, changed globalized
+- index
+Page and Guide controller
+- CRUD modules
+- deleted page new method
+- bug fix for deleted page/guide in altered lists
+Application controller
+- added view modules - for mod/page/guide pop-up preview
+
+Fixed modules/page/guide list order bug
+-fixed sort order on last update fields
+
+Module Public views
+-enabled viewing of just modules by public via module/view_module
+
+Moved More Info into module
+-more info on custom content no longer opens in new window
+-more info displays in module when read more is clicked
+-added ajax to controll show hide
+
+Module Layout changes
+- added module layout to preview modules - pop up and in tool.
+
+
+Database module bugs
+- added code to handle removal of databases from dods
+- altered coverage date layout
+
+
+
+Release 1.2
+--------------
+This release has database changes. See upgrading documentation in README.
+
+All resource Models
+-added pages? method that return true if the module is on any guides or pages
+
+DRYed Code
+-dryed up edit database views. removed from multiple views added to share.
+
+
+Optimized code
+- reduced database hits by adding include to finds (portals and indexes of ICA and SRG)
+- optimized ICA and SRG controller and model methods
+
+More Info on custom module
+-added ajax to controll show hide
+
+Pagination changes
+-changed look and feel
+-add show all to my lists
+-add next and previous to my lists
+-enabled persistence across checkbox selects and pagination or sorts in add to and add modules
+
+My Modules
+-add view all to pagination
+-add previous, next
+-add return to sort to actions icons
+- added star to modules that are on a page or guides: grey if not,  yellow if on
+
+Modules Edit mod
+-removed actions (publish..) from add to pages/guides
+
+Course Reserves
+-fixed module for newest oasis update
+-changed workflow of creating modules
+-added ability to select courses 
+-changed look and feel of form
+
+Librarian profile
+-added image upload and delete
+-added new fields to libresource db table
+-added paperclip plugin
+-requires RMajick gem
+
+Course Attachment Module
+-new module
+-requires new database tables: uploader_resources and uploadables
+-allows multiple attachments of different types
+-requires rmagck
+
+Admin interface
+-added add user button to user list
+-added auto email regarding new account
+
+Dashboard
+-added edit to contact module view
+
+CSS and Images changes
+-added star images
+-cleaned up css
+-minmized css and js look ups and removed unneeded files
+
+Layout Issues
+-fixed layout issue in page edit one-col view
+
+About this Guide box
+- added new box to pages/guides left hand side bar
+- automatically pulls in the page/guide description
+- enhances SEO
+
+Print Page
+-reordered module order when printed reads left to right 
+
+Page
+-add ability to add slashes in section number, i.e., 122/222
+
+Update WYSIWYG
+-to newest TinyMCE version
+-broke spellcheck
+-added new buttons: HTML,blockquote, table*
+
+***********Release 1.25*************************************
+Fixed comment delete bug 
+Fixed sort order bug 
+Fixed copy bugs
+Altered global copy - mimics regular copy
+Fixed Sharing email bug
+Fixed uploads sizing
+Fixed 1 column sort/display bug
+Ordered SRG under masters on portal
+
+Added branches** - cascades
+-changed page form
+-added campus to Page
+-
+Ordered relateds - changed guide and page methods**
+Fixed view mod filter bug
+
+Fixed LibraryFind bug **
+
+Added OSUL menu to portals**
+-moved tags
+-moved LHS to RHS
+-moved tags below main list
+
+Altered ICAP portal**
+-browse by subjects and A-Z
+
+Added browse by to Page**
+-alterd Page model
+-altered published page method and view
+
+
+Altered New Page/Guide/Module on index pages and add to pages**
+-removed tables
+-changed CSS
+-changed look and feel
+Changed Modules layout**
+
+Added auto-archive to admin**
+
+**************Release 1.3*********************
+Datbase changes
+-New feeds table
+-altered RSSResource table
+-altered Pages table
+
+Bugs
+-fixed Admin user update bug
+-fixed tab sort
+-fixed guide one col module sort order
+-fixed admin register bug
+-fixed created by bug
+-fixed 
+
+Added edit relateds
+-- alter page db table
+-- added edit relateds subject guides
+-- changed layout of edit view
+
+Altered Edit Contact
+-- moved edit contact from update to edit
+
+Changed RSS module to use Google API
+--new DB table
+--alter rss module table
+--requires google API
+--changed look and feel of rss module
+
+Added RSS to pages
+-added new method to all models to generate rss feeds
+
+Added drag and drop sort to tabs on Guides
+- sort tabs with drag n drop
+
+Changed Module names
+-changed course widgets -> multi-media widgets
+- removed course from names
+
+Alter Dashboard
+-added overview
+ - recent activity
+ - legend
+ - create new modules/guides/pages
+ - browse items
+ 
+Pages/Guides
+- added new create method w/o sidebar for dashboard
+- added multiple subjects to pages
+
+Layouts
+-Removed multiple layouts. 
+-Consolidated portal and guides and pages into one layout.
+-altered colors
+
+CSS and JS
+Consolidated css files and js files
+
+****Release 1.4*******
+Rails upgrade to 2.2.3
+Ruby upgrade to 1.8.7
+Gems upgrade to 1.3.1
+Phusion support
+
+New database tables
+links and url_resources
+videos and video_resources
+questions, quiz_resources, answers, students, results
+authorships, tutorials, units, unitizations, resourcables
+images and image_resources
+image_managers
+
+
+Altered Tables
+librarian table to add image uploads
+tab table to add page_id
+local table to add tutorial fields
+
+New Gems: 
+ hpricot:
+  		gem install hpricot-0.8.2		
+ 		 
+  fastercsv:
+  		gem install fastercsv-1.5.0
+  		
+  active_youtube:
+  		gem install active_youtube-1.0.0
+  
+  flickr-fu:
+  		gem install flickr-fu-0.1.4
+  		
+  minme-type:
+  		gem install mime-types-1.16	
+
+Major code refactoring
+-fat models skinny controllers
+-moved special modules into own folders
+-moved methods into models
+-refactored application code
+
+Major UI changes
+-changed sidebar 
+-- action names 
+-- changed look and feel
+-- moved preview / publish actions into title bar
+
+
+Modules
+-added tags
+-- add_tags method to all models
+-added list of pages/guides/tutorials module is on
+--added method to all models
+- changed sidebar links 
+-- removed  add to...
+-- added links to list of guides/pages/tutorials mod is on
+---added add to button to list
+---added breadcrumbs to add to guides/pages
+
+
+New Modules
+- web links
+- image - includes flickr search
+- youtube video 
+- catlog links - searcg III catalog, add book cover images
+- guizzes - includes graded option for tutorials
+- image manager - adds image upload from WYSIWYG, librarian profile,
+
+Altered Modules
+-libraian profile
+--removed upload
+--added image manager
+-attachments
+--removed image embed
+--altered logo method
+-course reserves module
+--altered to use hpricot
+
+Image Manager
+-added image manager option to tinymce
+
+TinyMce
+-choose between image manager or not
+-custom editors for module types
+-fixed spellcheck
+
+Guides
+-added copy
+--copies tabs
+--choose between copying mods or reusing mods
+-altered share
+--removing editor from guide also removes them from the modules on that guide
+
+Pages
+-added tabs
+-altered copy
+--copies tabs
+--choose between copying mods or reusing mods
+-altered share
+--removing editor from page also removes them from the modules on that guide
+
+Tutorials
+-new tutorial tab
+-- branching tutorials with units
+-- graded or not graded
+- quizzes
+-- graded or not graded
+- copy tutorials
+- share original or copy of tutorial
+- archive tutorials
+- tag tutorials, units
+- search tutorials
+
+Bugs
+-RSS 
+-contact module (share)
+-admin register user accounts
+-share page and guides
+-copy page
+
+
+Admin
+- Added edit subjects, master, and dods
+- Added user tutorial admin actions (edit, delete, assign)
+- added edit tutorial locals

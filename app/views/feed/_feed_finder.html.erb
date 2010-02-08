@@ -1,0 +1,67 @@
+
+   <script type="text/javascript">//<![CDATA[
+
+      var defaultQuery<%=@mod.id.to_s%> = "<%= @mod.topic %>";
+	  var num_feeds<%=@mod.id.to_s%> = "<%= @mod.num_feeds %>";
+
+      // load the AJAX Feed API
+      google.load("feeds", "1");
+      google.setOnLoadCallback(function() {findFeeds<%=@mod.id.to_s%>(defaultQuery<%=@mod.id.to_s%>)});
+
+      function findFeeds<%=@mod.id.to_s%>(query) {
+        google.feeds.findFeeds(query, feedSearchDone<%=@mod.id.to_s%>);
+      }
+
+      function feedSearchDone<%=@mod.id.to_s%>(result) {
+        var el<%=@mod.id.to_s%> = document.getElementById("feedControl<%=@mod.id.to_s%>");
+
+        if (result.error || result.entries.length <= 0) {
+          el<%=@mod.id.to_s%>.innerHTML = '<center>No Results Found</center>';
+          return;
+        }
+
+        // create a feed control
+        var feedControl<%=@mod.id.to_s%> = new google.feeds.FeedControl();
+
+        // Grab top ...
+        for (var i = 0; i < num_feeds<%=@mod.id.to_s%>; i++) {
+          feedControl<%=@mod.id.to_s%>.addFeed(result.entries[i].url, result.entries[i].title);
+        }
+
+        feedControl<%=@mod.id.to_s%>.setLinkTarget(google.feeds.LINK_TARGET_BLANK);
+        feedControl<%=@mod.id.to_s%>.setNumEntries(2);
+        feedControl<%=@mod.id.to_s%>.draw(el<%=@mod.id.to_s%>);
+      }
+
+      function onSubmit<%=@mod.id.to_s%>() {
+        inputChange<%=@mod.id.to_s%>(document.getElementById("input<%=@mod.id.to_s%>"));
+        return false;
+      }
+
+      function inputChange<%=@mod.id.to_s%>(input) {
+        var query = input.value.toLowerCase();
+
+        var el = document.getElementById("feedControl<%=@mod.id.to_s%>");
+        el.innerHTML = 'Loading...';
+
+        if (!query) {
+          query = defaultQuery<%=@mod.id.to_s%>;
+          input.value = query;
+        }
+        findFeeds<%=@mod.id.to_s%>(query);
+      }
+
+    //]]>
+    </script>
+	
+<%if @mod.style=="search"%>
+ <form id ="<%=@mod.id.to_s%>" class="search-box" method="post" onsubmit="return onSubmit<%=@mod.id.to_s%>()">
+    <input class="search-input" id="input<%=@mod.id.to_s%>" 
+	   type="text" 
+	   size="35" 
+	   value= "<%=@mod.topic%>"
+	   onchange="inputChange<%=@mod.id.to_s%>(this)"/>
+    </form>
+<%end%>
+   <div id="feedControl<%=@mod.id.to_s%>">Loading</div>
+

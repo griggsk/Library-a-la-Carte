@@ -1,0 +1,34 @@
+ <fieldset>
+    <%=render :partial => '/module/edit_top'%>
+	<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+	<%= error_messages_for 'mod' %>
+     <%form_tag({:controller => 'uploader', :action => 'update_uploader', :id => @mod} , {:multipart => true})  do %>
+	      
+		   <%=render :partial => '/module/mod_title'%>  
+		  
+		   <label for="mod_info" > General Information
+   	            <span class = 'more_help' onMouseover="fixedtooltip(UPLOADER_INFO_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+	              <%= text_area 'mod', 'info',:class => "mceEditor" %>
+	
+		<div id ='uploadables'>
+			<%=render :partial => '/uploader/uploadable', :collection => @mod.uploadables %>
+		</div>
+		
+		
+		<label><%= link_to_function image_tag("/images/icons/add.png", :title => 'Click to add an attachment', :alt => '', :border => 0)+" Add Attachment" do |page| 
+					    page.insert_html :bottom, :uploadables, :partial => 'uploadable', :object => Uploadable.new
+		  		   end  %>  
+		</label>
+ 
+    <%= image_tag "spinner.gif", :id => "spinner_search", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
+		 
+<div id="submit_button">
+  <%= submit_tag 'Save Module', :class => "submit" %>  
+  <p> <%= link_to 'Cancel', :controller => 'module', :action => 'index',:id => @mod, :type =>@mod.class, :list => 'mine', :sort => 'name' %></p>
+  </div>
+<%end%>
+</fieldset> 			  
+			  
+

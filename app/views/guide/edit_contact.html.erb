@@ -1,0 +1,49 @@
+
+
+<fieldset>
+<h3 class = 'title'><%=render :partial => 'title_actions'%></h3>
+<h4>Contact Module</h4>
+<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+<% end -%>	
+<div class = 'tip'> A guide must have a contact module before it can be published. </div>
+
+
+<div id="hide" <% if @guide.resource%> style="display:none" <%end%> >
+	<% form_tag :action => 'edit_contact'  do%>
+			<label>Contact Module <span class = 'more_help'  onMouseover="fixedtooltip(CONTACT_MOD_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+					<select id="guide_type" name="contact">
+						   <option>Select</option>
+	  				       <%for resource in @resources %>
+						 		<option value=<%=resource.id%> <%if resource.id == @selected%> selected='selected' <%end%>><%=h resource.mod.label%></option>
+	  						<%end%>
+						</select>	
+		<div id="submit_button">
+			<%= submit_tag 'Update', :class => "submit"  %>		
+			
+		</div>	
+	<%end%>
+</div>
+
+<%if @guide.resource%>
+<div id="actions">
+<p><a href="#" onclick="$('hide').toggle(); $('actions').toggle();$('boxes').toggle();; return false;">Select New Contact Module</a> 
+<span class = 'more_help'  onMouseover="fixedtooltip(NEW_CONTACT_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+</p>
+</div>
+	   <div id="boxes">
+		<div class="item">
+			<div class ="item2">
+				<%= show_mod(@mod)%>
+			    <div class="bot"><div></div></div>
+			</div>
+		</div>
+		  </div>
+	 <%=link_to 'Edit Contact Module', {:controller => 'module',  :action => 'edit_content', :id => @mod, :type => @mod.class}%>
+<%end%>
+ 
+
+		<div id="submit_button">
+<%= link_to 'Cancel', :action => 'edit',:id => @guide %></div>
+ <%=render :partial => 'side_bar'%>
+</fieldset>

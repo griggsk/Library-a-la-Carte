@@ -1,0 +1,32 @@
+<fieldset>
+<h3> Tutorials for <%=h @user.name%></h3>
+<% if flash[:notice] -%>
+	   <div id="error_wrapper">   <div id="notice" ><%= flash[:notice] %></div></div>
+	<% end -%>
+<p>Total Tutorials: <%=@count%></p>
+<div id="product-list" >
+<table>
+ <tr valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+  
+    <th> Title </th>
+    <th> Last Update </th>
+    <th> Published </th>
+    <th> Actions </th>
+  </tr>
+  
+<% for tutorial in @tutorials %>
+  <tr valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+    <td><%= link_to h(tutorial.full_name),{ :controller => "ort", :action => 'index', :id => tutorial} %></td>
+    <td><%=h tutorial.updated_at%></td>    
+    <td><%=h tutorial.publish %></td>
+    <td><%= link_to 'Assign', { :controller => "admin", :action => 'assign_tutorial', :id => tutorial} %>
+	 | <%= link_to 'Archive', { :action => 'archive_tutorial', :id => tutorial}, :confirm => 'Are you sure you want to archive this tutorial?', :method => :post %>
+	 | <%= link_to 'Delete', { :controller => "admin", :action => 'destroy_tutorial', :id => tutorial}, :confirm => 'Are you sure you want to delete this tutorial?', :method => :post %></td>
+  </tr>
+<% end %>
+</table>
+</div>
+
+<p>
+ <b><%= link_to 'Back to Users', :action => 'users' %></b></p>
+</fieldset>

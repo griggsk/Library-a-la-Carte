@@ -1,0 +1,9 @@
+if flash[:error]
+  page.replace "msg_flash",:partial => 'flashmsg',:object => flash
+  page.replace "image-upload", :partial => 'uploader'
+else
+  page.replace "image_list", :partial => 'show_image_list', :object => @image_managers
+  page.replace "image-upload", :partial => 'uploader'
+  page.replace "msg_flash",:partial => 'flashmsg', :object => flash
+end
+

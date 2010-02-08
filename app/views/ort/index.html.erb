@@ -1,0 +1,67 @@
+<%= render :partial => 'ort/top'%>
+
+<div id="content">
+	<div id="item-corner"></div>
+	<div id="content-column2">
+		<%if @tutorial.graded == 1%>
+			<div id='signin'>
+				<%if !@student.blank?%>
+				<% @quizes, @left = @student.quizes(@tutorial)%>
+				  <%= render :partial => '/ort/student_signin', :quizes => @quizes, :left => @left%>
+				<%else%>
+					<%= render :partial => '/ort/log_in'%>
+				<%end%>	
+			</div>	
+		<%end%>	
+	<!-- end content-column2 -->
+
+	</div>
+	
+	<div id="content-column1">
+		<h2>Tutorial Description</h2>
+		<p>
+			<%=@tutorial.description%>
+		</p>
+		<div class="start"><%=link_to 'Start', :controller => 'ort', :action => 'next_lesson', :id => @tutorial %></div>
+		
+	<!-- end content-column1 -->
+	</div>
+	<div id="content-column1">
+	
+		<h2>Table of Contents</h2>
+			<% unless @tutorial.unitizations.blank? %>
+			<ol id="toc" class="hover">
+			<%
+		        @tutorial.unitizations.each do |uz| 
+				unit = uz.unit%>
+					<%resources = unit.resourceables%>
+					<%if @unit and unit.id == @unit.id%><li class='current'><%else%><li><%end%><%=link_to unit.title, {:controller => 'ort', :action => 'unit', :id =>@tutorial, :uid => unit.id}%>
+					<p><%=unit.description%></p>
+						<% unless resources.blank?  %>
+							<ol>
+								 <%resources.each do |resable|
+												res = resable.resource
+												mod = res.mod
+												%>
+								     <li><%=link_to_unless_current mod.module_title, :controller => 'ort', :action => 'lesson', :id =>@tutorial, :uid =>unit.id,  :mid => mod, :type => mod.class%></li>
+								 <%end%>
+						   </ol>
+						  <%end%>
+			
+					  <%end%>
+			 </ol> 
+		   <%end%>
+	<div id="update">   
+		<p>	 <%if @tutorial.tag_list.length > 0 %> Tagged with: <% @tutorial.tag_list.each do |tag|%> <%= link_to tag, { :action => :tagged, :id => tag }%><%end%> <%end%></p>
+		<p>Last Update: <%=@tutorial.updated_at.to_formatted_s(:long)%></p>
+		</div>
+		
+	<!-- end content-column1 -->
+	</div>
+	
+<!-- end content -->
+<div class="bot"><div></div></div></div>
+
+
+<!-- end wrap, wrap-inner -->
+</div></div>

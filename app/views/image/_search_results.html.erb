@@ -1,0 +1,15 @@
+<% if @list!= "" and !@list.photos.empty?%>
+	<%= image_tag "spinner.gif", :id => "add_spinner_search", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
+	<ul class ="undeco list">
+	 	<%@list.each do |photo|%>
+		   <li>Title: <%= truncate(h(photo.title), 100)   %><br/>
+		  	Description: <%=  truncate(photo.description, 100) unless [nil, ''].include?(photo.description)%><br/>
+			Owner: <%= truncate(h(photo.owner_username), 100)   %><br/>
+		   	<%= image_tag photo.url([:square]) %>
+			<%=image_tag("/images/icons/add.png", :title => 'Add this image', :alt => 'preview', :border => 0) %><%=link_to_remote('Add Image',:update => "images", :loading => "Element.show('add_spinner_search')", :complete => "Element.hide('add_spinner_search')",:url =>{:controller => :image,  :action => 'save_image', :id => @mod, :alt => photo.title, :description => photo.description, :url => photo.url([:medium])} , :update => "images")%>
+			 </li>
+		<%end%>
+	</ul>	
+<%else%>
+  No photos found
+<% end%>

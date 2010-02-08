@@ -1,0 +1,23 @@
+<span>
+<%=h@page.header_title%>  
+</span>
+<div class='actions'>
+	<%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this page', :alt => 'preview', :border => 0),{ :controller => "ica", :action => 'index', :id => @page}%> <%= link_to 'Preview', {:controller => "ica", :action => 'index', :id => @page.id}, :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes'], :title =>"Preview " + @page.search_title%>
+		|
+		<% unless @page.published? %>
+    
+          <%= link_to "Publish", {:controller => 'page', :action => 'publish', :id => @page.id}, :confirm => 'Are you sure you want to publish this page?', :method => :post %> 
+        <%else%> 
+            
+            <%= link_to "Unpublish", {:controller => 'page', :action => 'publish', :id => @page.id}, :confirm => 'Are you sure you want to unpublish this page?', :method => :post %> 
+        <%end%>
+		|
+		 <% unless @page.archived? %>
+            <%= link_to "Archive", {:controller => 'page', :action => 'archive', :id => @page.id}, :confirm => 'Are you sure you want to archive this page?', :method => :post %> 
+        <%else%> 
+            
+            <%= link_to "Unarchive", {:controller => 'page', :action => 'archive', :id => @page.id}, :confirm => 'Are you show you want to remove this page from archive?', :method => :post %> 
+        <%end%>
+	
+	
+</div> 

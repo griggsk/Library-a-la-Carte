@@ -1,0 +1,38 @@
+<div class="item grey"><div class="item2"><div class="item3">
+			<h2>Hello <%=@student.name%></h2>
+			<p>
+				This Tutorial is for <b><%=@tutorial.full_name%></b>
+	        </p>
+			<p>
+			<%if !@quizes.blank?%>
+				You have taken the following quizzes:
+				<ul>
+				   <%@quizes.each do |quiz|%>
+					<li><%=quiz.module_title%></li>
+				<%end%>
+				</ul>
+			<%else%>
+				You have not taken any of the quizzes yet. 
+			<%end%>	
+			<%if !@left.blank?%>
+				<span class="required">Remember, you can only take graded quizzes once.</span>  You have the following quizzes left to take:
+				<ul>
+				<%@left.flatten.each do |quiz|%>
+					<li><%=quiz.module_title%></li>
+				<%end%>
+				</ul>
+			<%end%>	
+			</p>
+			<p><%=link_to 'Not '+ @student.name + "?", :controller => 'ort', :action => 'log_out', :id =>@tutorial %> | <%=link_to 'Sign out', :controller => 'ort', :action => 'log_out' , :id =>@tutorial%></p>
+		
+		<h5>Change Class Sections</h5>
+		 You registered as being in section <%=@student.sect_num%>
+		 		<% form_tag :controller =>"ort", :action=>'edit_section', :id =>@tutorial.id do%>
+				<label for="email">Section #</label>
+	            <%= select "student","sect_num",@sections, :size =>15 %>
+	            <br /><br />
+	            <%= submit_tag 'Change', :class => 'submit' %>
+	       <% end %>
+		</div></div></div>
+		
+		

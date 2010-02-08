@@ -1,0 +1,45 @@
+<%if @mod.style=="tabbed"%>
+	<script language="Javascript" type="text/javascript">//<![CDATA[
+
+      // load the AJAX Feed API
+      google.load("feeds", "1");
+
+      function OnLoad() {
+
+        // create a feed control
+        var feedControl = new google.feeds.FeedControl();
+		var feed_array = <%= @mod.feedurls.to_json %>;
+		var label_array = <%= @mod.feedlabels.to_json %>;
+		for (var i=0; i<feed_array.length; i++){
+        	feedControl.addFeed(feed_array[i], label_array[i]);
+		}
+        feedControl.setLinkTarget(google.feeds.LINK_TARGET_BLANK);
+        feedControl.setNumEntries(<%=@mod.num_feeds%>);
+        feedControl.draw(document.getElementById("feedControl<%=@mod.id.to_s%>"), 
+                         {drawMode : google.feeds.FeedControl.DRAW_MODE_TABBED});
+      }
+      google.setOnLoadCallback(OnLoad);
+    //]]>
+    </script>
+
+    <div id="feedControl<%=@mod.id.to_s%>">Loading</div>
+
+<%else%>
+
+	
+	<script type="text/javascript" src="/javascripts/gfeedfetcher.js"></script>
+		<script type="text/javascript">
+			var feed_array = <%= @mod.feedurls.to_json %>;
+			var label_array = <%= @mod.feedlabels.to_json %>;
+			var feed=new gfeedfetcher("feedControl<%=@mod.id.to_s%>", "feeds_class", "_new")
+			for (var i=0; i<feed_array.length; i++){
+				feed.addFeed(label_array[i], feed_array[i]) //Specify "label" plus URL to RSS feed
+			}
+			feed.displayoptions("label date snippet") //show the specified additional fields
+			feed.setentrycontainer("p") //Display each entry as a paragraph
+			feed.filterfeed(<%=@mod.num_feeds%>, "date") //Show n entries, sort by date
+			feed.init() //Always call this last
+	
+	</script>
+
+<%end%>

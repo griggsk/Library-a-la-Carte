@@ -1,0 +1,17 @@
+<div id="header">
+	<%if @guide%>
+		<%= link_to "Go To Screenreader Version" , {:action => 'print', :id => @guide} , :id => 'ada', :style=>"position:absolute;top:-1000px;"  %>
+	<%elsif @page%>
+		<%= link_to "Go To Screenreader Version" , {:action => 'print', :id => @page} , :id => 'ada', :style=>"position:absolute;top:-1000px;" %>
+	<%else%>
+		<%= link_to "Go To Screenreader Version" , {:action => 'print_portal', :from => @from} , :id => 'ada', :style=>"position:absolute;top:-1000px;" %>
+	<%end%>
+	<a href="#skip" id="skipNav" title="Skip Navigation and Jump to Content"></a>
+	 <div id="logo">
+       <%= if !@local.image_map.blank? then @local.image_map end %>
+	<div id="top_links">
+    <%unless @local.lib_name.blank? || @local.lib_url.blank? %>    <a href="<%=@local.lib_url%>"><%=@local.lib_name%></a>  | <%end%>
+    <%unless @local.univ_name.blank? || @local.univ_url.blank? %>  <a href="<%=@local.univ_url%>"><%=@local.univ_name%></a>  <%end%>
+   </div>
+   </div>
+</div>

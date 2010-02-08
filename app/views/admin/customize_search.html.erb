@@ -1,0 +1,36 @@
+<fieldset>
+	<h2> Customize Search Engines</h2>
+	<% form_tag :action => 'customize_layout', :id => @local do%>
+	    <%= error_messages_for 'local' %>
+      <div id ="share">
+      	<fieldset>
+      		<h4>Local Search</h4>
+			 <label for="local_site_search">Library Site Search</label>
+			 <div class = 'tip'>Enter the code snippet for your library site search.  </div> <br />
+            <%= text_area 'local','site_search',  :size => '48x5'%>
+       
+            <label for="local_book_search">Library Catalog Search</label>
+			<div class = 'tip'>Enter the code snippet to search your library's catalog. </div> <br />
+            <%= text_area 'local','book_search',  :size => '48x5'%>
+             
+      	</fieldset>
+		<fieldset>
+			<h4>Google Custom Search</h4>
+			<div class = 'tip'>Add a <a href ="http://www.google.com/coop/cse/" target='_blank'>google custom search engine</a> to search ala carte guides and tutorials. See admin documentation for instructions.  </div> <br />
+			 <label for="local_g_search">Search Box Code</label>
+			 <div class = 'tip'>Paste in the search box code snippet from google.  </div> <br />
+            <%= text_area 'local','g_search',  :size => '48x5'%>
+       
+            <label for="local_g_results">Search Results Code</label>
+			<div class = 'tip'>Paste in the search results code snippet from google. </div> <br />
+            <%= text_area 'local','g_results',  :size => '48x5'%>
+			
+		</fieldset>
+
+      </div>
+		
+	   <%= submit_tag 'Customize Search', :class => "submit"  %>
+	<%end%>	 
+	<%= link_to 'Cancel', :action => 'tools' %>
+		 
+</fieldset>

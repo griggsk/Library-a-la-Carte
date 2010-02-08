@@ -1,0 +1,15 @@
+<fieldset>
+<h3>Create New Guide</h3>
+<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+<% form_tag :action => 'new'  do%>
+ <%= render :partial => 'form' %>
+
+<%= submit_tag 'Save Guide', :class => "submit"  %>
+
+<%end%>
+<p><%= link_to 'Cancel', :action => 'index' %></p>
+
+ </fieldset>
+ 

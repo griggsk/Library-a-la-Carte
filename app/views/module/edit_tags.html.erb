@@ -1,0 +1,27 @@
+<fieldset>
+<div id="main">
+<h3 class='title'> 
+<%=render :partial => 'title_actions'%>
+</h3>
+<h4>Tags</h4>
+<% if flash[:notice] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:notice] %></div></div>
+<% end -%>
+<%= error_messages_for 'mod' %>
+<% form_tag :action => 'edit_tags', :id => @mod, :type =>@mod.class do%>
+<!--[form:page]-->
+<div id ='share'>
+  <fieldset>
+   <label for="tags">Tags <span class = 'more_help' onMouseover="fixedtooltip(MOD_TAGS, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+   <%= text_area_tag 'tags', @tags, {"class" => 'mceNoEditor', :size => '40x2'}  %>
+    <div class = 'tip'>	example: WR101, Databases, Writing</div>
+</fieldset>
+<!--[eoform:page]-->
+
+<%= submit_tag 'Save', :class => "submit"  %>
+
+<%end%>
+<p><%= link_to 'Cancel', :action => 'index' %></p>
+</div>
+ </fieldset>
+

@@ -1,0 +1,36 @@
+<ul id="search">
+        <li class="selected"> <a href="#" rel="guides"><span>Guides</span></a></li>
+        <li> <a href="#" rel="books"><span>Books</span></a></li>
+        <li class="last"> <a href="#" rel="library"><span>Library</span></a></li>
+    </ul>
+    <div class="module">
+       <div id="guides" class="tabcontent">
+        <strong>Search OSU Library Guides</strong> 
+		<form action="http://ica.library.oregonstate.edu/guides/search" id="cse-search-box">
+		  <div>
+		    <input type="hidden" name="cx" value="013309845372334004077:sxkmdms2uq4" />
+		    <input type="hidden" name="cof" value="FORID:11" />
+		    <input type="hidden" name="ie" value="UTF-8" />
+		    <input type="text" name="q" size="23" />
+		    <input type="submit" name="sa" value="Go" />
+		  </div>
+		</form>
+
+		
+	  </div>
+	  <div id="books" class="tabcontent">
+        <strong>Search Books, Articles, Journals</strong>
+		<form method="post" action="http://search.library.oregonstate.edu/record/retrieve">
+		<label for="lf" title="Search popular library resources for books and articles"><input type="text" id="lf" name="query[string]" size="23" maxlength="256"  accesskey="s" value="LibraryFind Search" onfocus="if(value=='LibraryFind Search'){value=''};" /></label>
+		<input type="submit" value="Go"></input>
+		</form>
+	  </div>
+	  <div id="library" class="tabcontent">
+        <strong>Search OSU Libraries Website</strong> 
+		<form method="get" action="http://search.oregonstate.edu/web">
+		<label for="query" title="Enter your search query here."><input type="text" id="query" name="query" size="23" maxlength="256" value="Site Search" onfocus="if(value=='Site Search'){value=''};" /></label>
+		<input type="hidden" name="site"  value="osulibrary.oregonstate.edu" checked="checked"  />
+		 <input type="submit" value="Go" id="submit" />
+		</form>
+	  </div>
+    </div>    

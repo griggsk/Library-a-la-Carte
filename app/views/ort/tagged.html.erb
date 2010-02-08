@@ -1,0 +1,40 @@
+<div id="main"><div id="content">
+
+<h1>Demos and Guides </h1>
+
+<div class="item">
+	<h2>Browse Tutorials by Tag Results</h2>
+
+	<div class="module">
+		<p>Tutorials tagged with: <b><%=@tag%></b></p>
+		<ul class = 'indent-left'>
+		<%@tutorials.each do |tutorial|%>
+			<li class = 'undeco'><%=link_to h(tutorial.full_name), :controller => 'ort', :action => 'index', :id => tutorial%>
+				<br />
+					<%=h(tutorial.description)%>
+				    <small><b>Tags: </b><% tutorial.tag_list.each do |tag|%> <%= link_to tag, { :action => :tagged, :id => tag }%>  <%end%></small>
+			</li>
+       <%end%>
+		</ul>
+	</div>
+	<div class="bot"><div></div></div>
+</div>
+
+<div class="item">
+<h2>Browse by Tags</h2>
+	<div class="module">
+		<p><% tag_cloud @tags, %w(css1 css2 css3 css4) do |tag, css_class| %>
+		   			 <%= link_to tag.name, { :action => :tagged, :id => tag.name }, :class => css_class %>
+		  <% end %>
+	    </p>
+	</div>
+	<div class="bot"><div></div></div>
+</div>
+	
+</div></div>
+
+<%= render :partial => '/shared/left_side'%>
+<%= render :partial => 'right_side'%>
+
+<!-- end wrap, wrap-inner -->
+</div></div>

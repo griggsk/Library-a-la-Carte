@@ -1,0 +1,16 @@
+
+
+<div id="db" style="display:none">
+ 	<label>Add Databases</label>
+	<p>Select the databases you want to add to this module and then click the button to add them.</p>
+ 	<%form_tag({:controller => 'database', :action => 'add_databases', :id => @mod} , {:multipart => true})  do %>
+			  <div id="a_z_list">
+			  <%= render :partial => "a_z_list" %>
+			  </div>
+	<div id="submit_button">		  
+	<%= submit_tag 'Add Databases', :class => "submit" %> 
+	<p><%= link_to_function "Cancel", "$('db').toggle(); + $('mo').toggle(); + $('link').toggle(); " %> </p>
+	</div>
+<% end %>
+
+</div>

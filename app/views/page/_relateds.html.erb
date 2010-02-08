@@ -1,0 +1,14 @@
+<%if @relateds.length <1%>
+			<p><b>Could not find any related guides.</b></p>
+		<%else%>
+			<ul class="undeco no_indent">
+				<%@relateds.each do |guide|%>
+					<%guide_url = url_for :controller => 'srg', :action => 'index', :id => guide%>
+		   			<li>
+		   				<%= link_to h(guide.guide_name), guide_url, :title => "#{h(guide.description)}", :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes'] %>
+					    <%= link_to image_tag("/images/icons/remove.png", :title => 'Remove from related guides list', :alt => 'remove', :border => 0), { :action => 'remove_related', :gid => guide.id}, :confirm => 'Are you sure you want to remove this guide from the related guides list?', :method => :post %>
+					</li> 	
+				<%end %> 
+			</ul>
+			<p><b>The guides were successfully related.</b></p>
+		<%end%>

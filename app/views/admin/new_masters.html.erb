@@ -1,0 +1,35 @@
+<fieldset>
+	<h3>New Master Subject(s)</h3>
+	<% if flash[:error] -%>
+	  <div id ="error_wrapper">    
+	  	<div id="list_error" >
+	  		<%= flash[:error] %>
+		</div>
+	</div>
+	<% end -%>
+ 		<% form_tag :action => 'create_masters' do %>
+ 			<div id='counter'>
+				<%= hidden_field_tag "formCount" , @num%>
+			</div>	
+			<div id ='masters'>
+ 				<% @masters.each_with_index do |master, index| %>
+   					<% fields_for "masters[#{index}]", master do |f| %>
+        				<%= error_messages_for :master %>
+   					<label for="value"><span class="required">*</span>Master Subject Name</label>
+    					<%= f.text_field 'value'%> <%= f.error_message_on "value" %>
+   					<% end %>
+   				<% end %>
+			</div>
+    		<div id="submit_button">
+				<%= next_master -%>
+				<%= image_tag "spinner.gif", :id => "spinner_search", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
+			</div>
+			<div id="submit_button">
+ 			<%= submit_tag 'Save Masters' ,:class =>"submit" %>  or
+			<%= submit_tag 'Save and Add '+@num+' More' ,:class =>"submit" %>
+			</div>
+ 		<% end %>
+	<p>
+ 		<%= link_to 'Cancel', :action => 'masters' %>
+	</p>
+</fieldset>

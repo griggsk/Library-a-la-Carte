@@ -1,0 +1,14 @@
+ <h2><%=h @mod.module_title%></h2>
+ <div class="module">
+	<% form_tag @mod.search, :target => '_blank' do %>
+	      <%= text_field_tag('query[string]',value="Enter keywords",{ :size=> "25",:onclick => "this.value='';"}) %>
+          <%= hidden_field_tag('sets', value= @mod.get_targets)%>  
+	      <%= submit_tag 'Go' %> 
+          <br />**Search results open in a new window**
+    <% end %>
+	
+	<%unless @mod.information == ""%>
+	   <br />
+	   <%=@mod.information%>
+	<%end%>
+ </div>

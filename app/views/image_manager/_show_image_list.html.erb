@@ -1,0 +1,49 @@
+<div id="image_list">
+	<% form_remote_tag :html => {:id => "pic", :multipart => true },:url => {:action => 'add_path_to_general'},:update => "general_panel" do %>
+	<%= hidden_field_tag "pic_path", "", :id => "pic_path" %>
+	<%= hidden_field_tag "norm_desc", "", :id => "norm_desc" %>
+	<%= hidden_field_tag "norm_title", "", :id => "norm_title" %>
+	<%if @image_managers.length > 30
+		j=" style = \"height: 465px\";"
+	else
+		j=""
+	end%>
+	<div id='dynamic_images_list'<%="#{j}"%> >
+		<fieldset>
+			<legend>Available Images</legend>
+			<%i=1%>
+			<%- @image_managers.each { |attr| -%>
+				<%file = attr.photo.url + attr[:photo_file_name]
+				org_file = file.gsub(/thumb/,"original")
+				case i
+					when 1
+						%><div id = 'first_image'><%
+					when 2
+						%><div id = 'second_image'><%
+					when 3
+						%><div id = 'third_image'><%
+					when 4
+						%><div id = 'fourth_image'><%
+					else
+						%><div id = 'fifth_image'><%
+				end%>
+				
+				<%= image_submit_tag file ,:id => 'thumb',:onclick => 
+				"Change_Value('#{org_file}','pic_path');
+				retrieve_values();"  %>
+				<br />
+				<%= link_to_remote "Delete",  :confirm => 'Are you sure you want to delete this photo?',
+				:url => { :controller => 'image_manager', :action => :destroy, :id => attr.id }, :method => :destroy %>
+				</div>
+			<%	if i >= 5
+					%><br /><%
+					i=1
+				else
+					i+=1
+				end
+			}%>
+		</fieldset>
+	</div>
+	<%end%> 
+</div>
+

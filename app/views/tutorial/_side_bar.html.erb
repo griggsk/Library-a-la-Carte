@@ -1,0 +1,30 @@
+<% content_for(:sidebar) do %> 
+
+
+<div id="my_menu" class="sdmenu green_page">
+      <div>
+		<%= link_to 'Title &amp; Metadata', {:controller => 'tutorial', :action => 'update',  :id => @tutorial.id }, :class => "top " + ( @ucurrent || "") %>
+		 <%= link_to 'Units', {:controller => 'unit', :action => 'units' }, :class =>@uscurrent%>
+		 <%= link_to 'Quiz Manager', {:controller => 'tutorial', :action => 'quizes',  :id => @tutorial.id}, :class =>@qcurrent%>
+		 <%= link_to 'Share Tutorial', {:controller => 'tutorial', :action => 'share',  :id => @tutorial.id }, :class =>@scurrent%>
+		<%if @altered_tutorials%>
+		       <br />
+			    <span>Recently Edited</span>
+				<% form_tag :controller => 'tutorial', :action => 'recent_tutorials' do%> 
+					<ul class ='undeco'>
+						<li> When finished editing; mark as done.</li>
+					<%for altered in @altered_tutorials
+						if altered %>
+						  <li>
+						  	 <%= check_box_tag("altered_list[]", altered.id ,false, {}) %><%= link_to h(altered.route_title), {:controller => 'tutorial', :action => 'edit',  :id => altered.id }, :title => "edit guide"%>
+						  </li> 
+						<%end 
+					end%>
+					<li><%= submit_tag 'Done' %></li>
+				    </ul>
+				<%end%>
+			  
+	   <%end%>	
+   </div>
+</div>  
+<%end%>

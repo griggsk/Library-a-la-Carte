@@ -1,0 +1,8 @@
+<h2><%=h @mod.module_title%></h2>
+<div class="module">
+  <% unless @mod.reserves.blank?  %>
+  	<%=@mod.reserves%>
+  <% end %>
+  <%= render :partial => "/reserve/show_reserved_titles", :locals => {:reserves => @mod.library_reserves} %>
+  
+</div>

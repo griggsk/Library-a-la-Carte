@@ -1,0 +1,9 @@
+<% if reserves and !reserves.empty? %>
+  <% reserves.each do |r| %>
+  <div class="reserves">
+     <span class="item_title"><%= r[:title] %></span> 
+     <span class="call_num">Author: <%= r[:author] %> </span> 
+     <span class="call_num">Call #: <%= r[:availability] %> </span> 
+  </div>
+  <% end %>
+ <% end %>

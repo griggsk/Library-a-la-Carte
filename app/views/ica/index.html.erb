@@ -1,0 +1,35 @@
+	<div id='main'>
+	 	<h1><%=h(@page.header_title)%></h1>
+		<div id="sidebar-left">
+	     <%= render :partial => 'left_side_bar'%>
+	    </div> <!-- end sidebar-left -->	
+		<a id="skip" name="skip"></a>
+        <% if @tabs.length > 1 %>
+			<div id="tabs"><ul>
+				<% for tab in @tabs%>
+					<% @tab_url = url_for :controller => 'ica', :action => 'index', :id => @page, :tab => tab.id %>
+					<%if tab.id == @tab.id%><li id='current'><%else%><li><%end%><a href ="<%=@tab_url%>"> <span><%= tab.tab_name%></span> </a></li>
+			    <%end%>
+			</ul>
+			</div>
+			<div id="main-inner">
+		<%else%>
+		    <div id="topLeft"></div>	
+			<div id="main-inner" class = "no-tabs">	
+        <%end%>
+		
+				<div id="content">
+					<%unless @mods%>
+			 			  <%=render :partial => 'two_column' %> 
+					<%else%>
+			  			  <%=render :partial => 'one_column' %> 
+					<%end%>
+					<%= render :partial => 'metadata'%>
+		        </div>
+		</div> <!-- end content, end main-inner -->
+	</div> <!-- end main -->
+
+
+
+
+

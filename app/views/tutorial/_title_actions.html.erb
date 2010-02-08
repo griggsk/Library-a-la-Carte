@@ -1,0 +1,23 @@
+<span>
+<%=h @tutorial.full_name%>  
+</span>
+<div class='actions'>
+	<%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this tutorial', :alt => 'preview', :border => 0),{ :controller => "ort", :action => 'index', :id => @tutorial}%> <%= link_to 'Preview', {:controller => "ort", :action => 'index', :id => @tutorial.id}, :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes'], :title =>"Preview " + @tutorial.name%>
+		|
+		<% unless @tutorial.published? %>
+    
+          <%= link_to "Publish", {:controller => 'tutorial', :action => 'publish', :id => @tutorial.id}, :confirm => 'Are you sure you want to publish this tutorial?', :method => :post %> 
+        <%else%> 
+            
+            <%= link_to "Unpublish", {:controller => 'tutorial', :action => 'publish', :id => @tutorial.id}, :confirm => 'Are you sure you want to unpublish this tutorial?', :method => :post %> 
+        <%end%>
+		|
+		 <% unless @tutorial.archived? %>
+            <%= link_to "Archive", {:controller => 'tutorial', :action => 'archive', :id => @tutorial.id}, :confirm => 'Are you sure you want to archive this tutorial?', :method => :post %> 
+        <%else%> 
+            
+            <%= link_to "Unarchive", {:controller => 'tutorial', :action => 'archive', :id => @tutorial.id}, :confirm => 'Are you show you want to remove this tutorial from archive?', :method => :post %> 
+        <%end%>
+	
+	
+</div> 

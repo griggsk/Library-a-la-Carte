@@ -1,0 +1,40 @@
+<fieldset>
+ <h3 class='title'> 
+	<%=render :partial => 'title_actions'%>
+	</h3>
+	<h4>
+		Tutorials
+	</h4>
+	<div id="new_button" class="new">
+	    <a href= "/module/add_to_tutorial/<%=@mod.id%>?type=<%=@mod.class%>&sort=name">
+        <span>
+	        <img src="/images/icons/add.png" alt="Add Tab" />
+	        Add to Tutorials
+	    </span></a>
+    </div>
+	
+<div id="product-list" >
+	<%if !@tutorials.blank?%>
+		<table>
+			<thead>
+			<th colspan=2>Tutorials Containing <%=@mod.label%> </th>
+			</thead>
+	   		<% @tutorials.each do |tutorial| %>
+			<tr class="<%= cycle('list-line-odd', 'list-line-even') %>">
+				<td>
+					<b><%= h tutorial.full_name%></b>
+				</td>
+				<td>
+					<%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this Tutorial', :alt => 'Edit', :border => 0), {:controller =>'tutorial', :action => 'update',  :id => tutorial}, :class=>'space'%>
+				|	<%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this Tutorial', :alt => 'View', :border => 0), { :controller => "ort", :action => 'index', :id => tutorial}, :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes'] , :class=>'space'%>
+				
+				</td>
+			</tr>
+			<%end%>
+		</table>
+	<%else%>
+	<p>This Module is not used on any Tutorials</p>
+	<%end%>	
+</div>
+  </fieldset> 
+ 

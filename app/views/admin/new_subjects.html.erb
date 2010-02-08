@@ -1,0 +1,40 @@
+<fieldset>
+	<h3>New Subjects</h3>
+	<% if flash[:error] -%>
+		<div id ="error_wrapper">    
+	  		<div id="list_error" >
+	  			<%= flash[:error] %>
+			</div>
+		</div>
+	<% end -%>
+	<div id="vertical_inputs">
+ 		<% form_tag :action => 'create_subjects' do %>
+ 			<div id='counter'>
+				<%= hidden_field_tag "formCount" , @num%>
+			</div>	
+			<div id ='subjects'>
+ 				<% @subjects.each_with_index do |subject, index| %>
+   					<% fields_for "subjects[#{index}]", subject do |f| %>
+        				<%= error_messages_for :subject %>
+   							<span><label for="subject_code"><span class="required">*</span>Subject Code</label>
+    						<%= f.text_field 'subject_code' , :size => 10%> <%= f.error_message_on "subject_code" %></span>
+							<span><label for="subject_name"><span class="required">*</span>Subject Name</label>
+    						<%=f.text_field 'subject_name'%><%= f.error_message_on "subject_name" %></span>
+							 <br class="clearer" />
+   					<% end %>
+ 				<% end %>
+ 			</div>
+	</div>
+	   		<div id="submit_button">
+				<%= next_subject -%>
+				<%= image_tag "spinner.gif", :id => "spinner_search", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
+			</div>
+			<div id="submit_button">
+    		<%= submit_tag 'Save Subjects' ,:class =>"submit" %>  or
+			<%= submit_tag 'Save and Add ' + @num +' More' ,:class =>"submit" %> 
+			</div>
+ 		<% end %>
+	<p>
+ 		<%= link_to 'Cancel', :action => 'subjects' %>
+	</p>
+</fieldset>

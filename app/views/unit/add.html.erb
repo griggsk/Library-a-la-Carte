@@ -1,0 +1,27 @@
+<fieldset>
+	<h3 class='title'> 
+	<%=render :partial => '/tutorial/title_actions'%>
+	</h3>
+	<h4>Add Units</h4>
+	<% if flash[:error] -%>
+		  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+		
+	<%=render :partial => "unit/new_unit"%>	
+		   
+	<%unless @units.size <1%>
+		<div id="product-list" >
+				<p>Check the box next to the units you want to add.</p>	
+			<% form_tag :controller => 'unit', :action => 'add' do%> 	
+				<div id="table">
+			      <%=render :partial => "unit/unit_list"%>
+			   </div>
+				 <%= submit_tag 'Add to Tutorial', :class=> "submit" %>
+			<%end%>
+	<%else%>
+			<p><b>You currently have no Units. </b></p>
+		</div>	
+	<%end%>
+	
+	 <%=render :partial => 'tutorial/side_bar'%>
+</fieldset>
