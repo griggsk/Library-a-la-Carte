@@ -1,0 +1,54 @@
+<%search_results_message%>
+<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+<% end -%>
+
+<div id="page-list">	
+	<div id="new_button" class="new">
+	    <a href="#" onclick="$('new').toggle();$('new_button').toggle();; return false;">
+	    	<span>
+	        <img src="/images/icons/add.png" alt="Create New Tutorial" />
+	        Create New Tutorial
+	    </span></a>
+   </div>
+	
+	 <div id="new"  style="display:none">
+	<% form_tag :controller => 'tutorial', :action => 'create', :id => @tutorial do%>
+	<%= error_messages_for 'tutorial' %>
+		<div id="vertical_inputs" class="index">
+			<h4>Create Tutorial</h4><span class="more_help" onMouseover="fixedtooltip(TUTORIAL_TITLE_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span> 
+			  <%= link_to_function 'cancel', "$('new').toggle();$('new_button').toggle();; return false;" %>
+			  <span <%= %(class="required") if flash[:tutorial_title_error] %>>
+			<label for="tutoral_name">Title <span class="required more_help">*</span></label>
+		   <%= text_field 'tutorial','name',"size" => 50 %> 
+		   </span>
+			<span><label>&nbsp;</label><%= submit_tag 'Create Tutorial' %></span>
+			<br />  
+		</div> 
+	<%end%>
+	</div> 	
+	
+		<div id ="second_tabs">
+		<ul id="second_tabs">
+			<li><%= link_to "My Tutorials" , :controller => 'tutorial', :action => 'index', :sort => 'name' %></li>
+			<li  class = 'current'>	
+			<span id="message"><%=search_results_message%></span>
+				<% form_tag :controller => 'search', :action => 'search_tutorials' do%>	
+			  		<%= text_field 'mod', 'search',"size" => 35, 
+	     				 :value => @search_term %>
+					<%= submit_tag 'Search' %>
+				<%end%>
+			</li>
+		</ul>
+	</div>	
+	<div style ="clear: right;"></div>	
+		<div id="product-list" >
+		<%unless @search_results.empty?%>	
+		<div id="table">
+		   <%=render  :partial => "tutorials_list"%>  
+		</div>
+ 		<%else%>
+			<div id="notice" > No Tutorials found with <b><%=@search_term%></b>. </div>
+		<%end%>
+		</div>
+</div>

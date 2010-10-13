@@ -1,0 +1,2 @@
+ <%= radio_button_tag question.id, 1, false%><label>True </label>   <br />
+  <%= radio_button_tag question.id, 0, false%> <label>False</label> 

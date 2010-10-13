@@ -1,4 +1,11 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
 <div id="page-list">
+	<% if flash[:notice] -%>
+	 <div id="notice" ><%= flash[:notice] %></div>
+<% end -%>
 		 <fieldset>
 		 	<h2>Hello <%=@user.name%></h2>
 		 	<div class="left_side">
@@ -31,7 +38,7 @@
 	  					</fieldset><%end%>
 						<%if @local.guides_list.include?('tutorials')%><fieldset>
 						<h3>My Tutorials</h3>
-						<p><%=image_tag("/images/icons/guide_add.png", :title => 'New Tutorial', :alt => 'add', :border => 0)%> <%=link_to 'Create a New Tutorial', :controller => 'tutorial', :action => 'new'%></p>
+						<p><%=image_tag("/images/icons/tutorial_add.png", :title => 'New Tutorial', :alt => 'add', :border => 0)%> <%=link_to 'Create a New Tutorial', :controller => 'tutorial', :action => 'new'%></p>
 						<p><%=image_tag("/images/icons/bookmark_folder.png", :title => 'Browse My Tutoroials', :alt => 'browse', :border => 0)%> <%=link_to 'Browse Tutorials', :controller => 'tutorial', :action => 'index'%></p>
 	  					</fieldset><%end%>
 			</div>
@@ -54,11 +61,17 @@
 					<div class="item"><div class ="item2">
 						<h2>Overview</h2>
 						<div  class="module">	
-					 	<p>You have <%=@cnum%> published course pages, <%=@acnum%> archived course pages, <%=@gnum%> published subject guides, <%=@tnum%> published tutorials, <%=@atnum%> archived tutorials, and <%=@mnum%> modules.</p>
-					    <p><%=image_tag("/images/icons/user.png", :title => 'My Account', :alt => 'Account', :border => 0)%><%= link_to"Edit Your Account" , :controller => 'dashboard', :action => 'my_account' %><br />
-								Edit your user name, email or password.</p>
-								<p>	<%=image_tag("/images/icons/help.png", :title => 'Help FAQ', :alt => 'Help', :border => 0)%><a href="http://alacarte.library.oregonstate.edu/support" target="_blank">Get Help</a> <br />
-								Get help and read about new features.</p>
+					 		<p>You have <%=@cnum%> published course pages, <%=@acnum%> archived course pages, <%=@gnum%> published subject guides, <%=@tnum%> published tutorials, <%=@atnum%> archived tutorials, and <%=@mnum%> modules.</p>
+					    	<p><%=image_tag("/images/icons/user.png", :title => 'My Account', :alt => 'Account', :border => 0)%><%= link_to"Edit Your Account" , :controller => 'dashboard', :action => 'my_account' %><br />
+							Edit your user name, email or password.</p>
+							<% if sso_enabled && used_sso %>
+								<p>	
+									<%=image_tag("/images/icons/user.png", :title => 'My ONID Account', :alt => 'ONID Account', :border => 0)%><%= link_to"Edit Your ONID Account" , 'http://onid.oregonstate.edu/' %><br />
+									Edit your ONID account.	
+								</p>
+							<% end %>
+							<p>	<%=image_tag("/images/icons/help.png", :title => 'Help FAQ', :alt => 'Help', :border => 0)%><a href="http://alacarte.library.oregonstate.edu/support" target="_blank">Get Help</a> <br />
+							Get help and read about new features.</p>
 					</div>
 					 <div class="bot"><div></div></div>
 				</div></div>

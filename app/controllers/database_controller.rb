@@ -1,3 +1,7 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class DatabaseController < ApplicationController
   before_filter :module_types
   before_filter :current_page
@@ -28,12 +32,11 @@ class DatabaseController < ApplicationController
      @ecurrent = 'current'
      begin
         @mod ||= find_mod(params[:id], "DatabaseResource")
-        session[:selected] ||= Array.new 
      rescue ActiveRecord::RecordNotFound
-        logger.error("Attempt to access invalid module #{params[:id]}" )
-        flash[:notice] = "You are trying to access a module that doesn't yet exist. "
+        flash[:notice] = "The module doesn't exist. "
         redirect_to  :back
      else
+       session[:selected] ||= Array.new 
        @letter = params[:sort] ? params[:sort] : "A" 
        @dbs = Dod.sort(@letter)
    end
@@ -63,15 +66,14 @@ class DatabaseController < ApplicationController
  def copy_databases
     begin
      @old_mod = find_mod(params[:id], "DatabaseResource")
-    rescue Exception => e
-     logger.error("Exception in add_copy: #{e}")
-     flash[:notice] = "You are trying to access a module that doesn't yet exist. "
+    rescue ActiveRecord::RecordNotFound
+     flash[:notice] = "The module doesn't exist. "
      redirect_to :back
    else
       @mod = @old_mod.clone
       @mod.global = false
+      @mod.label =  @old_mod.label+'-copy'
       if @mod.save
-        @mod.label =  @old_mod.label+'-copy'
         @mod.database_dods << @old_mod.database_dods.collect{|d| d.clone}.flatten
         create_and_add_resource(@user,@mod)
         flash[:notice] = "Saved as #{@mod.label}"

@@ -1,5 +1,6 @@
-#Controller for the tool's module tab.These are CRUD actions for a resource. 
-# An authorization filter ensures users are logged in and only working with their resources.
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
 
 class ModuleController < ApplicationController
   include Paginating
@@ -20,6 +21,7 @@ class ModuleController < ApplicationController
    @list=='mine' ? ((@mycurrent ='current') and (@globcurrent = '')) : ((@mycurrent ='') and (@globcurrent = 'current'))
    @mods = @user.sort_mods(@sort, @list)
    @all == "all" ? @mods : @mods = paginate_mods(@mods,(params[:page] ||= 1),@sort)
+   @search_value ='Search My Modules'
    if request.xhr? 
      if @list == 'mine' 
         render :partial => "mods_list", :layout => false
@@ -30,23 +32,12 @@ class ModuleController < ApplicationController
  end
 
  
- def tags
-    @tags = @user.module_tags
- end
- 
- def tagged
-   @mcurrent = 'current'
-   @tagcurrent = 'current'
-   @tag = params[:id]
-   @mods = @user.find_mods_tagged_with(@tag)
- end
- 
- 
  #creates a new module from the my modules list
   def create
        unless params[:mod][:type].empty? 
            @mod = create_module_object(params[:mod][:type])
            @mod.attributes = params[:mod]
+           @mod.slug = create_slug(params[:mod][:module_title])
            if @mod.save 
              create_and_add_resource(@user,@mod)
              redirect_to  :action => 'edit_content' , :id =>@mod.id, :type => @mod.class and return
@@ -73,11 +64,14 @@ class ModuleController < ApplicationController
  
  #creates a new module from the Module edit mode. Need this method because when in edit mod we already have a mod so must use form_tag
   def menu_new
+    @tags = ""
      if request.post? 
        unless params[:type].empty?
            @mod = create_module_object(params[:type])
            @mod.module_title = params[:name]
+           @mod.slug = create_slug(params[:name])
            if @mod.save 
+             @mod.add_tags(params[:tags])
              create_and_add_resource(@user,@mod)
              redirect_to  :action => 'edit_content' , :id =>@mod.id, :type => @mod.class and return
            else
@@ -86,12 +80,14 @@ class ModuleController < ApplicationController
              flash[:mod_type] = params[:type] 
              flash[:mod_title_error] = @mod.errors[:module_title] 
              flash[:mod_type_error] = @mod.errors[:type]
+             @tags = params[:tags] if params[:tags]
              redirect_to  :back and return
           end
        else
           
              flash[:mod_title] = params[:name]  
              flash[:mod_type] = params[:type] 
+             @tags = params[:tags] if params[:tags]
              flash[:mod_title_error] = "" unless params[:name] 
              flash[:mod_type_error] = ""
              redirect_to  :back and return
@@ -107,18 +103,18 @@ def new_mod
            @mod = create_module_object(params[:mod][:type]) unless params[:mod][:type].empty?
            if @mod
              @mod.attributes = params[:mod]
+              @mod.slug = create_slug(params[:mod][:module_title])
              if @mod.save
                @mod.add_tags(params[:tags])
                create_and_add_resource(@user,@mod)
                redirect_to  :action => 'edit_content' , :id =>@mod.id, :type => @mod.class and return
-            end
+             end
               @selected = params[:mod][:type]
               @tags = params[:tags] if params[:tags]
           end
       
   end
 end
-
 
   
  def edit_tags
@@ -134,7 +130,7 @@ end
       if request.post?
            @mod.add_tags(params[:tags])
              flash[:notice] = "Tags Updated"
-          redirect_to  :action => 'edit_tags' , :id =>@mod.id, :type => @mod.class
+          redirect_to  :action => 'edit_tags' , :id =>@mod.id, :type => @mod.class and return
       end
     end
   end
@@ -146,8 +142,6 @@ def edit_content
     begin
       @mod = find_mod(params[:id], params[:type])
      rescue ActiveRecord::RecordNotFound
-      logger.error("Attempt to access invalid module #{params[:id]}" )
-      flash[:notice] = "You are trying to access a module that doesn't yet exist."
       redirect_to  :action => 'index' and return
     else
        session[:mod_id] = @mod.id
@@ -199,8 +193,6 @@ end
     begin
      @old_mod = find_mod(params[:id],params[:type])
     rescue Exception => e
-     logger.error("Exception in add_copy: #{e}")
-     flash[:notice] = "You are trying to access a module that doesn't yet exist. "
      redirect_to :action => 'index', :list=> 'mine'
    else
      case @old_mod.class.to_s 
@@ -234,6 +226,18 @@ end
  end  
 
  
+def manage
+   @cpcurrent = 'current'
+    begin
+     @mod = find_mod(params[:id],params[:type])
+    rescue Exception => e
+      redirect_to :back
+    else
+      @course_pages = @mod.get_pages if @local.guides_list.include?('pages')
+      @guides = @mod.get_guides if @local.guides_list.include?('guides')
+      @tutorials = @mod.get_tutorials if @local.guides_list.include?('tutorials')
+   end 
+end
 
 def add_page
    unless session[:page_tabs].include?(params[:tid].to_s)
@@ -263,8 +267,6 @@ end
     begin
      @mod = find_mod(params[:id],params[:type])
    rescue ActiveRecord::RecordNotFound
-      logger.error("Attempt to access invalid module" )
-      flash[:notice] = "You are trying to access a module that doesn't yet exist."
       redirect_to  :action => 'index', :list=> 'mine' and return
     else
       @sort = params[:sort] ||= 'name'
@@ -275,12 +277,12 @@ end
        render :partial => "add_guide_list", :layout => false
    elsif request.post?
        session[:tabs].each do |tid|
-         tab = Tab.find(tid, :include => :guide)
+         tab = Tab.find(tid)
          tab.add_module(params[:id],params[:type])
        end
         session[:tabs]=nil
          flash[:message] = "#{@mod.module_title} successfully added to these guides."
-       redirect_to :action => "subject_guides", :id =>@mod.id, :type=> @mod.class
+       redirect_to :action => "manage", :id =>@mod.id, :type=> @mod.class
     end
  end
  
@@ -290,8 +292,6 @@ end
    begin
      @mod = find_mod(params[:id],params[:type])
    rescue ActiveRecord::RecordNotFound
-      logger.error("Attempt to access invalid module" )
-      flash[:notice] = "You are trying to access a module that doesn't yet exist."
       redirect_to  :action => 'index', :list=> 'mine' and return
     else
        @sort = params[:sort] ||= 'name'
@@ -301,12 +301,12 @@ end
            render :partial => "add_page_list", :layout => false
        elsif request.post?
          session[:page_tabs].each do |tid|
-           tab = Tab.find(tid, :include => :page)
+           tab = Tab.find(tid)
            tab.add_module(params[:id],params[:type])
          end
          session[:page_tabs]=nil
          flash[:message] = "#{@mod.module_title} successfully added these pages."
-         redirect_to :action => "course_pages", :id =>@mod.id, :type=> @mod.class
+         redirect_to :action => "manage", :id =>@mod.id, :type=> @mod.class
       end
     end
  end
@@ -317,8 +317,6 @@ end
    begin
      @mod = find_mod(params[:id],params[:type])
    rescue ActiveRecord::RecordNotFound
-      logger.error("Attempt to access invalid module" )
-      flash[:notice] = "You are trying to access a module that doesn't yet exist."
       redirect_to  :action => 'index', :list=> 'mine' and return
     else
        @sort = params[:sort] ||= 'name'
@@ -333,63 +331,42 @@ end
          end
          session[:units]=nil
          flash[:message] = "#{@mod.module_title} successfully added these tutorials."
-         redirect_to :action => "tutorials", :id =>@mod.id, :type=> @mod.class
+         redirect_to :action => "manage", :id =>@mod.id, :type=> @mod.class
       end
     end
  end
  
- def course_pages
-   @cpcurrent = 'current'
-    begin
-     @mod = find_mod(params[:id],params[:type])
-    rescue Exception => e
-     logger.error("Exception in add_copy: #{e}")
-     flash[:notice] = "You are trying to access a module that doesn't yet exist. "
-      redirect_to :action => 'index', :list=> 'mine' and return
-    else
-      @course_pages = @mod.get_pages.compact 
-   end 
- end
  
- def subject_guides
-   @sgcurrent = 'current'
-   session[:guide_list] ||=[]
-    begin
-     @mod = find_mod(params[:id],params[:type])
-    rescue Exception => e
-     logger.error("Exception in add_copy: #{e}")
-     flash[:notice] = "You are trying to access a module that doesn't yet exist. "
-      redirect_to :action => 'index', :list=> 'mine' and return
-    else
-      @guides = @mod.get_guides.compact
-   end 
- end
- 
- def tutorials
-   @tgcurrent = 'current'
-   session[:tutorial_list] ||=[]
-    begin
-     @mod = find_mod(params[:id],params[:type])
-    rescue Exception => e
-     logger.error("Exception in add_copy: #{e}")
-     flash[:notice] = "You are trying to access a module that doesn't yet exist. "
-      redirect_to :action => 'index', :list=> 'mine' and return
-    else
-      @tutorials = @mod.get_tutorials.compact
-   end 
- end
  
  def globalize 
    begin
      @mod = find_mod(params[:id],params[:type])
+     @mod.toggle!(:global)
+     if request.xhr? #if ajax request, only render the global partial, otherwise refresh the index
+        render :partial => "global" ,:locals => {:mod => @mod, :page => @page, :sort => @sort , :all => @all} 
+     else
+        redirect_to_index
+      end
     rescue Exception => e
-      redirect_to :action => 'index' and return
-    else
-       @mod.toggle!(:global)
-       redirect_to :back, :params => params.merge({:sort => params[:sort], :page => params[:page],  :all => params[:all]}) 
+      logger.error("Exception in globalize: #{e}" )
+      redirect_to :action => 'index' and return     
     end
  end
  
+ def publish
+    begin
+      @mod = find_mod(params[:id],params[:type])
+      @mod.toggle!(:published)
+     if request.xhr? #if ajax request, only render the publish partial, otherwise refresh the index
+      render :partial => "publish" ,:locals => {:mod => @mod, :page => @page, :sort => @sort , :all => @all} 
+     else
+      redirect_to_index
+     end
+   rescue Exception => e
+     logger.error("Exception in publish: #{e}" )
+     redirect_to :action => 'index' and return
+    end
+ end
 
  def share
    @shcurrent = 'current'
@@ -399,7 +376,7 @@ end
     end
     @mod = resource.mod
     @user_list = User.find(:all, :order => "name")
-    @mod_owners = resource.users
+    @mod_owners = resource.users.uniq
 end
   
   
@@ -456,18 +433,15 @@ end
       redirect_to :back
     end
      @preview = true if @mod.class == QuizResource
-    render :layout => 'popup'
+    respond_to do |format|
+      format.html {render :layout => 'popup'}   #/layouts/popup.html.erb
+    end
   end
 
  #removes a  module from a user through resources from my modules list
   def remove_from_user
     begin
      resource = @user.find_resource(params[:id],params[:type] )
-    rescue Exception => e
-     logger.error("Exception in remove_from_user: #{e}" )
-     flash[:notice] = "You are trying to access a module that doesn't yet exist. "
-     redirect_to :action => 'index', :list=> 'mine'
-   else
      @user.update_attribute(:resource_id, nil) if @user.resource_id == resource.id
      if resource.users.length == 1 #only 1 owner so delete all associations
        @user.resources.delete(resource)
@@ -476,8 +450,14 @@ end
      else #just delete the association
        resource.mod.update_attribute(:created_by, resource.users.collect{|u| u.name}.at(1)) if resource.mod.created_by.to_s == @user.name.to_s
         @user.resources.delete(resource)
-     end 
-     redirect_to :back, :params => params.merge({:sort => params[:sort], :page => params[:page],  :all => params[:all]})
+      end 
+      if request.xhr? 
+        render :text => "" #delete the table row by sending back a blank string.  The <tr> tags still exist though
+      else
+        redirect_to_index
+      end
+     rescue Exception => e
+       redirect_to :action => 'index', :list=> 'mine'
     end
   end
 
@@ -494,6 +474,15 @@ end
     redirect_to :action => 'share', :id => resource.mod.id, :type =>resource.mod.class
     end
 end
-
+ 
+ def  redirect_to_index
+   if params[:search]#if the delete request came from the search screen, redirect back to search otherwise go to the regular mod list
+          redirect_to :controller => 'search',:action => 'index' , :sort => params[:sort], :page => params[:page],  :all => params[:all],:mod => {:search => params[:search]}
+   elsif params[:tag]
+          redirect_to :controller => 'tagg',:action => 'index' , :sort => params[:sort], :page => params[:page], :all => params[:all], :tag =>params[:tag] and return
+   else
+        redirect_to :action => 'index', :sort => params[:sort], :page => params[:page],  :all => params[:all]  and return
+   end
+ end
  
 end

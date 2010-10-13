@@ -1,5 +1,5 @@
 <% if flash[:notice] -%>
-	 <div id="list_error" ><%= flash[:notice] %></div>
+	 <div id="notice" ><%= flash[:notice] %></div>
 <% end -%>
 <div id="mod-list">
 	<div id="new_button" class="new">
@@ -13,8 +13,8 @@
 	 <% form_tag :action => 'create' do%>
 	    <%= error_messages_for 'mod' %>
 		<div id="vertical_inputs" class="index">
-			<h4>New Module </h4><span class = 'more_help' onMouseover="fixedtooltip(MOD_TITLE_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
-				  <%= link_to_function 'cancel', "$('new').toggle();$('new_button').toggle();; return false;" %>
+			<h4>New Module <span class = 'more_help' onMouseover="fixedtooltip(MOD_TITLE_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+				  <%= link_to_function 'cancel', "$('new').toggle();$('new_button').toggle();; return false;" %></h4>
 				<span <%= %(class="required") if flash[:mod_title_error] %>>
   				<label for="page_course_name">Module Title<span class="required more_help">*</span></label>
   				 <%= text_field 'mod', 'module_title',"size" => 45 , :value => flash[:mod_title]   %>
@@ -28,11 +28,29 @@
 			<br />
 		</div>	
 	 <%end%>
-	</div> 	
+	</div> 
+	
 <div id ="second_tabs">
 	<ul id="second_tabs">
-		<li  class = "<%= @mycurrent %>"><%= link_to "My Modules" , :controller => 'module', :action => 'index', :sort => 'name', :list => 'mine'%></li>
 		<li class = "<%= @globcurrent %>"> <%= link_to "Global Modules" , :controller => 'module', :action => 'index', :sort => 'name', :list => 'global'%></li> 
+		<li class = "<%= @tgcurrent %>"> <%= link_to "Browse By Tags" , :controller => 'tagged', :action => 'index', :sort => 'name'%></li> 
+		<li  class = "<%= @mycurrent %>"><%= link_to "My Modules" , :controller => 'module', :action => 'index', :sort => 'name', :list => 'mine'%></li>
+		<% if @list == 'mine' and @local.enable_search? %><li class = "<%= @mycurrent %>">
+			<% form_tag :controller => 'search', :action => 'index' do%>	
+		  		<%= text_field 'mod', 'search',"size" => 35 , 
+					 :style => "color:#aaa;",
+     				 :value => @search_value,
+      				 :onfocus => "if(this.getValue()=='#{@search_value}'){this.clear();this.style.color = '#000';}",
+     				 :onblur => "if(this.getValue()==''){this.setValue('#{@search_value}');this.style.color = '#aaa';}"
+   				%>
+				<%= submit_tag 'Go' %>
+			<%end%>
+	</li><% end %>
+     <li class="pagination">
+				<%if !@all and @mods.total_pages > 1%>
+				<%= will_paginate @mods, :params => params.merge({:sort=> @sort}).except(:authenticity_token), :page_links => false %>	  
+			<%end%>
+		</li>
 	</ul>
 </div>
 <div class="clearer"></div>
@@ -41,15 +59,13 @@
 		<div id="table">
 			<%if @list == 'mine'%>
 				<%=render :partial => "mods_list"%>
-			<%elsif  @list == 'tagged' %>
-			   <%=render :partial => "tagged_list"%>
 			<%else%>
 				<%=render :partial => "global_list"%>
 			<%end%>	
 		</div>
 	</div>	
 	<%else%>
-			<p><b>You currently have no Modules. Create a new Module to get started.</b></p>
+			 <div id="notice" > You currently have no Modules. Create a new Module to get started. </div>
 	<%end%>
  	
 

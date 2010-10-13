@@ -1,9 +1,13 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class QuizController < ApplicationController
-  skip_before_filter :authorize, :only =>[:grade_quiz, :practice_quiz, :retake_quiz, :view_quiz_results]
+  skip_before_filter :authorize, :only =>[:grade_quiz, :practice_quiz, :retake_quiz, :view_quiz_results, :save_question_answer]
   before_filter :student_authorize, :only =>[:grade_quiz, :view_quiz_results]
-  before_filter :module_types, :except =>[:grade_quiz, :practice_quiz, :retake_quiz]
-  before_filter :current_page, :except =>[:grade_quiz, :practice_quiz, :retake_quiz]
-  before_filter :current_guide, :except =>[:grade_quiz, :practice_quiz, :retake_quiz]
+  before_filter :module_types, :except =>[:grade_quiz, :practice_quiz, :retake_quiz, :save_question_answer]
+  before_filter :current_page, :except =>[:grade_quiz, :practice_quiz, :retake_quiz, :save_question_answer]
+  before_filter :current_guide, :except =>[:grade_quiz, :practice_quiz, :retake_quiz, :save_question_answer]
   before_filter :current_tutorial
   layout 'tool'
 
@@ -17,9 +21,10 @@ class QuizController < ApplicationController
       session[:mod_id] = @mod.id
       session[:mod_type] = @mod.class
       @choices = [
+     ["Feedback Multiple Choice",  "FMC"],
+     ["Free Write",       "FW"],
      ["Multiple Choice",  "MC"],
      ["True/False",        "TF"],
-     ["Free Write",       "FW"]
    ]
      end
 end
@@ -28,7 +33,7 @@ end
    @mod = find_mod(params[:id], "QuizResource")
       @mod.update_attributes(params[:mod]) 
       if @mod.save 
-          if params[:commit]=="Save & Add Question"
+         if params[:commit]=="Save & Add Question"
            redirect_to :action => 'edit_question', :id =>@mod and return
          else
           redirect_to :controller => 'module', :action => "preview" , :id =>@mod.id, :type=> @mod.class and return
@@ -42,9 +47,10 @@ end
  def edit_question
   @mod = find_mod(params[:id], "QuizResource")
   @choices = [
+     ["Feedback Multiple Choice",  "FMC"],
+     ["Free Write",       "FW"],
      ["Multiple Choice",  "MC"],
      ["True/False",        "TF"],
-     ["Free Write",       "FW"]
    ]
    @question = params[:qid] ? @mod.questions.find(params[:qid]) : Question.new
    @mod.questions << @question unless @mod.questions.include?(@question)
@@ -63,9 +69,9 @@ end
  def edit_answer
   @mod = find_mod(params[:id], "QuizResource")
   @question = @mod.questions.find(params[:qid])
-   @answer = params[:aid] ? @question.answers.find(params[:aid].to_i) : Answer.new
+   @answer = params[:aid] ? @question.answers.find(params[:aid]) : Answer.new
+   @question.answers << @answer unless @question.answers.include?(@answer)
    if request.post?
-      @question.answers << @answer unless @question.answers.include?(@answer)
       @answer.update_attributes(params[:answer]) 
       if @answer.save 
           if params[:commit]=="Save & Add Another Answer"
@@ -109,9 +115,9 @@ def copy_quiz
    else
       @mod = @old_mod.clone
       @mod.global = false
+      @mod.label =  @old_mod.label+'-copy'
      if @mod.save
-       @mod.label =  @old_mod.label+'-copy'
-        @mod.questions << @old_mod.questions
+        @mod.questions << @old_mod.copy_questions
         create_and_add_resource(@user,@mod)
         flash[:notice] = "Saved as #{@mod.label}"
         redirect_to  :controller => 'module', :action => "edit_content" , :id =>@mod.id, :type=> @mod.class
@@ -145,10 +151,12 @@ def sort_answers
 end
 
 def practice_quiz
+  session[:quiz]= nil
   results=[]
    @mod = find_mod(params[:id], "QuizResource")
    @mod.questions.each do |question|
      if params[question.id.to_s]
+       Result.clear_answer(question.id, session[:saved_student])
        results << question.grade_answer(params[question.id.to_s])
      end
    end
@@ -169,6 +177,7 @@ def grade_quiz
    @mod = find_mod(params[:id], "QuizResource")
    @mod.questions.each do |question|
      if params[question.id.to_s]
+       Result.clear_answer(question.id, session[:saved_student])
        question.grade_answer(params[question.id.to_s], @student.id)
      end
    end
@@ -187,4 +196,12 @@ def view_quiz_results
    end
 end
 
+def save_question_answer
+  question = Question.find(params[:id])
+  answer = params[:guess]
+  if answer and question
+     question.save_answer(answer, session[:saved_student])
+  end
+  render :nothing => true 
+end
 end

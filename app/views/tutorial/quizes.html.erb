@@ -19,9 +19,9 @@
 				   <%= submit_tag 'Go' %>
 				   <%if @sect%>
 				       <small><%= link_to 'Show All Sections', :action => 'quizes' %></small> 
-					   <p><%=link_to 'Export Grades', :action => 'export', :id => @tutorial, :section => @sect%> | <%=link_to 'Clear Grades', :action => 'clear_grades', :id => @tutorial, :section => @sect%></p>
+					   <p><%=link_to 'Export Grades', :action => 'export', :id => @tutorial, :section => @sect%> | <%=link_to 'Clear Grades', {:action => 'clear_grades', :id => @tutorial, :section => @sect},:confirm => 'Are you sure you want to delete the grades for this section?', :method => :post %></p>
 				   <%else%>
-				   	 <p><%=link_to 'Clear All Grades', :action => 'clear_grades', :id => @tutorial%></p>
+				   	 <p><%=link_to 'Export All Grades', :action => 'export', :id => @tutorial%> | <%=link_to 'Clear All Grades', {:action => 'clear_grades', :id => @tutorial},:confirm => 'Are you sure you want to delete all grades for this tutorial?', :method => :post %></p>
 				   <%end%>
 		</p>
 	<%end%>
@@ -33,7 +33,6 @@
 		<%@students.each do |student| %>
 		<li>
 			<label>
-			Onid: <%=student.onid%><br />
 			Name: <%=student.name%><br />
 			Total Score: <%=student.final_score%> out of <%=@tutorial.possible_score%> <br />
 			Section: <%=student.sect_num%><br />

@@ -1,7 +1,7 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 module BookHelper
-  
- if !@uses_tiny_mce.blank? 
-  @tiny_mce_options[:theme] = "advanced"
-end
 
 end

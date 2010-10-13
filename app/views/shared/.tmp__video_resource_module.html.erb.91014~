@@ -1,0 +1,32 @@
+<%= javascript_include_tag "jquery.min.js" %>
+<%= javascript_include_tag "jquery.prettyPhoto.js" %>
+	
+	<h2><%=h @mod.module_title%></h2>
+	<div class="module">
+		<%unless @mod.information.blank?%><%= @mod.information%><%end%>
+		<% @mod.videos.each do |video|
+			 @vid = video.retrieve_video+"&amp;fs=1&amp;rel=0" 
+				unless @vid.blank?%>
+							<p>
+					        <%= render :partial => "video/player.html.erb" %><br />
+						   <a href="<%=video.url%>" rel="prettyPhoto" title="Click to view larger"><img style="vertical-align:middle;"src="/images/icons/play.png" alt="Play"  /></a>
+						   <a href="<%=video.url%>" rel="prettyPhoto" title="Click to view larger">View Larger</a>
+						   </p>
+						   
+					<% else %>
+						<p> No Video Found. </p>
+					<% end %>	 
+					 <%unless video.description.blank?%><br /> <%=h(video.description)%><%end%>
+		<%end%>
+		</ul>
+		
+	</div>
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function(){
+			$("a[rel^='prettyPhoto']").prettyPhoto({
+				default_width: 800,
+			    default_height: 600,
+
+			});
+		});
+	</script>

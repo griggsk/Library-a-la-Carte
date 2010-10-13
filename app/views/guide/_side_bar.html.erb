@@ -1,3 +1,7 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
 <% content_for(:sidebar) do %> 
 
 
@@ -7,6 +11,7 @@
 		    <%= link_to 'Edit Guide', {:controller => 'guide', :action => 'edit',  :id => @guide.id} , :class =>@ecurrent%>
 			<%= link_to 'Add Modules', {:controller => 'tab', :action => 'add_modules',  :id => @guide.id, :sort => 'name'}, :class =>@amcurrent%> 
 		    <%= link_to 'Share Guide', {:controller => 'guide', :action => 'share',  :id => @guide.id }, :class =>@shcurrent%>
+			<%=link_to 'Create New Guide', :controller => 'guide', :action => 'new'%>
 	</div>  
 </div>  
 <%end%>

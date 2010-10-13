@@ -1,0 +1,71 @@
+<div id="main">
+	<h1><%=@local.ica_page_title %> </h1>
+	<div id="main-inner"><div id="content">
+		<a id="skip" name="skip"></a>
+		<div class="item">
+			<h2>Browse Archived Course Guides</h2>
+			
+			<div class="module">
+			<div class="filter">
+			<% form_tag :action => 'archived' do%>
+				   Browse by department:
+				    <select id="subject" name="subject">
+				    <option value="00" selected="selected" >Select</option>
+				   	<%= options_from_collection_for_select(@subjects, 'id', 'subject_code', @subj.to_i)%>
+				  </select>
+				   <%= submit_tag 'Go' %>
+				   <%if @subj%>
+				       <small><%= link_to 'Show All Pages', :action => 'archived' %></small> 
+				   <%end%>
+				<%end%>
+			</div>
+			<div class="list">
+				<% if @pages.size < 1%>
+					 <p> Sorry there are no archived course guides for this department.</p>
+				
+				<% else%>
+				     <%if @subject%><p>Course Guides for: <strong><%=@subject.subject_name %></strong> </p><%end%>
+				    <% for page in @pages %>
+				        <%page_url = url_for :controller => 'ica', :action => 'index', :id => page%>
+				        <ul class = 'undeco'>
+				            <li class = 'undeco'><%= link_to page.search_title, page_url, :title => "#{h page.page_description}" %> </li>
+				        </ul>
+				    <%end%>
+				
+				 <%end%>
+              <p>Looking for a more recent course guide? Try the <%= link_to "Current Course Guides", :action =>'published_pages' %> List.</p>
+			</div>
+			<div class="bot"><div></div></div>
+		</div>
+		</div>
+			 
+    </div></div> <!-- end content, end main-inner -->
+</div> <!-- end main -->
+
+<div id="sidebar-right">
+	<%= render :partial => '/shared/right_side'%>
+</div> <!-- end sidebar-right -->
+
+<div id="sidebar-left"><div id="sidebar-left-inner">
+	<%= render :partial => '/shared/left_side'%>
+</div></div> <!-- end sidebar-left-inner, end sidebar-left -->
+
+<script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&lang=en"></script>
+	<script type="text/javascript">
+//<![CDATA[
+
+	var mysearch=new ddtabcontent("search") //enter ID of Tab Container
+	mysearch.setpersist(true) //toogle persistence of the tabs' state
+	mysearch.setselectedClassTarget("linkparent") //"link" or "linkparent"
+	mysearch.init()
+//]]>
+</script> 
+	<script type="text/javascript">
+//<![CDATA[
+
+	var myov=new ddtabcontent("overview") //enter ID of Tab Container
+	myov.setpersist(true) //toogle persistence of the tabs' state
+	myov.setselectedClassTarget("link") //"link" or "linkparent"
+	myov.init()
+//]]>
+</script>

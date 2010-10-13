@@ -1,0 +1,28 @@
+<%search_results_message%>
+<% if flash[:notice] -%>
+	 <div id="list_error" ><%= flash[:notice] %></div>
+<% end -%>
+<div id="mod-list">
+	<div id = 'search_add_module'>	
+		<% form_tag  :action => 'index' do%>	
+	  		<%= text_field 'mod', 'search',"size" => 45    %>
+			<%= submit_tag 'Search Modules' %></div>
+		<%end%>
+		
+	</div>
+	<div id = 'search_list'>
+	<%= button_to 'Return to module list' ,:controller => 'module' , :action => 'index'%>
+	</div>
+<div class="clearer"></div>
+	<%unless @search_results.empty?%>
+	<div id="product-list">
+		<div id="table">
+			<%=render :partial => "search_list"%>
+		</div>
+	</div>	
+	<%else%>
+		<p><b>No modules fit your search terms.</b></p>
+	<%end%>
+ 	
+
+</div>

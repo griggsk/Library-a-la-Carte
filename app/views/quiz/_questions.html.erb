@@ -5,33 +5,23 @@
 	   	<fieldset>
 			<div id="ex_question_<%=question.id%>" >
 			    <h4>
-						<%=link_to "Edit Question", :controller => 'quiz', :action => 'edit_question', :id =>@mod, :qid => question.id%>
-						|			
-					     <span class = 'more_help' onMouseover="fixedtooltip(QUIZ_QUESTIONS_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+						<%=link_to "Edit Question", {:controller => 'quiz', :action => 'edit_question', :id =>@mod, :qid => question.id}, :title =>question.question%>
 			            |
-						<span>
 					    <%= link_to_remote image_tag("/images/icons/remove.png", :title => 'Click to remove this question', :alt => 'Remove', :border => 0), :url => {:controller => 'quiz', :action => 'remove_question', :id => @mod, :qid => question} %>
-					  </span>
 					  <span class = 'handle'>
-						     	 <%=image_tag("/images/icons/move.png", :title => 'Drag and Drop', :alt => 'Drag and Drop', :border => 0)%> 
+						   <%=image_tag("/images/icons/move.png", :title => 'Drag and Drop', :alt => 'Drag and Drop', :border => 0)%> 
 				     </span>
 				</h4>	
-				<div id="more_q_<%=question.id%>" style="display:block">
-				<p>
+				<div id="more_q_<%=question.id%>" style="display:block; margin-top:.5em;">
+				<strong><span class="no=image"><%=question.question%></span></strong>
 				<label>Type:</label>  <%=question.quiz_type%> <br />
 				<label>Points:</label> <%=question.points%> <br />
-				<label>Question:</label> <strong><%=h question.question%></strong>	 
-				</p>	
-				
 				<%unless (question.q_type == 'TF' || question.q_type == 'FW') and question.answers.length > 0%>
-					<p><b>
-				    <%=link_to image_tag("/images/icons/add.png", :title => 'Click to add an answer', :alt => 'add', :border => 0)+'Add Answers', :controller => :quiz, :action => 'edit_answer', :id => @mod, :qid => question.id%>
-					</b>
-					</p>	
+					<label>	<%=link_to image_tag("/images/icons/add.png", :title => 'Click to add an answer', :alt => 'add', :border => 0)+'Add Answers', :controller => :quiz, :action => 'edit_answer', :id => @mod, :qid => question.id%></label>	   
 				<%end%>	
-					<div id ='answer_container<%=question.id.to_s%>'>
-							<%=render :partial => '/quiz/answers',  :locals => {:question => question} %>
-				   </div>
+				<div id ='answer_container<%=question.id.to_s%>'>
+						<%=render :partial => '/quiz/answers',  :locals => {:question => question} %>
+			   </div>
 					  
 					  <%= sortable_element 'answer_container'+question.id.to_s, 
 	  						:tag => 'div',

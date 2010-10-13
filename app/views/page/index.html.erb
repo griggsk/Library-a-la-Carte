@@ -16,9 +16,9 @@
 	<div id="new"  style="display:none">
 		<% form_tag :action => 'create' do%>
 		<%= error_messages_for 'page' %>
-		<div id="vertical_inputs" class="index">
-			<h4>Page Title </h4><span class="more_help" onMouseover="fixedtooltip(PAGE_INDEX_TITLE_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span> 
-			  <%= link_to_function 'cancel', "$('new').toggle();$('new_button').toggle();; return false;" %>
+		<div id="vertical_inputs" class="page_index">
+			<h4>Create Page <span class="more_help" onMouseover="fixedtooltip(PAGE_INDEX_TITLE_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span> 
+			  <%= link_to_function 'cancel', "$('new').toggle();$('new_button').toggle();; return false;" %></h4>
 			  <%=render  :partial => "page_title"%>  
 			<span><label>&nbsp;</label><%= submit_tag 'Create Page' %></span>
 			
@@ -28,13 +28,35 @@
 	</div> 	
 
 	<%unless @pages.size <1%>
+	<div id ="second_tabs">
+	<ul id="second_tabs">
+		<% if @local.enable_search? %>
+		<li  class = 'current'>	
+			<% form_tag :controller => 'search', :action => 'search_pages' do%>	
+		  		<%= text_field 'mod', 'search',"size" => 35, 
+					 :style => "color:#aaa;",
+     				 :value => @search_value,
+      				 :onfocus => "if(this.getValue()=='#{@search_value}'){this.clear();this.style.color = '#000';}",
+     				 :onblur => "if(this.getValue()==''){this.setValue('#{@search_value}');this.style.color = '#aaa';}"%>
+				<%= submit_tag 'Search' %>
+			<%end%>
+		</li>
+		<%end%>
+		 <li class="guide_pag pagination">
+				<%if !@all and @pages.total_pages > 1%>
+				<%= will_paginate @pages, :params => params.merge({:sort=> @sort}).except(:authenticity_token), :page_links => false %>	  
+			<%end%>
+		</li>
+	</ul>
+	</div>	
+	<div class="clearer"></div>	
 		<div id="product-list" >
 			<div id="table">
 			   <%=render  :partial => "pages_list"%>  
 			</div>
 		</div>
 	<%else%>
-	   <p><b>You currently have no ICA pages. Create a new page to get started.</b></p>
+	    <div id="notice" > You currently have no ICA pages. Create a new page to get started. </div>
 	<%end%>
 
 </div>

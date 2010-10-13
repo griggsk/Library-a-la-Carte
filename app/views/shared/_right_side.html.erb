@@ -16,13 +16,13 @@
 				<%end%>  
 			  <% unless @local.book_search.blank?%>
 			  <div id="books" class="tabcontent">
-		        <label>Search Books, Articles, Journals</label>
+		        <label><%=@local.book_search_label%></label>
 				  <%=@local.book_search%>
 			  </div>
 			  <%end%>
 			  <% unless @local.site_search.blank?%>
 			  <div id="library" class="tabcontent">
-		        <label>Search Library Website</label> 
+		        <label><%=@local.site_search_label%></label> 
 				  <%=@local.site_search%>
 			  </div>
 			 <%end%> 
@@ -41,31 +41,24 @@
 
 //]]>
 </script>
-   <%end%>	
+<%end%>	
    
-   <%unless @local.lib_chat.blank? and @local.lib_help.blank?%>	
+   <%unless @local.right_box.blank?%>	
 		<div class="item"><div class="item2">
 			<div class="module">
-				<%unless @local.lib_chat.blank?%>
-				 <%= @local.lib_chat%>
-				 <br />
-				<%end%>
-				<%unless @local.lib_help.blank?%>
-				<%= image_tag("/images/icons/small_help.png", :alt => 'get help from a librarian')%> <a href="<%=@local.lib_help%>">Ask a Librarian</a>
-				<%end%>
-				
+				<%= @local.right_box%>				
 			</div>
 		</div></div>
   <%end%>				
 
-  <div class="item"><div class="item2">
+  <div id = "about-guides" class="item"><div class="item2">
 				<div class="module">
 					<p id="overview" class= 'center'>
 					<a href="#" rel="all" class ="selected">About These Guides</a> <br />
 					<a href="#" rel="students">Students</a> | <a href="#" rel="teachers">Instructors</a> | <a href="#" rel="librarians">Librarians</a> 
 					</p>
 	                  <div id="all" class="tabcontent">
-						<p>These Library Guides suggest tips and search strategies for finding and using information in a course, discipline, topic or format. 
+						<p>Library guides and tutorials suggest tips and search strategies for finding and using information in a course, discipline, topic or format. 
 						</p>
 					 </div>
 					 <div id="students" class="tabcontent">
@@ -77,8 +70,8 @@
 						<p>Librarians can quickly create guides to help your students find the resources you want them to use,
 						 including discipline specific article databases, core journals, scholarly reference works and key web sites
 						  important to your field or course.   
-						  <% unless @local.lib_help.blank?%>
-							<a href="<%=@local.lib_help%>">Contact a Librarian</a> if you would like something tailored for your specific subject or assignment.
+						  <% unless @local.lib_url.blank?%>
+							<a href="<%=@local.lib_url%>">Contact a Librarian</a> if you would like something tailored for your specific subject or assignment.
 						 <%end%>
 						  </p>
 					 </div>

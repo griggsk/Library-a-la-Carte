@@ -1,0 +1,43 @@
+<%= error_messages_for 'tutorial' %>
+	<label for="tutoral_name">Title <span class="required more_help">*</span> <span class = 'more_help'  onMouseover="fixedtooltip(TUTORIAL_TITLE_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+		   <%= text_field 'tutorial','name',"size" => 62 %> 
+  <label for="tutorial_tutorial_description">Description <span class = 'more_help' onMouseover="fixedtooltip(TUTORIAL_DESC_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+   <%= text_area 'tutorial', 'description', "class" => 'mceEditor'%>
+   
+   <label for="tags">Tags <span class = 'more_help' onMouseover="fixedtooltip(TUTORIAL_TAG_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+   <%= text_field_tag 'tags', @tag_list,"size" => 62%>
+   <div class = 'tip'>e.g. anthropology, insects, caves</div>
+
+
+<fieldset>
+	<h5> Course Data
+	 <span class = 'more_help'  onMouseover="fixedtooltip(TUTORIAL_CLASS_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+	</h5>
+	<div class='tip'>Is this tutorial for a specific class?</div>
+	<label>
+		<span class = 'more_help'  onMouseover="fixedtooltip(TUTORIAL_GRADED_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+	     Is the tutorial graded?</label>
+		  <b>Yes</b> <%= radio_button :tutorial,  :graded, true%> 
+		 <b>No</b> <%= radio_button :tutorial,  :graded, false%>
+	<div id="vertical_inputs">
+	<span <%= %(class="required") if flash[:course_subj_error] %>>
+		  <label for="tutorial_subject">Subject</label>
+		  <div>
+	  		    <%= select('tutorial','subject_id', Subject.all.collect {|p| [ p.subject_code, p.id ] },{:include_blank => true}, {:class => 'page'}) %>
+		</div>	
+		</span>	
+		 <span <%= %(class="required") if flash[:course_num_error] %>>
+		   <label for="tutorial_course_num">Course Numbers</label>
+		   <%= text_field 'tutorial', 'course_num',"size" => 15%>
+		    <div class = 'tip'> e.g. 451 or 451/551</div>
+		</span>
+		<span>
+		  <label for="tutorial_section_num">Section Numbers</label>
+		  <%= text_field 'tutorial', 'section_num',"size" => 20  %>
+		   <div class = 'tip'>e.g. 001 or 011, 012, 013</div>
+		</span>
+	</div>	
+	<div class='clearer'></div>
+</fieldset>
+ <p><%= submit_tag 'Save', :class => "submit"  %> or <%= submit_tag 'Save &amp; Add Unit', :class => "submit"  %></p>
+

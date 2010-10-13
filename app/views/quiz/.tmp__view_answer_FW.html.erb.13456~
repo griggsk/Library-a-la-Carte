@@ -1,0 +1,5 @@
+<%=text_area_tag question.id, Result.get_answer(question.id), :size => '60x5'%>
+
+ <%= observe_field question.id,  
+							  :url => {:controller => "quiz", :action => "save_question_answer", :id => question.id},
+							  :with => 'guess' %>

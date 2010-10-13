@@ -1,0 +1,40 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
+<fieldset>
+<h3>Listing Pending Users</h3>
+<% if flash[:notice] -%>
+	   <div id="error_wrapper">   <div id="notice" ><%= flash[:notice] %></div></div>
+	<% end -%>
+<div id="product-list" >
+<table>
+   <tr valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+  
+    <th> Name </th>
+    <th> Email </th>
+    <th> Role </th>
+    <th > Actions </th>
+	
+ 
+  </tr>
+  
+<% for author in @users %>
+	<% if author.role == 'pending'%>
+  		<tr valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+    		<td><%=h author.name %></td>
+    		<td><%=h author.email %></td>
+    		<td><%=h author.role %></td>
+    		<td>
+        		<%= link_to 'Approve', {:action => 'approve', :id => author} , :confirm => 'Are you sure you want to approve this user?', :method => :post%> | 
+        		<%= link_to 'Deny', { :action => 'deny', :id => author }, :confirm => 'Are you sure you want to deny this user?', :method => :post %></td>
+
+  		</tr>
+	<% end %>
+<% end %>
+</table>
+</div>
+<%=will_paginate @users%>
+
+
+</fieldset>

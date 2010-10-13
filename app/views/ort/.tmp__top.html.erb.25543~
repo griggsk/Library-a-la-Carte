@@ -1,0 +1,43 @@
+<div class="breadcrumbs">
+	<%= link_to @local.tutorial_page_title,:controller => :ort, :action => :published_tutorials %> 
+	<%unless @tutorial.subject.blank?%>
+	> 
+	<%=link_to h(@tutorial.subject.subject_name+ " " + "Tutorials"), :controller => 'ort', :action => 'subject_list', :id => @tutorial.subject.id%>
+	<%end%>
+</div>
+<h1><%=h @tutorial.name%></h1>
+<%if @student%><div id ='logout'> <%= link_to "Log Out", {:controller => :student, :action => :log_out, :id => @tutorial}%></div><%end%>
+<div id="bar">
+<div id='nav'>
+	 <ul id='tabs'>
+		<li><%=link_to '<span></span>Start', {:controller => :ort, :action => :index, :id => @tutorial}%></li>
+        <%@tutorial.unitizations.each do |uz| 
+			unit = uz.unit%>
+			<%resources = unit.resourceables%>
+			<%if !unit.slug.blank?%>
+				<% if @unit and unit.id == @unit.id %> <li class='current'> <%else%> <li> <%end%><%=link_to "<span></span>"+h(unit.slug)+"<span class='plus'></span>", {:controller => 'ort', :action => 'unit', :id =>@tutorial, :uid => unit.id}, :title =>unit.title%>
+		 		<% unless resources.blank?  %>
+						 <div class="secondary"><% if @unit and unit.id == @unit.id %> <div class='current'> <%else%> <div> <%end%>
+							 <%resources.each do |resable|
+											res = resable.resource
+											mod = res.mod
+											%>
+								     <%if !mod.slug.blank?%>
+									 	<%=link_to_unless_current h(mod.slug), {:controller => 'ort', :action => 'lesson', :id =>@tutorial, :uid =>unit.id,  :mid => mod, :type => mod.class}, :title => mod.module_title%>
+									<%end%>
+							 <%end%>
+						</div></div>	
+			   <%end%>
+			   </li>
+			<%end%>
+		<%end%> 
+	</ul>
+		<%if @tutorial.graded?%>
+			<%if @student%>
+				<div id='quizzes'><%= link_to "My Quizzes", {:controller => :student, :action => :quizzes, :id => @tutorial}%></div>
+			<%else%>
+				<div id='login'><%= link_to "Login", {:controller => :student, :action => :login, :id => @tutorial}%></div>
+		   <%end%>
+		<%end%>
+</div>
+</div>

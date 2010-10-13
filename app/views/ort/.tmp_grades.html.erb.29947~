@@ -1,0 +1,55 @@
+<h1><%=@tutorial.full_name%></h1>
+<h2>Tutorial Grades</h2>
+	<% form_tag :action => 'grades' do%>
+	 <p>
+				 <h3>Sort by Section Number</h3>  
+				    <select id="section" name="section">
+				    <option value="00" selected="selected" >Select</option>
+				   	<strong>Course Section #:</strong><%= options_for_select(@sections, @sect)%>
+				  </select>
+				   <%= submit_tag 'Go' %>
+				   <%if @sect%>
+				       <small><%= link_to 'Show All Sections', :action => 'grades' %></small> 
+					 <h4> <%=link_to 'Export Section '+ @sect+ ' Grades',:controller => 'ort',  :action => 'export', :id => @tutorial.id, :section => @sect%></h4> 
+				   <%else%>
+				    <br /><br />
+				   <%end%>
+		</p>
+	<%end%>
+	<% if @students.size < 1%>
+		 <p> Sorry there are no quiz results for this tutorial.</p>
+	<% else%>
+        <%@students.each do |student|%>
+			<fieldset>
+			<h3>Name: <%=student.name%><br />Onid: <%=student.onid%><br />Section: <%=student.sect_num%> <br /> Email: <%=student.email%></h3>
+			<h3>Total Score: <%=student.final_score%> out of <%=@tutorial.possible_score%></h3>
+		<div id="quizes">
+			<%quizes, left = student.quizes(@tutorial)
+			quizes.each do |quiz|
+			total = 0%>
+			<h4><%=quiz.module_title%></h4>
+			<%results = student.get_results(quiz.id)%>
+				<%results.each do |result|%>
+				   <%question = quiz.questions.find(result[0])%>
+				   <label><%=question.question%></label>
+				 <ul>
+				  <li>
+					 <label>Correct Answer: </label> <%=question.correct_answer%>
+					  <br /> <label>Student's Answer: </label><%=h result[1]%>
+					  <%unless question.points == 0%><br /> <label>
+						 <%=result[2]%>
+						 out of <%=h question.points%></label> 
+					<%end%>	
+				 </li> 	 
+				</ul>  
+				   <% total = result[2] + total %>
+				<%end%>
+				
+				<h5>Score: <span class="required"><%=total%> / <%=quiz.possible_points%></span> </h5>
+				<p> Taken on: <%=student.taken_on.to_formatted_s(:long)%></p>
+			<hr />	
+			<%end%>
+		</div>
+		</fieldset> 
+		<%end%>
+<%end%>	

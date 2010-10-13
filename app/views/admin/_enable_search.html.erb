@@ -1,0 +1,15 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
+<% if @local.enable_search? %>
+	<%= link_to_remote 'Disable Search', 
+		{:url => { :controller => 'admin', :action => 'enable_search'},:update => "admin_search_customize" , :confirm => 'Are you sure you want to disable search functionality?',:complete => "alert('Search has been disabled');"},
+		:href => url_for(:action => 'enable_search', :controller => 'admin')%><br />
+	&nbsp; Disable the search function in modules, pages, guides and tutorials.
+<% else %>
+	<%= link_to_remote 'Enable Search', 
+		{:url => { :controller => 'admin', :action => 'enable_search'},:update => "admin_search_customize" , :confirm => 'Are you sure you want to enable search functionality?',:complete => "alert('Search has been enabled');"},
+		:href => url_for(:action => 'enable_search', :controller => 'admin')%>	<br />
+	&nbsp; Enable the search function in modules, pages, guides and tutorials.	
+<% end %>

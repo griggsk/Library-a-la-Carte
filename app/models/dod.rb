@@ -1,3 +1,7 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class Dod < ActiveRecord::Base
   has_many :database_dods, :dependent => :destroy
   has_many :database_resources, :through => :database_dods

@@ -1,0 +1,48 @@
+<div id ="mine">
+<div id="product-list" >
+ <table class="my_lists">
+ 	<thead>
+ 		<tr>
+ 	<th class='center'>Add
+	  <span class = 'more_help' onMouseover="fixedtooltip('Check the box next to the modules you want to add to this tab/unit or create a new module to add.', this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+	</th>
+	<th  class= '<%= sort_th_class_helper "name" %> ' >  
+        <%= sort_link_helper "Label", "name" %>
+    </th>
+	<th><%= image_tag "spinner.gif", :id => "spinner_sort", :class => 'image', :alt => "Spinner", :style => 'display:none;'%></th>
+	
+	<th   class= '<%= sort_th_class_helper "date" %>'>
+        <%= sort_link_helper "Last Update", "date" %></th>
+	<th   class= '<%= sort_th_class_helper "type" %>'>
+        <%= sort_link_helper "Content Type", "type" %></th>
+    </tr>
+	</thead>
+	
+  <% for mod in @search_results %>
+     <tr class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+       <td class= 'center' width ="5%">
+        <% s = mod.id.to_s + mod.class.to_s%>
+		 <%= check_box_tag(mod.id, mod.id,session[:add_mods].include?(s) , :onclick => remote_function( :url => {:controller => 'tab',:action => 'add_mod', :mid1 => mod.id ,:mid2 => mod.class })) %>
+       </td>
+	   <td class= '<%= sort_th_class_helper "name" %>'  width ="40%"><%= truncate(h(mod.label),:length => 45)%>
+	    </td>
+	   <td  class='center' width ="10%">
+	   	 <span class = 'more_help' onMouseover="fixedtooltip('<%=render_tooltip(mod)%>', this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+		  |
+	   	<%= link_to image_tag("/images/icons/document_preview.png", :title => 'View this Module', :alt => 'View Module', :border => 0),{ :controller => 'module', :action => 'view', :id => mod, :type => mod.class}, :popup => ['', 'height=500,width=400,toolbar=yes, scrollbars =yes,resizable=yes'] %></td>
+	   <td class= '<%= sort_th_class_helper "date" %> '  width ="10%"> <%= mod.updated_at.to_date %>	</td>
+	   <td class= '<%= sort_th_class_helper "type" %> '  width ="15%"> <%= mod.content_type%>	</td>	
+	   
+    </tr>
+ <% end %>
+</table>
+</div>
+</div>
+<div class="pagination">
+<%if @search_results and @search_results.total_pages > 1%>
+	<ul>
+		<li><%=will_paginate @search_results, :params => params.merge({:sort=> @sort}).except(:authenticity_token)%></li>
+		  <li><%= image_tag "spinner.gif", :id => "spinner_links", :class => 'image', :alt => "Spinner", :style => 'display:none;'%></li>
+	</ul>	  	
+<%end%>
+</div>

@@ -1,6 +1,9 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class Uploadable < ActiveRecord::Base
   belongs_to :uploader_resource
-  belongs_to :assign_resource
   has_attached_file :upload, 
                     :styles => { :medium => '505x405>', :thumb => '75x75>' },
                     :url => "/uploads/:attachment/:style/:basename.:extension",

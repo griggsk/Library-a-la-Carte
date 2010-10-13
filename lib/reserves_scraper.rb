@@ -1,11 +1,15 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 #Submitting a search query to Oasis, and then scraping the results. 
 require 'hpricot'
 require 'open-uri'
 
 module ReservesScraper
-  OASIS_DOMAIN = "oasis.library.yourdomain.edu"
-  BASE_URI = "http://oasis.library.yourdomain.edu"
-  SEARCH_URI = "http://oasis.library.yourdomain.edu/search~S13/r?SEARCH="
+  OASIS_DOMAIN = "catalog.yourdomain.edu"
+  BASE_URI = "http://catalog.yourdomain.edu"
+  SEARCH_URI = "http://catalog.yourdomain.edu/search~S13/r?SEARCH="
 
   def search_reserves(course=nil, uri=nil)
     if course
@@ -19,10 +23,9 @@ module ReservesScraper
 
   def get_page(course=nil, uri=nil)
     if uri.nil?
-      uri = ''
-      uri << SEARCH_URI << course
+      uri = SEARCH_URI + course
     else
-      uri = BASE_URI << uri
+      uri = BASE_URI + uri
     end
     res = Hpricot(open(uri))
     return res

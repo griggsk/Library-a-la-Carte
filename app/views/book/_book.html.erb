@@ -1,4 +1,8 @@
-	<div class="book"> 
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
+	<div id="book_<%=book.id%>" class="book"> 
 	 <%= error_messages_for "book" %>
 	 <% if flash[:error] -%>
 	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
@@ -7,50 +11,51 @@
 		<% prefix = "mod[#{new_or_existing}_book_attributes][]" %> 
 		<% fields_for prefix, book do |book_form| -%> 
 		
-		   <div id="books">
 		   	<fieldset>
+		   		<span class = 'handle' style = <%=new_or_existing == 'existing' ? "" : "display:none"%>><%=image_tag("/images/icons/move.png", :title => 'Drag and Drop', :alt => 'Drag and Drop', :border => 0)%>  </span>
 				<div id="new_book_<%=book.id%>" style = <%=new_or_existing == 'new' ? "" : "display:none"%> >
-				<h5>Edit Book
-				  <%= link_to_function image_tag("/images/icons/remove.png", :alt => 'Remove', :border => 0), "$(this).up('.book').remove()" %>
-				</h5>
-			<%if book and book.catalog_results.blank?%>
-				<label for="mod_label">Book Title/Label
-				   <span class = 'more_help' onMouseover="fixedtooltip(BOOK_TITLE_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
-	              </label>
-				    <%= book_form.text_field :label  %>
-					<label for="mod_label">Book URL
-				   <span class = 'more_help' onMouseover="fixedtooltip(BOOK_URL_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
-	              </label>
-				    <%= book_form.text_field :url, :value => book.url || "http://" %> 
-				
-		    <%else%>
-				<%=text_area_tag '', book.catalog_results.collect{|r| r[:title]}.first, :disabled => true%>
-			<%end%>	
-				
-				<label for="mod_book_description" >Book Description  
-					<span class = 'more_help' onMouseover="fixedtooltip(BOOK_DESC_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
-	            </label>
-				    <%= book_form.text_area :description, {:class => 'mceNoEditor', :size => '40x2'} %>
-			    <label for="mod_label">Book ISBN/OCLC # (for book covers)
-				   <span class = 'more_help' onMouseover="fixedtooltip(BOOK_ISBN_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
-	              </label>
-				    <%= book_form.text_field :image_id  %>
+					<h5>Edit Book
+					  <%= link_to_function image_tag("/images/icons/remove.png", :alt => 'Remove', :border => 0), "$(this).up('.book').remove()" %>
+					</h5>
+					<%if book and book.catalog_results.blank?%>
+						<label for="mod_label">Book Title/Label
+						   <span class = 'more_help' onMouseover="fixedtooltip(BOOK_TITLE_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+			              </label>
+						    <%= book_form.text_field :label  %>
+							<label for="mod_label">Book URL
+						   <span class = 'more_help' onMouseover="fixedtooltip(BOOK_URL_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+			              </label>
+						    <%= book_form.text_field :url, :value => book.url || "http://" %> 
+						
+				    <%else%>
+						<%=text_area_tag '', book.catalog_results.collect{|r| r[:title]}.first, :disabled => true%>
+						<p><%= book_form.radio_button :location, true %>Show Call Numbers  <%= book_form.radio_button :location, false %>Hide Call Numbers</p>
+					<%end%>	
+						
+					<label for="mod_book_description" >Book Description  
+						<span class = 'more_help' onMouseover="fixedtooltip(BOOK_DESC_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+		            </label>
+					    <%= book_form.text_area :description, {:class => 'mceNoEditor', :size => '40x2'} %>
+				    <label for="mod_label">Book ISBN/OCLC # (for book covers)
+					   <span class = 'more_help' onMouseover="fixedtooltip(BOOK_ISBN_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+		             </label>
+					 <%= book_form.text_field :image_id  %>
 				</div>
 			
-			<div id="ex_book_<%=book.id%>" style = <%=new_or_existing == 'existing' ? "" : "display:none"%> >
-			    <h5>Book Preview
-				    <%= link_to_function "edit", "$('ex_book_#{book.id}').toggle(); + $('new_book_#{book.id}').toggle();" %>
-					    |
-				    <%= link_to_function image_tag("/images/icons/remove.png", :title => 'Click to remove this book', :alt => 'Remove', :border => 0), "$(this).up('.book').remove()" %>
-				</h5>
-			     <div id ='book_view'>
-			   		<p>
-					<%=render :partial => '/book/view_book', :locals => {:book => book} %>
-					</p>
-				</div>
-			   </div>	
+				<div id="ex_book_<%=book.id%>" style = <%=new_or_existing == 'existing' ? "" : "display:none"%> >
+				    <h5>Book Preview
+					    <%= link_to_function "edit", "$('ex_book_#{book.id}').toggle(); + $('new_book_#{book.id}').toggle();" %>
+						    |
+					    <%= link_to_function image_tag("/images/icons/remove.png", :title => 'Click to remove this book', :alt => 'Remove', :border => 0), "$(this).up('.book').remove()" %>
+					</h5>
+				     <div id ='book_view'>
+				   		<p>
+						<%=render :partial => '/book/view_book', :locals => {:book => book} %>
+						</p>
+					</div>
+				</div>	
 		  </fieldset>
-		  </div>
 		
 	   <% end -%> 
    </div> 
+   

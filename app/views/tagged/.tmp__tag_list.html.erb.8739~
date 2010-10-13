@@ -1,0 +1,89 @@
+<div id="notice">
+			<% tag_cloud @tags, %w(css1 css2 css3 css4) do |tag, css_class| %>
+   			 <%if @tag == tag.name then css_class ='highlight' end%>
+			 <%= render_tag_list(tag.name,css_class) %>
+ 		   <% end %>	
+</div>
+<%unless @mods.blank?%>
+ <table>
+ 	<thead>
+	 	<tr>
+	 		<th></th>
+	 		<th  class= '<%= sort_th_class_helper "name" %> ' >  
+	        <%= sort_link_helper "Label", "name" %>
+	    	</th>
+			<th>
+				<%= image_tag "spinner.gif", :id => "spinner_sort", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
+			</th>
+			<th class= '<%= sort_th_class_helper "date" %>'>
+	        	<%= sort_link_helper "Last Update", "date" %>
+			</th>
+			<th class= '<%= sort_th_class_helper "type" %>'>
+	        	<%= sort_link_helper "Content Type", "type" %>
+			</th>
+			<th   class= '<%= sort_th_class_helper "global" %>'>
+        	<%= sort_link_helper "Global", "global" %></th>
+			<th   class= '<%= sort_th_class_helper "publish" %>'>
+        	<%= sort_link_helper "Published", "publish" %></th>
+		</tr>
+	</thead>
+	<% for mod in @mods %>
+		<tr class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+			<td class='center' width="5%">
+		        <span class="right_space">
+				 <%if mod.shared?%>
+				  <%= link_to image_tag("/images/icons/user_add.png", :title => 'Click to Share this Module', :alt => 'Share', :border => 0), :controller => 'module' ,:action => 'share',  :id => mod, :type => mod.class%>
+				  <%else%>
+				  	<%= link_to image_tag("/images/icons/users.png", :title => 'This module has been shared. Click to Share with others.', :alt => 'Share', :border => 0), :controller => 'module' , :action => 'share',  :id => mod, :type => mod.class %>
+				  <%end%>
+				  	</span>		
+				 <%if mod.used?%>
+				  	<%= image_tag("/images/icons/star.png", :title => 'This module is on at least one page or guide', :alt => '', :border => 0)%>
+				  <%else%>
+				  	<%= image_tag("/images/icons/no-star.png", :title => 'This module is not on any pages or guides', :alt => '', :border => 0)%>
+				<%end%>
+			</td>
+		   	<td  class= '<%= sort_th_class_helper "name" %> ' width="45%"><%= truncate(h(mod[:label]),:length => 55) %>
+			</td>
+			<td class= 'center' width="15%">
+		   
+		   	<%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this Module', :alt => 'edit', :border => 0),{:controller => 'module' , :action => 'edit_content', :id => mod, :type => mod.class}, :class =>'space' %>
+		   
+		   	 | <%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this Module in New Window', :alt => 'preview', :border => 0),{:controller => 'module' , :action => 'view', :id => mod, :type => mod.class}, :class =>'space', :popup => ['', 'height=400,width=480,toolbar=yes, scrollbars =yes,resizable=yes']%>
+		     |  <%= link_to image_tag("/images/icons/application_add.png", :title => 'Copy this Module', :alt => 'copy', :border => 0), {:controller => 'module' ,:action => 'copy',  :id => mod, :type => mod.class },:class =>'space'%>
+			 | <%= link_to image_tag("/images/icons/remove.png", :title => 'Delete this Module', :alt => 'delete', :border => 0), {:controller => 'module' , :action => 'remove_from_user', :id => mod, :type => mod.class, :page => @page, :sort => @sort,  :all => @all , :tag => @tag},:class =>'space', :confirm => 'Are you sure you want to delete this module from your list?', :method => :post %>
+		      </td>
+		   <td class= '<%= sort_th_class_helper "date" %>' width="10%"> <%= mod.updated_at.to_date %>	</td>
+		   <td class= '<%= sort_th_class_helper "type" %>' width="10%"> <%= mod.content_type%>	</td>	
+		   
+		    <td class='center' width="5%">
+		    <%if mod.global == 0%>
+	    
+	            <%=  link_to image_tag("/images/icons/Minus.png", :title => 'Add this Module to the global list', :alt => 'add to global list', :border => 0),{:controller => 'module' , :action => 'globalize', :id => mod, :type => mod.class, :page => @page, :sort => @sort , :all => @all, :search => @search_term}, :confirm => 'Are you show you want to add this module to the global list?', :method => :post%> 
+	        <%else%> 
+	            
+	            <%= link_to image_tag("/images/icons/global.png", :title => 'Remove this Module from the global list', :alt => 'remove from global list', :border => 0), {:controller => 'module' ,:action => 'globalize', :id => mod , :type => mod.class, :page => @page, :sort => @sort,  :all => @all, :search => @search_term}, :confirm => 'Are you show you want to remove this module from the global list?', :method => :post %> 
+	        <%end%>	
+			</td>
+			<td class='center' width="5%">
+	    	<%if mod.published == 0%>
+    			<%=  link_to image_tag("/images/icons/Minus.png", :title => 'Add this Module to the published list', :alt => 'add to published list', :border => 0),{:controller => 'module' , :action => 'publish', :id => mod, :type => mod.class, :page => @page, :sort => @sort , :all => @all,:tag => @tag}, :confirm => 'Are you sure you want to add this module to the published list?', :method => :post%> 
+        	<%else%> 
+            	<%= link_to image_tag("/images/icons/global.png", :title => 'Remove this Module from the published list', :alt => 'remove from published list', :border => 0), {:controller => 'module' ,:action => 'publish', :id => mod , :type => mod.class, :page => @page, :sort => @sort,  :all => @all,:tag => @tag }, :confirm => 'Are you show you want to remove this module from the published list?', :method => :post %> 
+        	<%end%>	
+		</td>		
+	    </tr>
+ 	<% end %>
+</table>
+
+<div class="pagination">
+<%if @mods.total_pages > 1%>
+	<ul>
+		<li><%=will_paginate @mods, :params => params.merge({:sort=> @sort}).except(:authenticity_token)%></li>
+		  <li><%= image_tag "spinner.gif", :id => "spinner_links", :class => 'image', :alt => "Spinner", :style => 'display:none;'%></li>
+	</ul>	  	
+<%end%>
+</div>
+<%else%>
+			<div id="notice"><b>No Modules Found</b></div>
+<%end%>

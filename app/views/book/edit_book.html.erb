@@ -1,3 +1,7 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
  <fieldset>
 	<%=render :partial => '/module/edit_top'%>
 	<% if flash[:error] -%>
@@ -15,14 +19,19 @@
 		<div id ='books'>
 			<%=render :partial => '/book/book', :collection => @mod.books %>
 		</div>
-		
+		 <%= sortable_element 'books', 
+                :url => {:controller => 'book' ,:action => "sort" }, 
+                :complete => visual_effect(:highlight, 'books'), 
+                :handle => 'handle',
+                :containment => ['books'], 
+                :constraint => false,
+				:tag => :div %>
 		
 		<label><%= link_to_function image_tag("/images/icons/add.png", :title => 'Click to add an link', :alt => '', :border => 0)+" Add Book by URL" do |page| 
 					    page.insert_html :bottom, :books, :partial => 'book/book', :object => Book.new
 		  		   end  %>  
 		</label>
  
-    <%= image_tag "spinner.gif", :id => "spinner_search", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
 	 <div id="videos">	 
 	<fieldset>
 		 <div id="page_title">
@@ -55,4 +64,4 @@
 <%end%>
 </fieldset> 			  
 			  
-
+  

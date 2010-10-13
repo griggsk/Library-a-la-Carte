@@ -1,3 +1,7 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 require "vendor/plugins/responds_to_parent/init"
 class ImageManagerController < ApplicationController
   # GET /images/1

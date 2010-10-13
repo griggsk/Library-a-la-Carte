@@ -1,3 +1,7 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class BookController < ApplicationController
   include CatalogScraper
   before_filter :module_types
@@ -85,6 +89,16 @@ def copy_book
      end
    end  
  end
-
+  #Sort modules function for drag and drop  
+def sort
+  if params['books'] then 
+     sortables = params['books'] 
+     sortables.each do |id|
+      book = Book.find(id)
+      book.update_attribute(:position, sortables.index(id) + 1 )
+     end
+   end
+   render :nothing => true 
+end
 
 end

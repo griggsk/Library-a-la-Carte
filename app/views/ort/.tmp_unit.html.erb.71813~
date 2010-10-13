@@ -1,0 +1,32 @@
+<%= render :partial => 'ort/top'%>
+<div id="content"><div id="item-corner"></div>
+
+	<h1><%=@unit.title%></h1>
+	
+	<div id="content-column2">
+		<div class="item"><div class="item2"><div class="item3">
+			<h2>Table of Contents</h2>
+			<% unless @tutorial.unitizations.blank? %>
+					<%= render :partial => 'ort/toc' %>
+		   <%end%>		
+		</div></div></div>
+	</div>
+	
+	<div id="content-column1">
+	
+		<h2>Unit Description</h2>
+		<p><%=@unit.description%></p>
+	<div id="update">   
+		<p> <%if  @unit.tag_list.length > 0 %> Tagged with: <% @unit.tag_list.each do |tag|%> <%= link_to tag, { :action => :tagged, :id => tag }%><%end%> <%end%></p>
+		<p>	Last Update: <%=@unit.updated_at.to_formatted_s(:long)%> </p>
+		</div>
+		
+	<!-- end content-column1 -->
+	</div>
+
+<!-- end content -->
+<div class="bot"><div></div></div></div>
+
+
+<!-- end wrap, wrap-inner -->
+</div></div>

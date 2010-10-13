@@ -1,12 +1,11 @@
 
-<%= error_messages_for 'mod' %>
            <label for="topic" >Discussion Topic
 		    <span class = 'more_help' onMouseover="fixedtooltip(COMMENTS_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
           </label> 
            <%= text_area(:mod, :topic, :class => "mceEditor") %>
             <p><strong>Number of Comments to Display</strong><span class="required">*</span>
 		    <select name="mod[num_displayed]" class="page">
-		      <%= options_for_select([3,5,8], @mod.num_displayed) %>
+		      <%= options_for_select([3,5,8,10,20,100], @mod.num_displayed) %>
 		    </select>
 			 <span class = 'more_help' onMouseover="fixedtooltip(COMMENTS_NUM_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
 		   </p>

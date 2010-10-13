@@ -1,6 +1,7 @@
 <%if @relateds.length <1%>
 			<p><b>Could not find any related guides.</b></p>
 		<%else%>
+		<div id="notice">The guides were successfully related</div>
 			<ul class="undeco no_indent">
 				<%@relateds.each do |guide|%>
 					<%guide_url = url_for :controller => 'srg', :action => 'index', :id => guide%>
@@ -10,5 +11,4 @@
 					</li> 	
 				<%end %> 
 			</ul>
-			<p><b>The guides were successfully related.</b></p>
 		<%end%>

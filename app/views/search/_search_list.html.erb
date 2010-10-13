@@ -1,0 +1,10 @@
+ <%=render :partial => "/module/mods_table"%>
+<div class="pagination">
+	<%if @mods.total_pages > 1%>
+		<ul>
+			<li><%=will_paginate @mods, :params => params.merge({:sort=> @sort}).except(:authenticity_token)%></li>
+			<li><%= image_tag "spinner.gif", :id => "spinner_links", :class => 'image', :alt => "Spinner", :style => 'display:none;'%></li>
+		</ul>	  
+		
+	<%end%>
+</div>

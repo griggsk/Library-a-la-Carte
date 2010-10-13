@@ -1,0 +1,19 @@
+ <table>
+	 <% for user in @page_owners %>
+	      <tr class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+	        <td width = "70%"><span class="list-title" ><%= h user.name %></span></td>
+			<td>
+			<%unless @page_owners.size == 1%>
+				<%= link_to image_tag("/images/icons/user_remove.png", :title => 'Remove this user from editor list', :alt => 'remove user', :border => 0), {:action => 'remove_user_from_page', :id => user.id}, :confirm => 'Are you sure you want to remove this user from the editor list?', :method => :post %>
+			<%end%>
+			</td>
+			<td>
+		    <%unless @page.created_by.to_s == user.name.to_s%>
+				  <%=image_tag("/images/icons/comment_add.png", :title => 'Set as Owner', :alt => 'set owner', :border => 0)%> <%=set_owner_helper(@page.id, user.id)%>
+			<%else%>
+			  <%=image_tag("/images/icons/comment.png", :title => 'Owner', :alt => 'owner', :border => 0)%> Owner
+			<%end%>
+			</td>
+	      </tr>
+	 <%end%>  
+	 </table>

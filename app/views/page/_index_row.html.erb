@@ -1,0 +1,45 @@
+<td class="center"  width ="5%">
+	<%if !id.shared?%>
+		  <%= link_to image_tag("/images/icons/user_add.png", :title => 'Click to share this page.', :alt => 'Share', :border => 0),  :action => 'share', :controller => 'page', :id => id %>
+	<%else%>
+		  <%= link_to image_tag("/images/icons/users.png", :title => 'This page is shared. Click to share this page with others.', :alt => 'Share', :border => 0),  :action => 'share', :controller => 'page',  :id => id %>
+	<%end%>
+</td>
+<td class= '<%= sort_th_class_helper "name" %>'  width ="40%">
+	<%= truncate(h(id.search_title),:length => 65) %>
+</td>
+
+<%
+	search = false if search.nil?	#avoiding null errors for a local variable
+	page_params = page_search_params(search,id,page) #if request came from a search, add search term to parameters
+%>
+<td  width ="15%">
+       	<%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this page', :alt => 'Edit', :border => 0), {:controller => 'page',:action => 'edit', :controller => 'page',  :id => id },:class =>'space'%> 
+		| <%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this Page in a new window.', :alt => 'preview', :border => 0), { :controller => 'page', :controller => "ica", :action => 'index', :id => id.id}, :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes'], :class=> 'space'%>
+		| <%= link_to image_tag("/images/icons/application_add.png", :title => 'Copy this page', :alt => 'Copy Page', :border => 0),{:controller => 'page', :action => 'copy', :controller => 'page',  :id => id},:class =>'space' %> 
+		| <%= link_to_remote image_tag("/images/icons/remove.png", :title => 'Delete this Page', :alt => 'Delete Page', :border => 0), {:url => page_params['destroy'],:update => "row#{id.id}" , :confirm => 'Are you sure you want to delete this page from your list?'},
+		:href => url_for(page_params['destroy']),:class =>'space', :method => :post %>	
+</td>
+	   
+<td class= '<%= sort_th_class_helper "date" %>'  width ="10%"> <%= id.updated_at.to_date%></td>
+
+<td class="center"  width ="5%">
+	<% unless id.published? %>
+		<%= link_to_remote image_tag("/images/icons/Minus.png", :title => 'Publish this Page', :alt => 'publish this page', :border => 0), {:url => page_params['publish'],:update => "row#{id.id}", :confirm => 'Are you sure you want to publish this page?'}, 
+		:href => url_for(page_params['publish']),:method => :post %> 
+	<%else%> 
+		<%= link_to_remote image_tag("/images/icons/Plus.png", :title => 'Unpublish this Page', :alt => 'unpublish this page', :border => 0),  {:url => page_params['publish'],:update => "row#{id.id}", :confirm => 'Are you sure you want to unpublish this page?'}, 
+		:href => url_for(page_params['publish']),:method => :post %> 
+	<%end%>			
+</td>
+<td class="center"  width ="5%">
+	<% unless id.archived? %>
+		<%= link_to_remote image_tag("/images/icons/Minus.png", :title => 'Archive this Page', :alt => 'archive this page', :border => 0), {:url => page_params['archive'],:update => "row#{id.id}", :confirm => 'Are you sure you want to archive this page?'}, 
+		:href => url_for(page_params['archive']),:method => :post %>  
+    <%else%> 
+		<%= link_to_remote image_tag("/images/icons/archive.png", :title => 'Remove from Archive', :alt => 'remove from archive', :border => 0), {:url => page_params['archive'],:update => "row#{id.id}", :confirm => 'Are you show you want to remove this page from archive?'}, 
+		:href => url_for(page_params['archive']),:method => :post %> 
+    <%end%>
+</td>
+
+

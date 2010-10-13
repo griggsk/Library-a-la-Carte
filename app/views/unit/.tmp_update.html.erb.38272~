@@ -1,0 +1,66 @@
+<fieldset>
+<h3 class = 'title'><%=render :partial => 'tutorial/title_actions'%></h3>
+<h4>Edit Unit : <%=@unit.title%></h4>
+<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+<% form_tag :controller => 'unit', :action => 'update', :id => @unit.id do%>
+  <%= error_messages_for 'unit' %>
+<div id ='share'>	
+<fieldset>
+	<div id="vertical_inputs">
+		<span>
+		<label for="unit_name">Title <span class="required more_help">*</span> <span class = 'more_help'  onMouseover="fixedtooltip(UNIT_NAME_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+		   <%= text_field 'unit','title',"size" => 56 %> </span>
+		 <span> 
+  		<label for="unit_name">Slug<span class="required more_help">*</span> <span class = 'more_help'  onMouseover="fixedtooltip(UNIT_SLUG_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+		   <%= text_field 'unit','slug',"size" => 18 %>
+		 </span>   
+  	</div>
+	<br class="clearer" />
+	<label for="unit_description">Description <span class = 'more_help' onMouseover="fixedtooltip(UNIT_DESC_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+   <%= text_area 'unit', 'description', "class" => 'mceEditor'%>
+   
+   <label for="tags">Tags <span class = 'more_help' onMouseover="fixedtooltip(UNIT_TAG_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+   <%= text_field_tag 'tags', @tag_list,"size" => 62%>
+   <div class = 'tip'>e.g. anthropology, insects, caves</div>
+
+<p>
+<%= submit_tag 'Save', :class => "submit"  %> or <%= submit_tag 'Save &amp; Add Modules', :class => "submit"  %></p>
+<p><%= link_to 'Cancel', :back %></p>
+</fieldset>	
+<%end%>
+
+
+<% unless @mods.blank? %>
+ <fieldset>
+	<h4>Unit Modules</h4>
+  <ul id = "full<%=@unit.id.to_s%>">
+    <%@mods.each do |resable|
+	res = resable.resource
+	mod = res.mod
+	%>
+       <li id = "item_<%=resable.id%>" class = "list-item">
+           <span class="list-title" ><%=truncate(h(mod.module_title) ,:length => 40) %></span>   <span class = 'handle'><%=image_tag("/images/icons/move.png", :title => 'Drag and Drop', :alt => 'Drag and Drop', :border => 0)%>  </span>
+           <br />
+		    <span class = 'more_help' onMouseover="fixedtooltip('Label: <%=mod.label%> <br \/> Last update: <%=mod.updated_at.to_date%>', this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+			|
+             <%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this module', :alt => 'Edit', :border => 0), { :controller =>'module', :action => 'edit_content', :id => mod, :type => mod.class} %> |
+             <%= link_to image_tag("/images/icons/document_preview.png", :title => 'View this Module', :alt => 'View Module', :border => 0),{ :controller => 'module', :action => 'view', :id => mod, :type => mod.class}, :popup => ['', 'height=500,width=400,toolbar=yes, scrollbars =yes,resizable=yes'] %>|
+			 <%= link_to image_tag("/images/icons/remove.png", :title => 'Delete this module from lesson', :alt => 'Delete', :border => 0), {:controller => 'unit', :action => 'remove_module', :rid => res , :id => @unit}, :confirm => 'Are you sure you want to remove this module from the lesson?', :method => :post %>
+        </li>
+    <% end %>
+   </ul>
+<span class="clear"></span>
+<%= sortable_element 'full'+@unit.id.to_s, 
+									                :url => {:controller => 'unit', :action => "sort_mods" }, 
+									                :complete => visual_effect(:highlight, 'full'+@unit.id.to_s), 
+									                :handle => 'handle',
+									                :containment => ['full'+@unit.id.to_s], 
+									                :constraint => false %>	
+<%end%>
+</div>
+
+ </fieldset>
+ <%=render :partial => 'tutorial/side_bar'%>
+ 

@@ -1,0 +1,66 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
+<fieldset>
+<div id="main">
+ <h3 class = 'title'><%=render :partial => 'title_actions'%></h3>
+ <h4>Share Guide</h4>
+ <% if flash[:notice] -%>
+	  <div id ="error_wrapper">    <div id="notice" ><%= flash[:notice] %></div></div>
+	<% end -%>
+<div id="share">
+	<fieldset>
+ 	<%form_tag({:action=> 'share_update',:id =>@guide}) do %>
+       <div id="share_left">
+       	 <fieldset>
+	        <h5>Add People</h5>
+			<div class="tip">Select people you want to share with.</div>
+       		<select id="users" name="users[]" multiple="multiple" class="share" >
+       			 <%= options_from_collection_for_select(@user_list, 'id', 'name') %>
+       		</select>
+     		 <br /><div class = "tip">(press Ctrl+Alt to select mutiple users)</div>
+  	  	</fieldset>
+	   </div>
+	   <div id="share_right">
+	   	 <fieldset>
+			<h5>Sharing Options <span class = 'more_help'  onMouseover="fixedtooltip(GUIDE_SHARE_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></h5>
+			         <strong> <%= radio_button_tag('copy', 2, true)%>   Share the Original</strong> 
+					  <div class = 'tip'> Sharing the original gives editing rights to this guide. </div>
+					<strong> <%= radio_button_tag('copy', 1, false)%>  Share a Template</strong> 
+					  <div class = 'tip'> A template is a copy and does not give editing rights to this guide.</div>
+			</fieldset>
+			 <fieldset>
+	  		 <h5>Email Message</h5>
+			    <%= text_area_tag "body", @message, :rows => 10, :cols => 3, :class => "mceNoEditor"%> 
+			 </fieldset>
+			<p> <%= submit_tag "Share Guide",:class => "submit"%> <%= link_to 'Cancel', :action => 'index' %></p>
+		</div>
+  <%end%>
+  </fieldset>
+   <div class ='clearer'></div>
+	<fieldset>
+	 <h5>Guide Editors</h5>
+	 <div class = 'tip'>Removing someone revokes their editing rights to this guide and the guide's modules. The last owner can not be deleted </div>
+	 
+	 <div id="editor-list" >
+	 <table>
+	 <% for user in @guide_owners %>
+	      <tr class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+	        <td width = "70%"><span class="list-title" ><%= h user.name %></span></td>
+			<td>
+			<%unless @guide_owners.size == 1%>
+				<%= link_to image_tag("/images/icons/user_remove.png", :title => 'Remove this user from editor list', :alt => 'remove user', :border => 0), {:action => 'remove_user_from_guide', :id => user.id}, :confirm => 'Are you sure you want to remove this user from the editor list?', :method => :post %>
+			<%end%>
+			</td>
+			</td>
+	      </tr>
+	 <%end%>  
+	 </table>
+	 </div>
+	 </fieldset>
+	 
+ </div>
+</div>
+</fieldset>
+ <%=render :partial => 'side_bar'%>

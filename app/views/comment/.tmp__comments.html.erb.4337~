@@ -1,0 +1,46 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
+<% edit |= false %>
+<% show |= false %>
+
+<% comments.each do |c| %>
+
+  <div class="comment_container <%= cycle('grey', 'purple', :name => "outer_colors") %>">
+
+   
+      <% truncated_comment = truncate_comment(c.body, num_characters) %>
+     
+      <div class="comment_title">
+      <% if edit %>
+      <span class = 'help'>
+        <%= link_to image_tag("/images/icons/remove.png", :title => 'Delete this comment', :alt => 'delete', :border => 0), {:controller => :comment, 
+                          :action => :destroy, 
+                          :id => c.id},
+                          :confirm => "Are you sure you want to delete this comment?",
+                          :method => :delete %>
+      </span>
+    <% end %>
+	
+      <% title = "Posted #{c.created_at.strftime("%m/%d")} by #{c.author_name}"  %>
+      <% title += ", #{c.author_email}" if edit or show %>
+      <%=h title %>
+	  </div>
+	   
+      <div id="truncated_comment_body<%=c.id%>" class="shown">
+        <%= auto_link(truncated_comment) %>
+      </div>
+      <div id="comment_body<%=c.id%>" class="hidden">
+        <%= auto_link(truncate_comment(c.body, c.body.size) %>
+      </div>
+
+      <% if c.body.size > num_characters or c.body[0..num_characters].include?("\n") %>
+        <div class="show_more"><%= link_to_function("read more", "swap('comment_body#{c.id}', 'truncated_comment_body#{c.id}');") %></div>
+      <% end %>
+
+	
+
+  </div>
+  
+<% end %>

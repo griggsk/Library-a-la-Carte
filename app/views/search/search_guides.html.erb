@@ -1,0 +1,51 @@
+
+<% if flash[:notice] -%>
+	  <div id="list_error" ><%= flash[:notice] %></div>
+<% end -%>
+
+<div id="page-list">	
+	<div id="new_button" class="new">
+	    <a href="#" onclick="$('new').toggle();$('new_button').toggle();; return false;">
+	    	<span>
+	        <img src="/images/icons/add.png" alt="Create New Guide" />
+	        Create New Guide
+	    </span></a>
+   </div>
+	
+	 <div id="new"  style="display:none">
+	<% form_tag :controller => 'guide', :action => 'create', :id => @guide do%>
+	<%= error_messages_for 'guide' %>
+		<div id="vertical_inputs" class="index">
+			<h4>Create Guide</h4><span class="more_help" onMouseover="fixedtooltip(GUIDE_TITLE_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span> 
+			  <%= link_to_function 'cancel', "$('new').toggle();$('new_button').toggle();; return false;" %>
+			  <%=render  :partial => "/guide/guide_title"%>  
+			<span><label>&nbsp;</label><%= submit_tag 'Create Guide' %></span>
+			<br />  
+		</div> 
+	<%end%>
+	</div> 	
+	
+		<div id ="second_tabs">
+		<ul id="second_tabs">
+			<li><%= link_to "My Guides" , :controller => 'guide', :action => 'index', :sort => 'name' %></li>
+			<li  class = 'current'>	
+			<span id="message"><%=search_results_message%></span>
+				<% form_tag :controller => 'search', :action => 'search_guides' do%>	
+			  		<%= text_field 'mod', 'search',"size" => 35, 
+	     				 :value => @search_term %>
+					<%= submit_tag 'Search' %>
+				<%end%>
+			</li>
+		</ul>
+	</div>	
+		<div style ="clear: right;"></div>	
+		<div id="product-list" >
+		<%unless @search_results.empty?%>
+		<div id="table">
+		   <%=render  :partial => "guides_list"%>  
+		</div>
+		<%else%>
+		  <div id="notice" > No Guides found with <b><%=@search_term%></b>. </div>
+		<%end%>
+		</div>
+</div>

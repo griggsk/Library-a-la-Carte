@@ -1,0 +1,67 @@
+<% if flash[:notice] -%>
+	 <div id="list_error" ><%= flash[:notice] %></div>
+<% end -%>
+<div id="mod-list">
+	<div id="new_button" class="new">
+		    <a href="#" onclick="$('new').toggle();$('new_button').toggle();; return false;">
+	    <span>
+	        <img src="/images/icons/add.png" alt="Create New Module" />
+	        Create New Module
+	    </span></a>
+	</div>
+	 <div id="new" style="display:none">
+	 <% form_tag :controller => 'module', :action => 'create' do%>
+	    <%= error_messages_for 'mod' %>
+		<div id="vertical_inputs" class="index">
+			<h4>Create New Module <span class = 'more_help' onMouseover="fixedtooltip(MOD_TITLE_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+				  <%= link_to_function 'cancel', "$('new').toggle();$('new_button').toggle();; return false;" %></h4>
+				<span <%= %(class="required") if flash[:mod_title_error] %>>
+  				<label for="page_course_name">Module Title<span class="required more_help">*</span></label>
+  				 <%= text_field 'mod', 'module_title',"size" => 45 , :value => flash[:mod_title]   %>
+			</span>
+ 			<span <%= %(class="required") if flash[:mod_type_error] %>>
+  				<label for="mod_type">Content Type<span class="required more_help">*</span></label>
+  				<%= select('mod','type', @types, {:selected => flash[:mod_type], :prompt => "Select"}, {:class => 'page'}) %>
+			</span>			
+			
+			<span><label>&nbsp;</label><%= submit_tag 'Create Module' %></span>
+			<br />
+		</div>	
+	 <%end%>
+	</div> 
+	
+<div id ="second_tabs">
+	<ul id="second_tabs">
+		<li class = "<%= @globcurrent %>"> <%= link_to "Global Modules" , :controller => 'module', :action => 'index', :sort => 'name', :list => 'global'%></li> 
+		<li class = "<%= @tgcurrent %>"> <%= link_to "Browse By Tags" , :controller => 'tagged', :action => 'index', :sort => 'name'%></li> 
+		<li  class = "<%= @mycurrent %>"><%= link_to "My Modules" , :controller => 'module', :action => 'index', :sort => 'name', :list => 'mine'%></li>
+		<li class = "<%= @seccurrent %>">
+			<span id="message"><%=search_results_message%></span>
+				<% form_tag  :action => 'index' do%>	
+			  		<%= text_field 'mod', 'search',"size" => 35,
+ 					 :value => @search_term
+					 %>
+					<%= submit_tag 'Search' %>
+				<%end%>
+	     </li>
+		   <li class="pagination">
+				<%if @mods.total_pages > 1%>
+				<%= will_paginate @mods, :params => params.merge({:sort=> @sort}).except(:authenticity_token), :page_links => false %>	  
+			<%end%>
+		</li>
+	</ul>
+</div>
+<div class="clearer"></div>
+
+<div id="product-list">
+	<%unless @mods.empty?%>
+		<div id="table">
+			<%=render :partial => "search_list"%>
+		</div>
+	<%else%>
+	 <div id="notice" > No Modules found with <b><%=@search_term%></b>. </div>
+	 <div></div>
+	<%end%>
+</div>
+
+</div>

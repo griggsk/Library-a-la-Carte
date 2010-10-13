@@ -383,3 +383,200 @@ Admin
 - Added edit subjects, master, and dods
 - Added user tutorial admin actions (edit, delete, assign)
 - added edit tutorial locals
+
+*************Release 1.5***********
+Plugins:
+Added Acts_as_Ferret
+mobile-fu
+rails exception notification
+Updated AaToS, AaL, in_place
+
+Gems:
+ferret 0.11.6
+flickr_fu 0.3.0
+
+Database Changes:
+*Moving all future database changes to migrations
+Removed limits on strings
+Changes to defaults, null values
+Changed ints to booleans
+added indexes
+Tutorials: 
+--changed name to firstname
+--added lastname
+Question
+--added feedback field
+Tabs
+--added polymorphic fields
+--delete guide and page id
+--reasigned indexes and removed FK constraint
+Book, video, link
+--added position
+All x_resource
+--added published
+Video
+--added size and orientation
+Link
+--added target
+Local
+--added new customization fields
+--removed unneeded ones
+Guides
+--added relateds
+
+New:
+Search Modules, Pages, Guides, Tutorials:
+ (Requires Ferret gems and plugin and lock files or drb server)
+Tagged Modules: Browse modules by Tags
+Set Owner (page, guide, tutorial)
+Mobile a la Carte (depends on search) - Pre-Alpha
+Account Creation and Login
+-added create account by user
+-added pending users
+--admin approves/deny accounts
+--automatic email notification
+--requires admin emails 
+Custom 404 and 500 pages
+--admin notification
+
+Changes:
+
+Guides:
+Share Guide Templates
+-changes to guide MVC
+-share copies or templates of modules
+Special Master subject
+-guides marked with "Tutorial"
+--will not be shown on portal
+--will be shown on tutorial portal
+--note: Tutorial must be a master subject
+Added set owner in share
+Sort by Shared
+Edit/suggest/remove Relateds
+
+Pages:
+Share Page Templates
+-changes to guide MVC
+-share copies or templates of modules
+Added set owner in share
+Sort by Shared
+
+Tutorials (moved from alpha to beta):
+altered DB and tutorial, student, results MVC
+Consolidated login and forgot into one file
+-deleted forgot file
+-changed method names
+Changed public templates - removed OSU specific
+adding WYSIWYG to question
+adding slug to modules and units
+adding WYSIWYG to unit and tutorial
+Added persistent answers to quizzes
+Added export all responses to quiz manager
+Added set owner in share
+Sort by shared
+
+Modules:
+Added info tooltip to add modules list
+--added helper method to show details about a module
+Added Tags
+Added published field to modules
+--for mobile (alpha)
+Changed Menu
+--added Add To/Used On
+Starred Modules
+--added tooltip that lists all things the module is used on
+--links to Add To/Used On
+Sort by published, global, shared and starred
+
+
+Image Module
+Added layout options
+---choose orientation and size
+
+Book Module
+--added hide call numbers option
+--sort book order
+
+Video Module
+--sort video order
+--added lightbox to pop-out video to larger format
+--added pop-out to full screen to youtube player
+--changed player code for IE
+
+Link Module
+--sort links
+-added window target
+--added target
+
+Comment Module
+-changed number of comments to allow up to 100
+-changed way links are made
+-added anchor link to comments
+--fixed display issues
+
+Quiz Module
+--added new module type (feedback multiple-choice)
+--added persistent answers in quizzes
+
+
+Tool Changes:
+added default tab to edit pages/guides
+Course Pages/Guides/Tutorials link merged into Add To/Used On
+Terminology Changes:
+--Linked Modules
+--Templates
+Icon changes
+--changed copy icon
+Added Ajaxy actions in lists
+--fixes return to sorted pages bug
+Added Create New to sidebar for pages, guides, tutorials
+Added pagination to top of lists
+
+Public Layout Changes
+Collapse/expand relateds
+Metadata additions
+---author and date
+---title, description and keywords
+
+Admin
+Customization
+Edit Portal Left side and Right side bars
+---added WYSIWYG editor boxes
+---removed quick links
+---removed library contact chat and link
+Added labels for search boxes
+Guide left side bar
+---added WYSIWYG editor box
+ More template customization options
+---added javascript link
+---added metadata
+---added tracking code
+Streamlined account creation
+---approve/deny pending users
+---Admin emails
+Error notification
+Batch load database subscriptions
+Auto-Archive content
+--archives pages more then 6 monthes since last revision
+--guides and tutorials more then 1 year
+User accounts
+-sorts by name
+-show all pagination
+
+Bugs:
+Image float
+Tag Cloud
+Course Reserves Bug
+Lots of Tutorial Bugs
+Share Bugs
+Edit answer
+Sort modules and missing columns
+Tab ordering
+Created By bugs
+Actions not returning to sorted list
+Global Module Redirect Error
+Order of multi-subject guides
+Quiz Editing
+Admin sharing
+Auto archive
+Copy bugs

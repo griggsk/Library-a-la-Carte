@@ -1,0 +1,23 @@
+<%= render :partial => 'ort/top'%>
+<div id="content">
+	<h2 class="no-bar"><%=@unit.title%></h2>
+	
+	<div id="content-column2">
+		<div class="item"><div class="item2"><div class="item3">
+		</div></div></div>
+	</div>
+	
+	<div id="content-column1">
+	
+		<h2>What to Expect</h2>
+		<div><%=@unit.description%></div>
+	
+	<!-- end content-column1 -->
+	</div>
+		
+		<div id="update">   
+		<p> <%if  @unit.tag_list.length > 0 %> Tagged with: <% @unit.tag_list.each do |tag|%> <%= link_to tag, { :action => :tagged, :id => tag }%><%end%> <%end%></p>
+		<p>	Last Update: <%=@unit.updated_at.to_formatted_s(:long)%> </p>
+		</div>
+<!-- end content -->
+<div class="bot"><div></div></div></div>

@@ -1,0 +1,13 @@
+<fieldset>
+ <h3>Request New Account</h3>
+    <% form_tag :action => 'request_account' do %>
+    	<%= render :partial => 'form' %>
+		<%= recaptcha_tags %>
+      	<br /><br />
+		<%= submit_tag 'Request New Account' ,:class =>"submit" %> 
+		<br /><br />
+    <% end %>
+	<p>
+ 		<b><%= link_to 'Cancel', :action => 'login' %></b>
+	</p>
+</fieldset>

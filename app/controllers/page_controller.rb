@@ -1,19 +1,21 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class PageController < ApplicationController
   include Paginating
-  before_filter :current_page, :only => [:sort, :edit_contact, :edit_relateds, :remove_related, :suggest_relateds, :send_url]
-  before_filter :current_tab, :except => [:index, :index_all, :new,  :destroy, :create]
+  before_filter :current_page, :only => [:edit_relateds, :remove_related, :suggest_relateds, :send_url, :remove_user_from_page]
   before_filter :custom_page_data, :only => [:index, :new, :update, :copy]
-  before_filter :clear_sessions, :only =>[:index]
-  before_filter :clear_guide_sessions, :only =>[:edit]
+  before_filter :clear_sessions, :only =>[:index, :new]
   layout 'tool'
-
+  
+  in_place_edit_for :tab, :tab_name
   
   def index
-  #might get slow if listing more than 1000 pages
-  #see http://wiki.rubyonrails.org/rails/pages/HowtoPagination
    @pcurrent = 'current'
    @subj_list = Subject.get_subjects
    @sort = params[:sort] || 'name'
+   @search_value ='Search My Pages'
    @pages = @user.sort_pages(@sort)
    @pages = paginate_pages(@pages, params[:page] ||= 1,@sort)
    if request.xhr?
@@ -30,6 +32,7 @@ class PageController < ApplicationController
  
   def create
       session[:page]= nil
+      session[:current_tab] = nil
       if request.post?
         @page =  Page.new
         @page.attributes = params[:page]
@@ -73,13 +76,16 @@ class PageController < ApplicationController
               session[:current_tab] = @page.tabs.first.id
               @user.add_page(@page)
               @page.add_tags(params[:tags])
-              @page.add_subjects(params[:subjects])
              redirect_to  :action => 'edit', :id =>@page.id and return
           else
             flash[:course_subj_error] = @page.errors[:subjects] 
             flash[:course_subj] = params[:subjects].collect{|s|s.to_i} if params[:subjects]
          end
        end
+  end
+  
+  def template
+    @pages = Page.find(:all)
   end
   
   def update
@@ -90,8 +96,6 @@ class PageController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       redirect_to  :action => 'index' and return
     else
-     session[:page] = @page.id
-     session[:current_tab] = @page.tabs.first.id
       @selected = @page.subjects.collect{|s| s.id}
       flash[:course_term] = @page.term
     end
@@ -107,6 +111,8 @@ class PageController < ApplicationController
  
   
   def copy
+     session[:page]= nil
+     session[:current_tab] = nil
      @ucurrent = 'current'
      @subj_list = Subject.get_subjects
     begin
@@ -125,9 +131,11 @@ class PageController < ApplicationController
             session[:page] = @new_page.id
             @user.add_page(@new_page)
             if params[:options]=='copy'
+              logger.debug("in copy")
               @new_page.copy_resources(@user.id, @page.tabs)  
             else
-               @new_page.copy_tabs(@page.tabs)
+              logger.debug("not in copy")
+              @new_page.copy_tabs(@page.tabs)
             end 
              session[:current_tab] = @new_page.tabs.first.id
             redirect_to  :action => 'edit'  , :id =>@new_page.id
@@ -148,14 +156,19 @@ class PageController < ApplicationController
     else
       session[:page] = @page.id
       @tabs = @page.tabs
-      @tab = session[:current_tab] ? @tabs.select{|t| t.id == session[:current_tab].to_i}.first : @tabs.first 
-      if @tab.template ==2
-        @mods_left  = @tab.left_resources
-        @mods_right = @tab.right_resources
-      else
-        @mods = @tab.tab_resources
-      end
-      session[:current_tab] = @tab.id
+     @tab = (session[:current_tab].blank? ? @tabs.first : @tabs.select{|t| t.id == session[:current_tab].to_i}.first) 
+      if @tab
+        session[:current_tab] = @tab.id
+        if @tab.template == 2
+          @mods_left  = @tab.left_resources
+          @mods_right = @tab.right_resources
+        else
+           @mods = @tab.tab_resources
+       end
+     else
+       flash[:notice] = "There are critical errors on the guide. Consider deleting this guide."
+       redirect_to  :action => 'index' and return 
+      end 
     end  
   end
  
@@ -169,7 +182,7 @@ class PageController < ApplicationController
        @selected = @page.resource_id
        @mod = @page.resource.mod if @page.resource
       if request.post?
-         @page.add_contact_module(params[:contact]) if params[:contact]
+         @page.resource_id = params[:contact].to_i  if params[:contact]
          if @page.save
            flash[:notice] = "The Contact Module was successfully changed."
            redirect_to :action => 'edit_contact'
@@ -201,58 +214,7 @@ end
       render :partial => "relateds", :layout => false
  end
  
-  #Sort function for drag and drop  
-def sort
-   if params['left'] then  
-    sortables = params['left']
-    sortables.each do |id|
-      tab_resource = @tab.tab_resources.find(id)
-      tab_resource.update_attribute(:position, 2*sortables.index(id) + 1 )
-    end
-   
-   elsif params['right'] then 
-      sortables = params['right'] 
-      sortables.each do |id|
-        tab_resource = @tab.tab_resources.find(id)
-       tab_resource.update_attribute(:position, 2*sortables.index(id) + 2 )
-       end
-   elsif params['full'] then 
-     sortables = params['full'] 
-     sortables.each do |id|
-      tab_resource = @tab.tab_resources.find(id)
-     tab_resource.update_attribute(:position, sortables.index(id) + 1 )
-     end
-   end
-   render :nothing => true 
-end
   
-   def remove_from_recent_list
-    if request.post? and params[:altered_list]
-      params[:altered_list].each do |gid|
-          session[:page_list].delete(gid.to_i)
-      end
-      if session[:page_list].empty?
-         session[:page_list] = nil
-         redirect_to :action => 'index', :sort =>"name" and return
-      else
-        begin
-          page = @user.pages.find(session[:page_list].at(0))
-        rescue ActiveRecord::RecordNotFound
-          session[:page_list].delete(0)
-         redirect_to :action => 'index', :sort =>"name" and return
-       else
-          session[:current_tab] = nil
-          redirect_to :action => 'edit' ,:id => page, :sort =>'name'
-        end
-      end
-    else
-       redirect_to :back
-    end
-     
- end
-  
-
-
   def publish
     begin
       page = @user.pages.find(params[:id])
@@ -261,8 +223,21 @@ end
      else
        page.toggle!(:published)
        page.update_attribute(:archived, false)
-       redirect_to :back, :page => params[:page], :sort => params[:sort]
-     end
+       if request.xhr?
+         @sort = params[:sort] #set the sort variable to make sure the proper sort class is set for the updated row
+         if params[:search]#if the request came from search, send back the search term
+            render :partial => "index_row" ,:locals => {:id => page, :page => params[:page], :sort => @sort , :all => params[:all],:mod => {:search => params[:search]}}         
+         else
+            render :partial => "index_row" ,:locals => {:id => page, :page => params[:page], :sort => @sort , :all => params[:all]}           
+         end
+       else
+          if params[:search]#if the delete request came from the search screen, redirect back to search otherwise go to the regular mod list
+            redirect_to :controller => 'search',:action => 'search_pages' , :sort => params[:sort], :page => params[:page],  :all => params[:all],:mod => {:search => params[:search]}
+         else
+            redirect_to :back, :page => params[:page], :sort => params[:sort]        
+        end      
+       end
+    end
    end
   
    def archive
@@ -273,22 +248,53 @@ end
      else
        page.toggle!(:archived)
        page.update_attribute(:published, false)
-       redirect_to :back, :page => params[:page], :sort => params[:sort]
+        if request.xhr?
+           @sort = params[:sort] #set the sort variable to make sure the proper sort class is set for the updated row
+           if params[:search]#if the request came from search, send back the search term
+              render :partial => "index_row" ,:locals => {:id => page, :page => params[:page], :sort => @sort , :all => params[:all],:mod => {:search => params[:search]}}         
+           else
+              render :partial => "index_row" ,:locals => {:id => page, :page => params[:page], :sort => @sort , :all => params[:all]}           
+           end
+       else      
+         if params[:search]#if the delete request came from the search screen, redirect back to search otherwise go to the regular mod list
+            redirect_to :controller => 'search',:action => 'search_pages' , :sort => params[:sort], :page => params[:page],  :all => params[:all],:mod => {:search => params[:search]}
+         else
+            redirect_to :back, :page => params[:page], :sort => params[:sort]        
+         end
+       end
      end
    end
 
+   def set_owner
+    begin
+     @page = @user.pages.find(params[:id])
+    rescue 
+     redirect_to :action => 'index', :list=> 'mine' and return
+    end 
+    @owner = User.find(params[:uid])
+    @page.update_attribute(:created_by, @owner.name) 
+    @page_owners = @page.users
+   if request.xhr?
+     render :partial => 'owners', :layout => false 
+   else
+     redirect_to :action => 'share', :id => @page.id
+   end  
+ end
+ 
  def share
  @scurrent = 'current'
    begin
       @page = @user.pages.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-      logger.error("You are tring to access something that doesn't exist . #{params[:id]}" )
-    flash[:notice] = "Successfully removed from shared guide."
       redirect_to :action => 'index' and return
   else
     session[:page] = @page.id
+    session[:current_tab] = @page.tabs.first.id
     @user_list = User.find(:all, :order => "name")
     @page_owners = @page.users
+    url = url_for :controller => 'ica', :action => 'index', :id => @page
+     @message =
+       "I've shared #{@page.header_title} with you. The link to the pagel is: #{url} .  -#{@user.name} "
   end
 end
 
@@ -300,44 +306,44 @@ def share_update
           params[:users].each do |p|
             new_user = User.find(p)
             if new_user and !@page.users.include?(new_user)
-              new_user.add_page_tabs(@page)
+              @page.share(new_user.id,params[:copy]) #user.add_page_tabs(@page)
               to_users << new_user
             end
           end
           flash[:notice] = "User(s) successfully added."
-          send_notices(to_users, @page)
+          send_notices(to_users, params[:body]) if params[:body]
       else
         flash[:notice] = "Please select at least one user to share with."
       end
       redirect_to :action => 'share', :id => @page.id and return
   end
   
-  def send_notices(users, page)
-    @page = @user.pages.find(page)
-    users.each do |p|
-      new_user = User.find(p)
-              begin
-                 Notifications.deliver_share_guide(new_user.email,@user.email,@page.header_title, @user.name)
-              rescue Exception => e
-                flash[:notice] = "User(s) successfully added. Could not send email"
-              else
-                flash[:notice] = "User(s) successfully added and email notification sent."
-              end
+
+ 
+  def send_notices(users, message)
+   users.each do |p|
+    user =  User.find(p)
+         begin
+             Notifications.deliver_share_tutorial(user.email,@user.email, message)
+          rescue Exception => e
+             flash[:notice] = "Page Shared. Could not send email"
+         else
+           flash[:notice] = "User(s) successfully added and email notification sent."
+        end
    end
-  end
+ end
  
  #remove a user from the list of editors via share page
   def remove_user_from_page
     begin
-       page = Page.find(params[:id])
+       user = @page.users.find_by_id(params[:id])
     rescue Exception => e
-     logger.error("Exception in remove_from_user: #{e}" )
      redirect_to :action => 'index', :list=> 'mine'
    else
-    user = page.users.find_by_id(params[:uid])
-    user.delete_page_tabs(page)
+    @page.update_attribute(:created_by, @page.users.at(1).name) if @page.created_by.to_s == @user.name.to_s
+    user.delete_page_tabs(@page)
     flash[:notice] = "User(s) successfully removed."
-    redirect_to :action => 'share', :id => page
+    redirect_to :action => 'share', :id => @page
     end  
   end
   
@@ -356,7 +362,6 @@ Please contact me if you have any questions or suggestions.
              begin
               Notifications.deliver_send_url(params[:email],@user.email,params[:body])
               rescue Exception => e
-                logger.error("Exception in send url: #{e}}" )
                 flash[:notice] = "Could not send email"
                 redirect_to  :action => "send_url" and return
               else
@@ -373,13 +378,22 @@ Please contact me if you have any questions or suggestions.
     rescue ActiveRecord::RecordNotFound
       redirect_to :action => 'index' and return
     else
-    if page.users.length < 2 # if only one owner delete the page
-       @user.pages.delete(page)
-       page.destroy
-    else # just delete the association
+      if page.users.length == 1 # if only one owner delete the page
          @user.pages.delete(page)
-    end 
-    redirect_to :back, :page => params[:page], :sort => params[:sort]
+         page.destroy
+      else # just delete the association
+           page.update_attribute(:created_by, page.users.at(1).name) if page.created_by.to_s == @user.name.to_s
+           @user.pages.delete(page)
+      end 
+      if request.xhr?
+        render :text => "" #delete the table row by sending back a blank string.  The <tr> tags still exist though        
+      else
+         if params[:search]#if the delete request came from the search screen, redirect back to search otherwise go to the regular mod list
+            redirect_to :controller => 'search',:action => 'search_pages' , :sort => params[:sort], :page => params[:page],  :all => params[:all],:mod => {:search => params[:search]}
+         else
+            redirect_to :back, :page => params[:page], :sort => params[:sort] 
+         end      
+      end
     end
 end
  

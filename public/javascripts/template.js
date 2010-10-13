@@ -1,4 +1,5 @@
 //open links in new window
+//<a href="document.html" rel="external">external link</a>
 
 function externalLinks() {  
  if (!document.getElementsByTagName) return;  

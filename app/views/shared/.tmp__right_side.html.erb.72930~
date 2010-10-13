@@ -1,0 +1,107 @@
+	<% unless @local.book_search.blank? and @local.site_search.blank? and @local.g_search.blank?%>
+		<div class="item search"><div class="item2">
+		    <div id="search">
+			<ul>
+		      <% unless @local.g_search.blank?%>  <li class="selected"> <a href="#" rel="guides"><span>Guides</span></a></li><%end%>
+		     <% unless @local.book_search.blank?%>   <li> <a href="#" rel="books"><span>Books</span></a></li><%end%>
+		     <% unless @local.site_search.blank?%>   <li class="last"> <a href="#" rel="library"><span>Library</span></a></li><%end%>
+		    </ul>
+			</div>
+		    <div class="module">
+		       <% unless @local.g_search.blank?%>
+				   <div id="guides" class="tabcontent">
+			        <label>Search Library Guides</label> 
+					 <%= @local.g_search%>
+				  </div>
+				<%end%>  
+			  <% unless @local.book_search.blank?%>
+			  <div id="books" class="tabcontent">
+		        <label>Search Books, Articles, Journals</label>
+				  <%=@local.book_search%>
+			  </div>
+			  <%end%>
+			  <% unless @local.site_search.blank?%>
+			  <div id="library" class="tabcontent">
+		        <label>Search Library Website</label> 
+				  <%=@local.site_search%>
+			  </div>
+			 <%end%> 
+		    </div>    
+		</div></div>
+		
+<script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&amp;lang=en">
+</script>
+<script type="text/javascript">
+//<![CDATA[
+
+	var mysearch=new ddtabcontent("search") //enter ID of Tab Container
+	mysearch.setpersist(true) //toogle persistence of the tabs' state
+	mysearch.setselectedClassTarget("linkparent") //"link" or "linkparent"
+	mysearch.init()
+
+//]]>
+</script>
+<%end%>	
+   
+   <%unless @local.lib_chat.blank? and @local.lib_help.blank?%>	
+		<div class="item"><div class="item2">
+			<div class="module">
+				<%unless @local.lib_chat.blank?%>
+				 <%= @local.lib_chat%>
+				 <br />
+				<%end%>
+				<%unless @local.lib_help.blank?%>
+				<%= image_tag("/images/icons/small_help.png", :alt => 'get help from a librarian')%> <a href="<%=@local.lib_help%>">Make an appointment with a Librarian</a>
+				<%end%>
+				
+			</div>
+		</div></div>
+  <%end%>				
+
+  <div class="item"><div class="item2">
+				<div class="module">
+					<p id="overview" class= 'center'>
+					<a href="#" rel="all" class ="selected">About These Guides</a> <br />
+					<a href="#" rel="students">Students</a> | <a href="#" rel="teachers">Instructors</a> | <a href="#" rel="librarians">Librarians</a> 
+					</p>
+	                  <div id="all" class="tabcontent">
+						<p>Library guides and tutorials suggest tips and search strategies for finding and using information in a course, discipline, topic or format. 
+						</p>
+					 </div>
+					 <div id="students" class="tabcontent">
+						<p>These Guides give you a place to start doing university level research in an academic discipline or course assignment. 
+						Return to them to find new resources, related guides or learn about disciplines new to you. 
+						</p>
+					 </div>
+					 <div id="teachers" class="tabcontent">
+						<p>Librarians can quickly create guides to help your students find the resources you want them to use,
+						 including discipline specific article databases, core journals, scholarly reference works and key web sites
+						  important to your field or course.   
+						  <% unless @local.lib_help.blank?%>
+							<a href="<%=@local.lib_help%>">Contact a Librarian</a> if you would like something tailored for your specific subject or assignment.
+						 <%end%>
+						  </p>
+					 </div>
+					 <div id="librarians" class="tabcontent">
+						<p>These Library Guides are created with Oregon State University Libraries' open source tool, Library &agrave; la Carte. 
+						The tool was developed to quickly and easily create subject and course guides. Learn more about  <a href="http://alacarte.library.oregonstate.edu">Library &agrave; la Carte</a>.
+						</p>
+					 </div>
+				
+				</div>
+			</div></div>
+
+	<script type="text/javascript">
+//<![CDATA[
+
+
+	var myov=new ddtabcontent("overview") //enter ID of Tab Container
+	myov.setpersist(true) //toogle persistence of the tabs' state
+	myov.setselectedClassTarget("link") //"link" or "linkparent"
+	myov.init()
+
+//]]>
+</script>
+
+
+	

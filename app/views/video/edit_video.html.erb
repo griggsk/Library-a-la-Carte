@@ -15,7 +15,13 @@
 		<div id ='videos'>
 			<%=render :partial => '/video/video', :collection => @mod.videos %>
 		</div>
-		
+		 <%= sortable_element 'videos', 
+                :url => {:controller => 'video' ,:action => "sort" }, 
+                :complete => visual_effect(:highlight, 'videos'), 
+                :handle => 'handle',
+                :containment => ['videos'], 
+                :constraint => false,
+				:tag => :div %>
 		
 		<label><%= link_to_function image_tag("/images/icons/add.png", :title => 'Click to add an video', :alt => '', :border => 0)+" Add Video by URL" do |page| 
 					    page.insert_html :bottom, :videos, :partial => 'video', :object => Video.new

@@ -1,3 +1,7 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class Authorship < ActiveRecord::Base
  belongs_to :user
  belongs_to :tutorial

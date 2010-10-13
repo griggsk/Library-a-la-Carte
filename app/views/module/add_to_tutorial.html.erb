@@ -3,13 +3,13 @@
 	<%=render :partial => 'title_actions'%>
 	</h3>
 	<h4>
-		<%=link_to "Tutorials", :controller => 'module', :action =>'tutorials', :id => @mod.id, :type => @mod.class %> >> Add to Tutorials
+		<%=link_to "Add To/Used On", :controller => 'module', :action =>'manage', :id => @mod.id, :type => @mod.class %> >> Add to Tutorials
 	</h4>
 	<% if flash[:error] -%>
 	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
 	<% end -%>
 
-<p> Check the box next to the unit on the tutorials you want to add the module to then click the button at the bottom of the list.</p>
+<p> Check the box next to the unit you want to add the module to.</p>
 <%unless @tutorials.size <1%>
 	 	<% form_tag :action => 'add_to_tutorial', :id => @mod.id, :type => @mod.class do%> 
 	        

@@ -1,0 +1,19 @@
+	<h2><%=h @mod.module_title%></h2>
+	<div class="module">
+		<%unless @mod.information.blank?%><%= @mod.information%><%end%>
+		<% @mod.videos.each do |video|
+			 @vid = video.retrieve_video
+				unless @vid.blank?%>
+							<p>
+					       <%= render :partial => "video/player" %>
+						   </p>
+					<% else %>
+						<p> No Video Found. </p>
+					<% end %>	 
+					 <%unless video.description.blank?%><br /> <%=h(video.description)%><%end%>
+		<%end%>
+		</ul>
+		<noscript>
+		You must have javascript enabled to view this content
+	</noscript>
+	</div>

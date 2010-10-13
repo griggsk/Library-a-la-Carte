@@ -1,5 +1,10 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class DashboardController < ApplicationController
  before_filter :clear_sessions, :only =>[:index]
+
 layout 'tool'
 
   def index
@@ -43,25 +48,13 @@ layout 'tool'
   
   def my_account
     if request.post?
-      if @user.update_attributes(:password=>params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
-        flash[:notice]="Password Changed"
-        redirect_to(:action => 'my_account')
-      
+      if @user.update_attributes(params[:user])
+          flash[:notice]="Account Changed"
+          redirect_to :action => 'index' and return
       end
     end
   end
   
-  def account_info
-  if request.post?
-      if @user.update_attribute(:name, params[:user][:name])and @user.update_attribute(:email, params[:user][:email])
-        flash[:notice]="Account Changed"
-        redirect_to(:action => 'my_account')
-      else
-        flash[:notice]="Account Not Changed"
-        redirect_to(:action => 'my_account')
-      end
-    end
-  end
   
 
   

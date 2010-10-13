@@ -1,0 +1,61 @@
+<fieldset>
+<div id="main">
+<h3 class='title'> 
+<%=render :partial => 'title_actions'%>
+</h3>	
+<h4><%=link_to 'Edit Guide', :controller => 'srg', :action => 'edit',  :id => @guide%> >> Related Subject Guides</h4>
+   	<% if flash[:notice] -%>
+	    <div id="error_wrapper">    <div id="notice" ><%= flash[:notice] %></div></div>
+	<% end -%>
+<p><%= related_link %> <span class = 'more_help'  onMouseover="fixedtooltip(AUTO_RELATED_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+<%= image_tag "spinner.gif", :id => "spinner_sort", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
+</p>
+
+ <div id="share_left">
+ 	<% form_tag :action => 'edit_relateds'  do%>
+ 	<label>Add Related Guides  <span class = 'more_help'  onMouseover="fixedtooltip(ADD_RELATED_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+    </label>
+	    <select id="guide_id" name="relateds[]" multiple="multiple"  size = 8>
+			<%= options_from_collection_for_select(@guides, 'id', 'guide_name', @relateds) %>
+	    </select>
+		<br /><div class = 'tip'> (Click CTRL or Cmnd to select multiple guides)</div>
+  
+	
+		<div id="submit_button">
+		<%= submit_tag 'Update', :class => "submit"  %>		
+		<p><%= link_to 'Cancel', :action => 'edit',:id => @page %></p>
+		</div>
+		<%end%>	
+    </div>
+  
+	<div id="share_right">
+		<br />
+		 	<div id="boxes">
+			<div class="item">
+			<div class ="item2">
+				<h2>Related Subject Guides</h2>
+				<div id="suggestions" class="module">
+				<%if @relateds.length < 1%>
+					<p><b>This page has no related guides.</b></p>
+				<%else%>
+					<ul class="undeco no_indent">
+						<%@relateds.each do |guide|%>
+							<%guide_url = url_for :controller => 'srg', :action => 'index', :id => guide%>
+				   			<li>
+				   				<%= link_to h(guide.guide_name), guide_url, :title => "#{h(guide.description)}", :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes'] %>
+								<%= link_to image_tag("/images/icons/remove.png", :title => 'Remove from related guides list', :alt => 'remove', :border => 0), { :action => 'remove_related', :gid => guide.id}, :confirm => 'Are you sure you want to remove this guide from the related guides list?', :method => :post %>
+							</li> 	
+						<%end %> 
+					</ul>
+				<%end%>	
+			 </div>
+			 <div class="bot"><div></div></div>
+			</div>
+		</div>
+	  </div>
+	</div>
+	
+	<br style="clear: both" /> 
+	
+ <%=render :partial => 'side_bar'%>
+</fieldset>

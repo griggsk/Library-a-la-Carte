@@ -1,0 +1,54 @@
+<%= render :partial => 'ort/top'%>
+
+<div id="content">
+	<!--<div id="item-corner"></div>-->
+	<%if @tutorial.graded == 1%>
+	<div id="content-column2">
+		<div class="item"><div class="item2"><div class="item3">
+			<div id='graded'>
+				<p><%=image_tag("/images/icons/warning.png", :title => 'Quiz Warning', :alt => 'Quiz Warning')%>
+				This tutorial has <b><%=pluralize @tutorial.units.length, 'unit'%></b> and <b><%=pluralize @tutorial.quizzes.length, 'quiz'%></b>. <br />
+				Make sure you complete all the quiz questions. Remember, you can only take the graded quizzes once.</p> 
+ 			</div>	
+		</div></div></div>
+	</div>
+	<%end%>	
+	
+	<div id="content-column1">
+		<h2>About this tutorial</h2>
+		<div id= 'toc'><%=@tutorial.description%></div>
+			<div class="start">
+			<%if !@student && @tutorial.graded == 1%>
+				<%=link_to 'Login', :controller => 'student', :action => 'login', :id => @tutorial %>
+			<%else%>
+				<%=link_to 'Start', :controller => 'ort', :action => 'start', :id => @tutorial %>
+			<%end%>
+		</div>
+	<!-- end content-column1 -->
+	</div>
+	
+	<div id="content-column1">
+		<h2>What to expect</h2>
+			<% unless @tutorial.unitizations.blank? %>
+			<ol id="toc">
+			<%
+		        @tutorial.unitizations.each do |uz| 
+				unit = uz.unit%>
+					<li><%=link_to unit.title, {:controller => 'ort', :action => 'unit', :id =>@tutorial, :uid => unit.id}%>
+					<p><%=unit.description%></p>
+					</li>
+				<%end%>
+			 </ol> 
+		   <%end%>
+	<!-- end content-column1 -->
+	<div id= 'toc'>
+	<p>Last Update: <%=@updated%></p>
+	<p>	 <%if @tutorial.tag_list.length > 0 %> Tagged with: <% @tutorial.tag_list.each do |tag|%> <%= link_to tag, { :action => :tagged, :id => tag }%><%end%> <%end%></p>
+	</div>	
+	</div>
+	
+		
+	
+	
+<!-- end content -->
+<div class="bot"><div></div></div></div>

@@ -1,0 +1,50 @@
+	<fieldset>
+     <h3 class='title'> 
+	<%=render :partial => '/module/title_actions'%>
+	</h3>
+	<h4>
+		<%if @page || @guide%>
+		<%=link_to "Edit Content", :controller => if @page then 'page' elsif @tab then 'guide' end, :action =>'edit', :id => @page || @guide %> >> Edit <%=@mod.module_title%>
+		<%elsif @tutorial%>
+		<%=link_to "Units", :controller => 'unit', :action =>'units', :id => @tutorial %> >> Edit <%=@mod.module_title%>
+		<%else%>
+			<%=link_to "Quiz", :controller => 'quiz', :action =>'edit_quiz', :id => @mod %> >> <%=link_to "Question", :controller => 'quiz', :action =>'edit_question', :id => @mod , :qid => @question%>
+		    >> Answer
+		<%end%>
+	</h4>
+	<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+     	<%= error_messages_for 'answer' %>
+	 <%form_tag({:controller => 'quiz', :action => 'edit_answer', :id => @mod, :qid => @question.id} , {:multipart => true})  do %>
+			<label for="mod_label"><%=@question.question%></label>
+  				<%=render :partial => '/quiz/answer_'+@question.q_type %>			
+				  	
+		`<div id="submit_button">
+			  <%= submit_tag 'Save', :class => "submit" %>  
+			  <%unless @question.q_type == 'TF' || @question.q_type == 'FW' %>
+			  or  <%= submit_tag 'Save &amp; Add Another Answer', :class => "submit" %>
+			  <%end%>
+			  <p> <%= link_to 'Cancel', :controller => 'module', :action => 'index',:id => @mod, :type =>@mod.class, :list => 'mine', :sort => 'name' %></p>
+		  </div>				
+	  <% end -%> 
+	   
+	    <div id ='answers'>
+	    	<fieldset>
+	    		 <%unless @question.answers.blank?%>
+		    		<h4> Answers for:  <%=@question.question%></h4>
+					<%@question.answers.uniq.each do |answer|
+						unless @answer and answer.id == @answer.id%>			
+						   	<p class ="answer_preview">
+						   		<%=render :partial => '/quiz/preview_answer_'+@question.q_type, :locals => {:answer => answer} %>
+						   	</p>
+						<%end
+					 end%>	
+			  <%end%>			
+			</fieldset>				
+		</div>
+	   
+</fieldset>
+			  
+			  
+

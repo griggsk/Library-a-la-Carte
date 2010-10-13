@@ -1,3 +1,7 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class VideoController < ApplicationController
   before_filter :module_types
   before_filter :current_page
@@ -37,7 +41,7 @@ def update_video
    @mod = find_mod(params[:id], "VideoResource")
    @query = params[:search_value] 
    begin
-       @list = Youtube::Video.find(:first, :params => {:vq => @query, "max-results" => '5'})
+       @list = Youtube::Video.find(:first, :params => {:vq => @query, "max-results" => '10'})
    rescue Exception
       @list = ""
    end
@@ -47,7 +51,13 @@ def update_video
  def search_preview
    @style ='width:290px; height:250px;'
    @mod = find_mod(params[:id], "VideoResource")
-   @vid = "http://www.youtube.com/v/"+Video.get_id(params[:vid])+";f=videos&amp;app=youtube_gdata" 
+   @vid = "http://www.youtube.com/v/"+Video.get_id(params[:vid])+"&amp;fs=1&amp;rel=0" 
+ end
+ 
+ def enlarge_video
+   @style ='width:290px; height:250px;'
+   @mod = find_mod(params[:id], "VideoResource")
+   @vid = "http://www.youtube.com/v/"+Video.get_id(params[:vid])+"&amp;fs=1&amp;rel=0" 
  end
  
  def save_video
@@ -68,8 +78,8 @@ def copy_video
    else
       @mod = @old_mod.clone
       @mod.global = false
-     if @mod.save
        @mod.label =  @old_mod.label+'-copy'
+     if @mod.save
         @mod.videos << @old_mod.videos.collect{|v| v.clone if v}
         create_and_add_resource(@user,@mod)
           flash[:notice] = "Saved as #{@mod.label}"
@@ -77,6 +87,18 @@ def copy_video
      end
    end  
  end
+
+   #Sort modules function for drag and drop  
+def sort
+  if params['videos'] then 
+     sortables = params['videos'] 
+     sortables.each do |id|
+      video = Video.find(id)
+      video.update_attribute(:position, sortables.index(id) + 1 )
+     end
+   end
+   render :nothing => true 
+end
 
 def select_layout
     if ['search_preview'].include?(action_name)

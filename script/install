@@ -1,0 +1,91 @@
+#!/usr/bin/env ruby
+#
+#Install script to populate the subjects table of the database.
+#By default, this script looks in lib/subjects.txt and uses the
+#abbreviations that work for Oregon State University.  If you are
+#at a university other than OSU, you will want to verify these
+#subjects are valid for your institution.
+
+require File.dirname(__FILE__) + '/../config/boot'
+#require 'environment'
+require File.dirname(__FILE__) + '/../config/environment'
+#Load the subjects file, so we can populate the subjects table
+fileName = RAILS_ROOT + '/lib/subjects.txt'
+
+File.open(fileName) do |f|
+  begin
+    line = f.readline
+    if line =~ /^(WARNING)/
+      puts line
+      puts "Continue? [yes/no]"
+      unless gets.chomp =~ /yes/
+        f.close
+        exit
+      end
+    else
+      f.rewind
+    end
+    while line = f.readline
+      #Due to attr_protected being set on subjects in the model,
+      #we have to indirectly assign the subject code then save
+      values = line.split(/\t/)
+      sub = Subject.new
+      sub.subject_code = values[0]
+      sub.subject_name = values[1]
+      sub.save
+    end
+  rescue EOFError
+    f.close
+  end
+end
+
+puts "\nLoaded subjects successfully!\n"
+
+
+#Load the masters file to populate the master table
+fileName = RAILS_ROOT + '/lib/masters.txt'
+
+File.open(fileName) do |f|
+  begin
+    line = f.readline
+    if line =~ /^(WARNING)/
+      puts line
+      puts "Continue? [yes/no]"
+      unless gets.chomp =~ /yes/
+        f.close
+        exit
+      end
+    else
+      f.rewind
+    end
+    while line = f.readline
+      #Due to attr_protected being set on subjects in the model,
+      #we have to indirectly assign the subject code then save
+      sub = Master.new
+      sub.value = line.chomp
+      sub.save
+    end
+  rescue EOFError
+    f.close
+  end
+end
+
+puts "\nLoaded department subjects successfully!\n"
+
+
+#Create the default admin user
+user = User.new :name => "Admin",
+                :password => "adm!n",
+                :password_confirmation => "adm!n",
+                :email => "admin@your-domain.com",
+                :role => "admin"
+user.role = "admin" #attr_protected is set, so assigning indirectly
+user.save
+
+#Create the localization 
+local = Local.new 
+local.save
+
+
+puts "Created default administrator.\n  Username: #{user.email}\n  Password: adm!n\nPlease change the password and email address immediately!\n"
+

@@ -1,0 +1,16 @@
+<table>
+ 	<%=render :partial => "tutorial/t_head" %>
+  <% for tutorial in @search_results %>
+     <tr class="<%= cycle('list-line-odd', 'list-line-even') %>" id="row<%= tutorial.id %>" >
+		<%=render :partial => "tutorial/index_row" ,:locals => {:tutorial => tutorial,:page => @pag, :sort => @sort,:search => @search_term} %>		
+    </tr>
+ <% end %>
+</table>
+<div class="pagination">
+<%if @search_results.total_pages > 1%>
+	<ul>
+		<li><%=will_paginate @search_results, :params => params.merge({:sort=> @sort}).except(:authenticity_token)%></li>
+		<li><%= image_tag "spinner.gif", :id => "spinner_links", :class => 'image', :alt => "Spinner", :style => 'display:none;'%></li>
+	</ul>	  	
+<%end%>
+</div>

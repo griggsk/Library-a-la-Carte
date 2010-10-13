@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+#
+#Install script to populate the dods table
+
+require File.dirname(__FILE__) + '/../config/boot'
+require File.dirname(__FILE__) + '/../config/environment'
+
+#Load the dods.txt file, so we can populate the dods table
+fileName = RAILS_ROOT + '/lib/dods.txt'
+
+File.open(fileName) do |f|
+  begin
+    line = f.readline
+    if line =~ /^(WARNING)/
+      puts line
+      puts "Continue? [yes/no]"
+      unless gets.chomp =~ /yes/
+        f.close
+        exit
+      end
+    else
+      f.rewind
+    end
+    while line = f.readline
+      values = line.split(/'(.*)',\s'(.*)',\s'(.*)',\s'(.*)',\s'(.*)',\s'(.*)',\s([0,1]),\s'(.*)'/)
+      dod = Dod.new
+      dod.title = values[1]
+      dod.url = values[2]
+      dod.startdate = values[3]
+      dod.enddate = values[4]
+      dod.provider = values[5]
+      dod.providerurl = values[6]
+      dod.proxy = values[7]
+      dod.descr = values[8]
+      dod.save
+    end
+  rescue EOFError
+    f.close
+  end
+end
+
+puts "\nLoaded dods successfully!\n"

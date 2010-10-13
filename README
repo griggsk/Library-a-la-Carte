@@ -1,7 +1,7 @@
 ############################# Library a la Carte Requirements #####################################
 
 The Library a la Carte project is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License Version 3. Under Version 3 
+it under the terms of the GNU Affero General Public License V 3.
 
 Thank you for your interest in our program.  
 
@@ -13,35 +13,36 @@ This software requires that you have the following components installed:
 
   Ruby (Version 1.8.7): 
   	http://rubyonrails.org/download
-  Database (MySQL Assumed): 
+  Database (MySQL 5.x Assumed, Postgres supported): 
   	http://wiki.rubyonrails.org/start?redirect=1#database_support
   Rails:
-  	 We have provided a frozen copy of Rails 2.2.3 with this application*
-  Ruby Gems (Version 1.3.1): 
+  	 We have provided a frozen copy of Rails 2.3.5 with this application*
+  Ruby Gems (Version 1.3.6*): 
   	http://rubyonrails.org/download
   Web Server (Nginx, Apache, Mongrel, Webbrick, FastCGI, Passenger): 
   	http://rubyonrails.org/deploy
   
-*freezing/thawing rails can be found here: http://support.tigertech.net/freeze-rails
+*New installs use Rails 2.3.5 and Ruby 1.3.6.
+*Updates can continue to use Rails 2.3.2 and Ruby 1.3.1, see instructions.
+*Freezing/thawing rails can be found here: http://support.tigertech.net/freeze-rails
 
 ############## Required Gems #######################
 You must install these gems before attempting to start Library a la Carte
 
   hpricot:
-  		gem install hpricot-0.8.2		
- 		 
+ 		gem install hpricot --version 0.8.2
   fastercsv:
-  		gem install fastercsv-1.5.0
-  		
+  		gem install fastercsv --version 1.5.0 
   active_youtube:
-  		gem install active_youtube-1.0.0
-  
-  flickr-fu:
-  		gem install flickr-fu-0.1.4
+  		gem install active_youtube --version 1.0.0
+  mime-type:
+  		gem install mime-types --version 1.16		
+  *flickr_fu:
+  		gem install flickr_fu --version 0.3.0
+  *ferret:
+  		gem install ferret --version 0.11.6
   		
-  minme-type:
-  		gem install mime-types-1.16		
-  
+  *New gems required for 1.5
   
 ####################### 3rd Party API Requirements #############################################
 
@@ -50,7 +51,7 @@ For this reason you will need to acquire the required API KEYS
 
 Recaptcha API: http://recaptcha.net/whyrecaptcha.html
 
-The Recaptcha API provides a CAPTCHA for the comment module.
+The Recaptcha API provides a CAPTCHA for the comment module and account registration.
 You will need to sign up for an account to get the private and public key for your domain.
 
 Google API: http://code.google.com/apis/ajaxfeeds/signup.html
@@ -70,7 +71,7 @@ You will need to sign up for an API key:
 Step 1. Create the Databases.
 
 	1.1 Create the following databases in MySQL:
-	
+
 	    alacarte_development
 	    alacarte_test
 	    alacarte_production 
@@ -84,15 +85,15 @@ Step 1. Create the Databases.
 	
 	1.3 In the root directory of your application, run the following command:
 	
-	    rake db:migrate
+	    rake db:schema:load
 	    This will run the initial migration to populate alacarte_development.
 	    Unless Library a la Carte is run in production mode the application uses the development database.
 	    
 	    OPTIONAL
-	    rake db:migrate RAILS_ENV=production 
+	    rake db:schema:load RAILS_ENV=production 
 	    This will run the initial migration to populate alacarte_production
 	    
-	    rake db:migrate RAILS_ENV=test 
+	    rake db:schema:load RAILS_ENV=test 
 	    This will run the initial migration to populate alacarte_test
 	
 	You *should* see messages scrolling by indicating tables have been created.
@@ -104,7 +105,7 @@ Step 2. Configure Environments Variables
 	
 	2.1 Add Action Mailer variables
 	
-	 edit config/initializers/smpt_settings.rb
+	 edit config/initializers/smtp_settings.rb
 	
 	 You will need to specify some additional configuration to tell ActionMailer which server will handle your outgoing e-mail.
 	
@@ -118,17 +119,26 @@ Step 2. Configure Environments Variables
 	Google:
 	Add your Google API key to the #goggle variables section
 	
+	
 	edit config/flick.yml
 	
 	Flickr Keys
-	Add your flickr api keys to the yml file. 
+	Add your flickr api keys to the flickr.yml file. 
 	Be careful to keep the formatting of the file as is - with no space before variable and a tab between variable and value.
 	
+	2.3 Add error notification settings
+	  
+	  edit config/initializers/error_notification.rb
+	  
+	  Add email address where you want error notifications sent to.  Add the email address in between the parentheses %w()
+	  ExceptionNotification::Notifier.exception_recipients = %w(user@email.edu). 
+	  All 500 errors that occur in Library a la Carte will be logged and emailed to this address.
+	  Note: You may see errors, due to robots crawling protected pages.
 
-Step 3.OPTIONAL: Edit and Batch load course subjects and research department values:
+Step 3.OPTIONAL: Edit and Batch load course subjects, research departments, and database subscription:
 
    Use this method to batch load data at install. Optionally, enter data by using Library a la Carte admin tools.
-   See this documentation on entering data in the tool. http://alacarte.library.oregonstate.edu/support
+   See this documentation on entering data in the tool. http://alacarte.library.oregonstate.edu/support. 
    
     OPTION 1: Edit and add data
     
@@ -143,29 +153,40 @@ Step 3.OPTIONAL: Edit and Batch load course subjects and research department val
 	Edit the master subjects to reflect the general subjects for your institution.  
 	The values in masters.txt by default are specific to Oregon State University 
 	departments.  The file format is one subject value per line; use masters.txt as an example.
+	
+	edit: lib/dods.txt 
+	
+	Edit the database of database (dod) file to add your own database subscriptions. 
+	The values in dods.txt are open access databases selected by OSU librarians.
+	The file format is one database per line with comma seperated values.
+	See this documentation http://alacarte.library.oregonstate.edu/support and use dods.txt as an example.
     
     OPTION 2: Batch Load data
 	   
 	 run: script/batchload_data
-	  
-	 This will populate the subjects and masters table with the values found in lib/subjects.txt and lib/masters.txt and lib/dods.txt respectively.
+	 or
+	 ruby script/batchload_data
+	 
+	 This will populate the subjects and masters table with the values found in lib/subjects.txt and lib/masters.txt respectively.
  
      OPTION 3: batch load database subscription data
-     Included is a list of open access databases selected by Oregon State University Librarians. 
      Required for database module: Either run this script and/or enter information through the admin tool.
      
-     run sql script: /db/dods.sql
+     run: script/batchload_dods
+     or 
+     ruby script/batchload_dods
    
-     Command line: mysql -u<user> -p<pass> -h mysqlserver.yourdomain.edu -D carte_production < /path/to/db/dods.sql
-     PHPAdmin: Import  /db/dods.sql
 	    
 
 Step 4. OPTIONAL: Module Configuration
 
-    OPTION 1: Enable read/write access privileges for attachment folders: public/uploads, public/photos
+    OPTION 1: Create attachment folders and enable read/write access privileges for attachment folders: public/uploads, public/photos
     Required if you plan on enabling the attachment module or the image manager to allow users to upload documents and images.
     
-    Unix Command:
+    Unix Command:  
+	   mkdir /path/to/public/uploads
+	   mkdir /path/to/public/photos
+	   
        chmod -R g+w /path/to/public/uploads
        chmod -R g+w /path/to/public/photos
        
@@ -208,19 +229,66 @@ Step 4. OPTIONAL: Module Configuration
      	The complete search URL - tip: to get this string query your catalog and copy the URL carefully removing everything after the search query.
      SEARCH_SCOPE = "&searchscope=13&SORT=D"
      	The searcg URL parameters - usually follows the query in the search URL
- 
-Step 5. Run the install script.
+
+Step 5 Optional: Enable Full Text Search in the tool
+Note: Search is enabled by default which requires these steps. If you do not want to enable search at this time, see this documentation
+and skip this step.
+
+These steps are required to enable full text search within the tool, which enables authors to find their content easier. 
+
+	To avoid corrupt indexes, we must provide a method to write to the index in a background process. You have 2 options. 
+	Option 1 requires more memory, but is more reliable then option 2. If you use Option 2, we suggest
+     you regularly run the indexer script to ensure that it stays in synch with the resources.
+     
+    Enable read/write access to the index directory (The index is located in the root directory and is named index)
+	
+	chmod -R 775 /path/to/index
+   
+    Option 1: Ruby drb server
+    The ferret_server script starts a ruby drb server that listens on port 9010 for search requests.  This port is 
+	configurable in the file config/ferret_server.yml.  
+    
+	In the root directory of the application type:
+	
+	1.  FERRET_USE_LOCAL_INDEX=1 ruby script/runner vendor/plugins/acts_as_ferret/script/ferret_server start 
+	2.  rake rebuild_all_indexes
+
+	When shutting down the server you need to also stop the search server
+	1.  FERRET_USE_LOCAL_INDEX=1 ruby script/runner vendor/plugins/acts_as_ferret/script/ferret_server stop
+	
+	    
+	The rake task rebuild_all_indexes creates a search index in the directory index/development and will have four
+	directories inside of it named shared, shared_guide, shared_page, and shared_tutorial.
+	Any time there are manual changes to the database(changes not created with the application), this rake task
+	will need to be run to update the index.
+	
+	Option 2: Lock Files 
+	If you are unable to run the drb server, there is an alternative method for making the search 
+	thread safe (prevents corrupt search indexes and potential server crashes).  See the README file
+	located in /lib/locks for instructions. 
+	
+	1. rake rebuild_all_indexes
+	The rake task rebuild_all_indexes creates a search index in the directory index/development and will have four
+	directories inside of it named shared, shared_guide, shared_page, and shared_tutorial.
+	Any time there are manual changes to the database(changes not created with the application), this rake task
+	will need to be run to update the index.
+	
+	
+
+
+Step 6. Run the install script.
 
 	In the root directory of the application, type:
 	
 	    script/install_admin
-	
+	    or
+		ruby script/install_admin
 	This will  create the default admin user:
 	
 	    login: admin@your-domain.com 
 	    password: adm!n
-	          
-Step 6. Test Library ala Carte Tool
+	
+Step 7. Test Library ala Carte Tool
 
 	At this time the ala Carte tool should be installed. 
 	Navigate to the root of where you installed the code:  http://yourdomain.com/
@@ -239,17 +307,32 @@ Step 6. Test Library ala Carte Tool
 	
 	
 
-Step 7. OPTIONAL: Move to production and deploy
+Step 8. OPTIONAL: Move to production and deploy
 
 
-7.1 If you have not already populated the production database:
+8.1 If you have not already populated the production database:
 
-	rake db:migrate RAILS_ENV=production 
+	rake db:schema:load RAILS_ENV=production
 	
 	Optionally, you can dump the development database into the production database or
 	edit database.yml and point the production environment variable to a populated database
 	
-7.2 Run in Production Mode
+8.2 Build the production search index and start the search server
+	If the ferret server is running in development, use the stop command detailed in step 6 to stop it before restarting it in
+	production mode.
+	
+	In the root directory of the application type:
+	1.  FERRET_USE_LOCAL_INDEX=1 RAILS_ENV=production ruby script/runner vendor/plugins/acts_as_ferret/script/ferret_server start 	
+	2.  rake rebuild_all_indexes RAILS_ENV=production
+	
+	When shutting down the server you need to also stop the search server
+	1.  FERRET_USE_LOCAL_INDEX=1 ruby script/runner vendor/plugins/acts_as_ferret/script/ferret_server stop
+
+8.3 If you populated a new production database in step 8.1:
+
+	Repeat steps 3 and 5 to populate the production database.
+	
+8.4 Run in Production Mode
 
 	Option 1: Set the Environment in Your .bash_login File on the Server
 	The best way is to set the actual RAILS_ENV environment variable. Rails work best with the bash shell.
@@ -264,10 +347,9 @@ Step 7. OPTIONAL: Move to production and deploy
 	Option 3: Edit environment.rb
 	The final way to set the environment for a shared host is to uncomment the following line at the top of environment.rb:
 	
-	ENV['RAILS_ENV'] ||= 'production'
+	RAILS_ENV = 'production'
 
-
-7.3 Deploy to production server
+8.5 Deploy to production server
 
 	OPTION 1: Mongrel
 	
@@ -323,6 +405,8 @@ Do Files Have the Correct Permissions?
 	¥ The log directory and files must be writable by the user running the FastCGI or Mongrel process. 
 	¥ The public directory must be writable by the user running the FastCGI or Mongrel process if you are using page caching. Rails will run if the public directory is not writable but will not use caching.
 	¥ dispatch.fcgi must be executable, but not writable by others.
+	¥ index must be writable by the application
+	¥ public/photo and public/photos and uploads must be RW (if using)
 
 Are Current Versions of Necessary Files and Requirements Present?
 
@@ -333,13 +417,12 @@ Are Current Versions of Necessary Files and Requirements Present?
 Has the Database Been Migrated to the Correct Version for Your
 Application?
 
-   If you are running in production mode check that you have run the migration or initialized the production database.
+   Check that you have run the migration or initialized the database for the correct environment.  If you are running in production mode 
+   add RAILS_ENV="production" to rail's commands.
  
 Is the server started?
   
-   You must start and stop the web server to make changes to the application
-      
-
+   You must start and stop the web server to make changes to the application. If using Phusion, run touch/tmp/restart.txt.   
 
 ##########################Contact Us ########################
   
@@ -360,11 +443,157 @@ Is the server started?
 	
 	Code: 
 	http://rubyforge.org/frs/?group_id=6732
+	http://github.com/griggsk/Library-a-la-Carte
 	
 	Roadmap and Tickets:
 	https://trac.library.oregonstate.edu/projects/ica/roadmap
 	https://trac.library.oregonstate.edu/projects/ica/report
 	
+################### Upgrading from V1.4.X to V1.5 ############################
+
+
+Step 1. Update your code base. 
+Note: Backup your files first
+	
+    Open the configuration folder: config/ and replace the following files with ones from your backed up copy.
+	
+	1.1 Add Action Mailer variables
+	
+	 config/initializers/smtp_settings.rb 
+	
+	1.2 ADD API Keys
+	
+	 config/initializers/api_settings.rb
+	
+	 config/flick.yml
+	
+	1.3 Add error notification settings
+	  
+	  edit config/initializers/error_notification.rb
+	
+	1.4  Set Rails and Gems Version
+     update your rubygem version to 1.3.6 
+     
+     If you can not update your rubygems then you will need to continue using Rails 2.3.1
+	
+	delete vendor/rails
+	rename vendor/rails-2.3.1 to vendor/rails
+	  
+	  
+Step 2. Upgrade databases
+Note: Back up your databases first
+	
+	
+	rake db:migrate VERSION=002
+	
+	*you should see database commands scroll by*
+	
+	NOTE:
+	If the migration does not run, you may have some previous migrations with a version number that is
+	greater than our upgrade migration version (2).  You can check this by running this command from a mysql prompt:
+	
+	SELECT version from schema_migrations;
+	
+	Change the file db/migrate/002_update_to_1_5.rb to a number greater than that of the largest version number returned
+	from the query.  EX: If the largest version number was 5, change the file name to 005_update_to_1_5.rb
+
+	If you need to undo the migration, you can run the command:
+	 
+	rake db:rollback 
+	 
+	and the last migration will be reversed.  For more information see:
+	
+	http://guides.rubyonrails.org/migrations.html
+	http://api.rubyonrails.org/classes/ActiveRecord/Migration.html
+
+Step 3 Optional: Module Configuration
+
+    OPTION 1: Configure Uploads and Image Manager  
+	 
+	If you have been using the attachment module or image upload in the librarian module:
+	Copy over attachment folders: public/uploads, public/photos
+
+	Unix Command:
+	cp -a /path/to/orig/public/uploads /path/to/new/public/uploads
+	cp -a /path/to/orig/public/photos /path/to/new/public/photos
+	
+	Enable read/write access privileges for attachment folders: public/uploads, public/photos
+
+    Unix Command:
+       chmod -R g+w /path/to/public/uploads
+       chmod -R g+w /path/to/public/photos
+    
+    OPTION 2: Upgrade to image manager (Option 1 required)
+    Required for image manager which enables users to upload and share images.
+    
+    edit: controllers/application_controller.rb
+    
+    In the uses_tiny_mce instantiation find the parameter advimage and replace with advimage_uploader
+    
+    OPTION 3: Configure III OPAC Variables 
+    Required if you want to enable the Course Reserves and  Books Module which provides a method to search for course reserves or
+    catalog records and embed the information directly in a guide.
+    
+  **See initial install instructions above for more module configuration options.
+
+Step 4 Optional: Enable Full Text Search in the tool
+Note: Search is enabled by default which requires these steps. If you do not want to enable search at this time, see this documentation
+and skip this step.
+
+
+     To enable full text search you must be able to write to an index. To avoid corrupt indexes, we must provide a method to write to the index
+     in a background process. You have 2 options. Option 1 requires more memory, but is more reliable then option 2. If you use option 2, we suggest
+     you regularly run the indexer script to ensure that it stays in synch with the resources.
+     
+    Install the ferret gem if you have not already.
+    gem install ferret --version 0.11.6 
+     
+    Enable read/write access to the index directory
+	
+	chmod -R 775 /path/to/index
+   
+    Option 1: Ruby drb server
+    The ferret_server script starts a ruby drb server that listens on port 9010 for search requests.  This port is 
+	configurable in the file config/ferret_server.yml.      
+    
+	In the root directory of the application type:
+	
+	1.  FERRET_USE_LOCAL_INDEX=1 ruby script/runner vendor/plugins/acts_as_ferret/script/ferret_server start 
+	2.  rake rebuild_all_indexes
+
+	When shutting down the server you need to also stop the search server
+	1.  FERRET_USE_LOCAL_INDEX=1 ruby script/runner vendor/plugins/acts_as_ferret/script/ferret_server stop
+	
+
+	The rake task rebuild_all_indexes creates a search index in the directory index/development and will have four
+	directories inside of it named shared, shared_guide, shared_page, and shared_tutorial.
+	Any time there are manual changes to the database(changes not created with the application), this rake task
+	will need to be run to update the index.
+	
+	Option 2: Lock Files 
+	If you are unable to run the drb server, there is an alternative method for making the search 
+	thread safe (prevents corrupt search indexes and potential server crashes).  See the README file
+	located in /lib/locks for instructions.
+	
+	1. rake rebuild_all_indexes
+	The rake task rebuild_all_indexes creates a search index in the directory index/development and will have four
+	directories inside of it named shared, shared_guide, shared_page, and shared_tutorial.
+	Any time there are manual changes to the database(changes not created with the application), this rake task
+	will need to be run to update the index.
+
+Step 5. Customize  NOTE: This update includes changes to customization
+    Please see this documentation for more info:
+	Admin FAQ: http://alacarte.library.oregonstate.edu/support/admin_faq
+	Customize Content Types: http://alacarte.library.oregonstate.edu/support/content_types
+	Configure Module Types: http://alacarte.library.oregonstate.edu/support/enable_mods
+	Customize Template: http://alacarte.library.oregonstate.edu/support/tut_template_customization
+	Customization Map: http://alacarte.library.oregonstate.edu/support/tut_map_customization
+	Customize Search: http://alacarte.library.oregonstate.edu/support/search_customization
+	Manage Database Tables: http://alacarte.library.oregonstate.edu/support/config_db
+	
+
+Step 7. Test and Deploy to Production	
+ *See initial install instructions
 
 ################### Upgrading from V1.3 to V1.4 ############################
 
@@ -382,15 +611,9 @@ Using what ever database tool you are comfortable with run the above sql file.
 Command line: mysql -u<user> -p<pass> -h mysqlserver.yourdomain.edu -D <your database> < /path/to/db/alaCarte_V1.4_update.sql
 PHPAdmin: Import  /db/alaCarte_V1.4_update.sql
 
-
-Step 1.1 Initialize database 
-
-	run: rake locals_update
-
 Step 2. Update your code base. 
 
 Note: Backup your environment.rb and database.yml configuration, as well as any local changes and files.
-
 
 Step 3. Configure Environments Variables
      Note: the configuration has changed, you will need to copy your values from environment.rb into new locations
@@ -532,7 +755,7 @@ Step 6. Customize
 	Manage Database Tables: http://alacarte.library.oregonstate.edu/support/config_db
 	
 
-Step 6. Test 
+Step 7. Test 
 
 
 #########################Older Upgrades########################

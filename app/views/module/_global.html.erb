@@ -1,0 +1,7 @@
+<%if mod.global == 0 or mod.global == false %>
+	<%= link_to_remote image_tag("/images/icons/Minus.png", :title => 'Add this Module to the global list', :alt => 'add to global list', :border => 0), {:url => {:controller => 'module',:action => 'globalize', :id => mod,  :type => mod.class, :page => @page, :sort => @sort,  :all => @all },:update => "global#{mod.id}#{mod.class}" , :confirm => 'Are you sure you want to add this module to the global list?'}, 
+	:href => url_for(:action => 'globalize', :controller => 'module', :id => mod,  :type => mod.class, :page => @page, :sort => @sort,  :all => @all),:method => :post%>
+<%else%> 
+	<%= link_to_remote image_tag("/images/icons/global.png", :title => 'Remove this Module from the global list', :alt => 'remove from global list', :border => 0), {:url => {:controller => 'module',:action => 'globalize', :id => mod,  :type => mod.class, :page => @page, :sort => @sort,  :all => @all },:update => "global#{mod.id}#{mod.class}" , :confirm => 'Are you sure you want to remove this module to the global list?'}, 
+	:href => url_for(:action => 'globalize', :controller => 'module', :id => mod,  :type => mod.class, :page => @page, :sort => @sort,  :all => @all),:method => :post%>
+<%end%>

@@ -1,0 +1,76 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
+<fieldset>
+	<h3>Admin Tools</h3>
+<div id ="share">
+	
+   <fieldset>
+   	<h4>Users</h4>
+	<ul class ="undeco">
+		<li> <%= link_to "Add User" , :controller => 'admin', :action => 'register'%></li>
+		<li> 
+	      <%= link_to "View User Accounts" , :controller => 'admin', :action => 'users'%>
+		</li>
+		<li> 
+	      <%= link_to "View Pending User Accounts" , :controller => 'admin', :action => 'pending_users'%>
+		</li>
+			<li>
+			  <%= link_to "View User Emails" ,  :action => 'email_list'%>
+		</li>
+		<li>
+			  <%= link_to "Auto Archive" , {:action => 'auto_archive'}, :confirm => 'Are you sure you want to auto archive ICAPs?', :method => :post%>
+		</li>
+	
+   </ul>
+   </fieldset>
+  <fieldset>
+	<h4>Overview</h4>
+	<ul class ="undeco">
+		<li>Number of users: <%=@user_count%></li>
+		<li>Number of pages: <%=@page_count%></li>
+		<li>Published pages: <%=@ppage_count%></li>	
+		<li>Archived pages: <%=@apage_count%></li>	
+		<li>Number of guides: <%=@guide_count%></li>	
+		<li>Published guides: <%=@pguide_count%></li>
+		<li>Published tutorials: <%=@ptutorial_count%></li>
+   </ul>
+   
+   </fieldset>
+   <fieldset>
+   	<h4>Customizations</h4>
+	<ul class="undeco">
+		<li> <%= link_to "Templates" , :controller => 'admin', :action => 'customize_layout'%> <br />
+		&nbsp; Add your library's banner and logo, names, useful links, custom color scheme and set the footer information.
+		</li>
+	
+		<li> <%= link_to "Search Engines" , :controller => 'admin', :action => 'customize_search'%>  <br />
+		&nbsp; Add code snippets for a google CSE, catalog and site search.</li>
+		
+		<li> <%= link_to "Configure Content Types" , :controller => 'admin', :action => 'customize_content_types'%>  <br />
+		&nbsp; Configure the types of guides and modules users can create.</li>
+		
+		<li> <%= link_to "Configure Admin Email Addresses" , :controller => 'admin', :action => 'customize_admin_email'%>  <br />
+		&nbsp; Configure the email addresses that you want mail sent to/from.</li>
+	</ul>
+   </fieldset>
+   
+   <fieldset>
+   	<h4>Database Management</h4>
+	<ul class="undeco">
+		
+		<li> <%= link_to "Customize Subjects" , :controller => 'admin', :action => 'subjects'%>  <br />
+		&nbsp; Add, Edit, or Delete Course Subjects.</li>
+		
+		<li> <%= link_to "Customize Master Subjects" , :controller => 'admin', :action => 'masters'%>  <br />
+		&nbsp; Add, Edit, or Delete Guide Master Subjects.</li>
+		
+		<li> <%= link_to "Customize Database Subscriptions" , :controller => 'admin', :action => 'dods'%>  <br />
+		&nbsp; Add, Edit, or Delete Database Subscriptions.</li>
+	</ul>
+   </fieldset>
+   
+    
+</div>
+</fieldset>

@@ -1,0 +1,25 @@
+<%if @taken == false%>
+	<%form_remote_tag :url => {:controller => "quiz", :action => "grade_quiz", :id => @mod.id}  do%>
+			<%@mod.questions.each do |question|%>
+					<fieldset>
+					<%= question.question%> <%= question.points != 0 ? "( "+question.points.to_s + " points )" : ""%>
+					
+						<ul>
+						<%question.answers.each do |answer|%>
+							<li>
+										<%=render :partial => '/quiz/view_answer_'+question.q_type,  :locals => {:answer => answer, :question => question} %>
+							</li>
+				       <%end%>
+					   </ul>
+				   </fieldset>
+			<%end%>
+			<%= submit_tag 'Grade My Quiz', {:class => "submit", :confirm => "This quiz can only be taken once. Are you sure you're ready to grade this quiz?"} %> 
+			<span class="required">You can only take the quiz once.</span>
+			
+	<%end%>
+<%else%>
+	You've taken this quiz already. You may not take it more than one time. <br />
+	You scored: <%=@student.get_total_score(@mod.id)%> out of <%=@mod.possible_points%>
+	<%=link_to_remote "View Results", :url => {:controller => "quiz", :action => "view_quiz_results", :id => @mod.id}%>
+<%end%>	
+

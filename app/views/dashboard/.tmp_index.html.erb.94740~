@@ -1,0 +1,123 @@
+<div id="page-list">
+		 <fieldset>
+		 	<h2>Hello <%=@user.name%></h2>
+		 	<div class="left_side">
+				 	<div id ="share">
+ 					  <fieldset>
+ 					  	<h3>Modules</h3>
+						<p><%=image_tag("/images/icons/image_add.png", :title => 'New Module', :alt => 'add', :border => 0)%> <%=link_to 'Create a New Content Module', :controller => 'module', :action => 'new_mod'%></p>
+						<p><%=image_tag("/images/icons/bookmark_folder.png", :title => 'Browse My Modules', :alt => 'browse', :border => 0)%> <%=link_to 'Browse Content Modules', :controller => 'module', :action => 'index'%></p>						
+						<% unless @user.resource_id.blank?%>
+								<p>
+						 			<%=image_tag("/images/icons/user_comment.png", :title => 'My Contact Module', :alt => 'add', :border => 0)%> <%= link_to "Edit Default Contact Module" , :controller => 'dashboard', :action => 'my_profile', :rid => @user.resource_id %><br />
+						 		</p>
+						<%else%>
+								<p>
+						 			<%=image_tag("/images/icons/user_comment.png", :title => 'Set My Contact Module', :alt => 'add', :border => 0)%> <%= link_to " Set Default Contact Module" , :controller => 'dashboard', :action => 'edit_profile' %>
+								</p>
+						<%end%>
+						<p><%=image_tag("/images/icons/global.png", :title => 'Browse Global Modules', :alt => 'browse', :border => 0)%> <%=link_to 'Browse Global Modules', :controller => 'module', :action => 'index', :list=>'global'%></p>
+						</fieldset>
+						
+						<%if @local.guides_list.include?('pages')%><fieldset>
+						<h3>My Pages</h3>
+						<p><%=image_tag("/images/icons/window_add.png", :title => 'New Page', :alt => 'add', :border => 0)%> <%=link_to 'Create a New Course Page', :controller => 'page', :action => 'new'%></p>
+						<p><%=image_tag("/images/icons/bookmark_folder.png", :title => 'Browse My Pages', :alt => 'browse', :border => 0)%> <%=link_to 'Browse Your Course Pages', :controller => 'page', :action => 'index'%></p>
+						</fieldset><%end%>
+						<%if @local.guides_list.include?('guides')%><fieldset>
+						<h3>My Guides</h3>
+						<p><%=image_tag("/images/icons/guide_add.png", :title => 'New Guide', :alt => 'add', :border => 0)%> <%=link_to 'Create a New Subject Guide', :controller => 'guide', :action => 'new'%></p>
+						<p><%=image_tag("/images/icons/bookmark_folder.png", :title => 'Browse My Guides', :alt => 'browse', :border => 0)%> <%=link_to 'Browse Subject Guides', :controller => 'guide', :action => 'index'%></p>
+	  					</fieldset><%end%>
+						<%if @local.guides_list.include?('tutorials')%><fieldset>
+						<h3>My Tutorials</h3>
+						<p><%=image_tag("/images/icons/guide_add.png", :title => 'New Tutorial', :alt => 'add', :border => 0)%> <%=link_to 'Create a New Tutorial', :controller => 'tutorial', :action => 'new'%></p>
+						<p><%=image_tag("/images/icons/bookmark_folder.png", :title => 'Browse My Tutoroials', :alt => 'browse', :border => 0)%> <%=link_to 'Browse Tutorials', :controller => 'tutorial', :action => 'index'%></p>
+	  					</fieldset><%end%>
+			</div>
+			</div>
+			<div class="right_side">
+				
+				<!-- <div id="boxes">
+					<div class="item"><div class ="item2">
+						<h2>Notices</h2>
+						<div  class="module">	
+					 	<p><%=image_tag("/images/icons/warning.png", :title => 'My Account', :alt => 'Account', :border => 0)%>
+						The tool will be offline tonight from 12-1.
+						</p>
+					</div>
+					 <div class="bot"><div></div></div>
+				</div></div>
+	  			</div> -->
+				
+				<div id="boxes">
+					<div class="item"><div class ="item2">
+						<h2>Overview</h2>
+						<div  class="module">	
+					 		<p>You have <%=@cnum%> published course pages, <%=@acnum%> archived course pages, <%=@gnum%> published subject guides, <%=@tnum%> published tutorials, <%=@atnum%> archived tutorials, and <%=@mnum%> modules.</p>
+					    	<p><%=image_tag("/images/icons/user.png", :title => 'My Account', :alt => 'Account', :border => 0)%><%= link_to"Edit Your Account" , :controller => 'dashboard', :action => 'my_account' %><br />
+							Edit your user name, email or password.</p>
+							<% if sso_enabled && used_sso %>
+								<p>	
+									<%=image_tag("/images/icons/user.png", :title => 'My ONID Account', :alt => 'ONID Account', :border => 0)%><%= link_to"Edit Your ONID Account" , 'http://onid.oregonstate.edu/' %><br />
+									Edit your ONID account.	
+								</p>
+							<% end %>
+							<p>	<%=image_tag("/images/icons/help.png", :title => 'Help FAQ', :alt => 'Help', :border => 0)%><a href="http://alacarte.library.oregonstate.edu/support" target="_blank">Get Help</a> <br />
+							Get help and read about new features.</p>
+					</div>
+					 <div class="bot"><div></div></div>
+				</div></div>
+	  			</div>
+				
+				
+					<div id="boxes">
+					<div class="item"><div class ="item2">
+						<h2>Recent Activity</h2>
+						<div  class="module">	
+						<ul class ='undeco no_indent'>
+							<%for item in @recents%>
+								  <li>
+								  	<%=image_tag("/images/icons/edit.png", :title => 'Edit', :alt => 'Edit', :border => 0)%>
+									 <%= activity_link(item) %>
+								  </li> 
+							<%end%>
+						</ul>
+					</div>
+					 <div class="bot"><div></div></div>
+				</div></div>
+	  			</div>
+				
+				<div id="boxes">
+					<div class="item"><div class ="item2">
+						<h2>Legend</h2>
+						<div  class="module">	
+						<ul class ='undeco no_indent'>
+					 		<li><%=image_tag("/images/icons/edit.png", :title => 'Edit', :alt => 'Edit', :border => 0)%> Edit</li>
+							<li><%=image_tag("/images/icons/document_preview.png", :title => 'View', :alt => 'View', :border => 0)%> Preview</li>
+							<li><%=image_tag("/images/icons/application_add.png", :title => 'Copy', :alt => 'Copy', :border => 0)%> Copy</li>
+							<li><%=image_tag("/images/icons/remove.png", :title => 'Delete', :alt => 'Delete', :border => 0)%> Remove / Delete</li>
+							<li><%=image_tag("/images/icons/user_add.png", :title => 'Share', :alt => 'Share', :border => 0)%> Share</li>
+							<li><%=image_tag("/images/icons/users.png", :title => 'Shared', :alt => 'Shared', :border => 0)%> Shared</li>
+							<li><%=image_tag("/images/icons/Minus.png", :title => 'No', :alt => 'No', :border => 0)%> No</li>
+							<li><%=image_tag("/images/icons/Plus.png", :title => 'Yes', :alt => 'Yes', :border => 0)%> Yes</li>
+							<li><%=image_tag("/images/icons/archive.png", :title => 'Archived', :alt => 'Archived', :border => 0) %> Archived</li>
+							<li><%=image_tag("/images/icons/star.png", :title => 'Starred', :alt => '', :border => 0)%> In Use</li>
+							<li><%=image_tag("/images/icons/no-star.png", :title => 'Not Starred', :alt => 'Stared', :border => 0) %> Not Used</li>
+							<li><%=image_tag("/images/icons/global.png", :title => 'Global', :alt => 'Global', :border => 0)%> Global</li>
+							
+						</ul>
+					    </div>
+					 <div class="bot"><div></div></div>
+				</div></div>
+	  			</div>
+				
+				
+				
+			</div>
+			
+			
+			
+		 </fieldset>
+
+</div>

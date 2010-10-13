@@ -1,2 +1,5 @@
-
- <%=render :partial => 'shared/view_mod'%> 
+<%=render :partial => 'shared/view_mod'%> 
+<% if @search_term%>
+<br />
+<%= link_to "New Search", :controller => 'mobile' , :action => 'index' ,:mod => {:search => @search_term} %>
+<% end %>

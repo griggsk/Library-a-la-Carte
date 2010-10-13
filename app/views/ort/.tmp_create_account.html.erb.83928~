@@ -1,0 +1,46 @@
+<%= render :partial => 'ort/top'%>
+
+<div id="content">
+	<div id="content-column2">
+		<div class="item"><div class="item2"><div class="item3">
+			<p>
+				This Account is for <b><%=@tutorial.full_name%></b>. <br />
+				 You will also need to know
+		        the <b>section number</b> for the class your in. 
+				You can usually find that information on your course syllabus.  
+	        </p>
+		</div></div></div>
+	</div>
+	
+	
+	<div id="content-column1">
+		<h2>Create an Account</h2>
+			<% if flash[:notice] -%>
+          		 <div id="notice" ><%= flash[:notice] %></div>
+   			<% end -%>
+			<% form_tag :controller =>"ort", :action=>'create_account', :id =>@tutorial.id do%>
+				<label for="email">Course Section</label>
+	            <%= select "student","sect_num",@sections, :size =>15, :prompt => 'Select' %>
+				<label for="name">First Name
+	            <%= text_field "student","firstname", :size =>15 %> </label>
+				<label for="name">Last Name
+	            <%= text_field "student","lastname", :size =>15 %> </label>
+				<label for="onid">Username</label>
+	            <%= text_field "student","onid", :size =>25 %>
+				<div class='tip'>e.g. smithj</div>
+	            <label for="email">Email</label>
+	            <%= text_field "student","email", :size =>25 %>
+				<div class='tip'>e.g. smithj@email.edu</div>
+	            <br /><br />
+	            <%= submit_tag 'Sign in', :class => 'submit' %>
+	       <% end %>
+			
+		<h3>Why Create an Account?</h3>
+		<p>This tutorial requires you to sign in so that you can take the graded quizzes. <b>Create an account with your onid name and email address and enter your first and lastname</b>. 
+		</p>
+		
+	<!-- end content-column1 -->
+	</div>
+	
+<!-- end content -->
+</div>

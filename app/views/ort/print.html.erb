@@ -1,0 +1,15 @@
+<h1><%=h @tutorial.name%></h1>
+<%@tutorial.unitizations.each do |uz| 
+			unit = uz.unit%>
+			<%resources = unit.resourceables%>
+			<h2><%= unit.title %></h2>
+					<p><%=unit.description%></p>
+		 		<% unless resources.blank?  %>
+							 <%resources.each do |resable|
+											res = resable.resource
+											mod = res.mod
+											%>
+								      <%=show_mod(mod)%> 
+							 <%end%>
+			   <%end%>
+<%end%> 

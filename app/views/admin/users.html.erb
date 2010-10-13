@@ -1,3 +1,7 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
 <fieldset>
 <h3>Listing Users</h3>
 <% if flash[:notice] -%>
@@ -23,25 +27,37 @@
   </tr>
   
 <% for author in @users %>
-  <tr valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+	<% if author.role != 'pending'%>
+  <tr valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>" id="row<%= author.id %>" >
     <td><%=h author.name %></td>
     <td><%=h author.email %></td>
     <td><%=h author.role %></td>
     <td>
         <%= link_to 'Edit', :action => 'edit', :id => author %> | 
-        <%= link_to 'Delete', { :action => 'destroy', :id => author }, :confirm => 'Are you sure you want to delete this user?', :method => :post %></td>
+		<%= link_to_remote 'Delete', {:url => { :action => 'destroy', :id => author },:update => "row#{author.id}" , :confirm => 'Are you sure you want to delete this user?'},
+			:href => url_for(:action => 'destroy', :controller => 'admin',:id => author)%>
+			</td>
 		<td>
 			<%= link_to 'Pages', :action => 'pages', :id => author %> |
 	       <%= link_to 'Guides', :action => 'guides', :id => author %> |
 		   <%= link_to 'Tutorials', :action => 'tutorials', :id => author %> 
 		</td>
   </tr>
+  <% end %>
 <% end %>
 </table>
 </div>
-<%=will_paginate @users%>
-
-
+<div class="pagination">
+<ul>
+<%if !@all%>
+	<li><%=will_paginate @users%></li>
+	<li><%=link_to 'show all', { :controller => 'admin', :action => 'users', :all => 'all' } %></li>
+	<li><%= image_tag "spinner.gif", :id => "spinner_links", :class => 'image', :alt => "Spinner", :style => 'display:none;'%></li>
+<%else%>
+   	<li><%=link_to 'show less', :controller => 'admin', :action => 'users'%></li>
+<%end%>
+</ul>
+</end>
 </fieldset>
 
 

@@ -1,0 +1,42 @@
+<fieldset>
+<div id="main">
+<h3> 
+<span style="margin-right: 5px;">Save Page As </span>
+</h3>
+<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+<% form_tag :action => 'copy' do%>
+  <!--[form:page]-->
+<div id ='share'>
+<fieldset>
+<h4 <%= %(class="required") if flash[:error] %>>Page Title</h4>
+<div class = 'tip'>A course page title must be unique. Press Ctrl or Command to select or deselect multiple subjects. <span class = 'more_help'  onMouseover="fixedtooltip(PAGE_TITLE_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label></div>
+  <div id="vertical_inputs">
+  <%=render  :partial => "page_title"%> 
+  </div>
+ </fieldset>
+ 
+ <fieldset>
+ 	<h4>Copy Options</h4>
+	<div class = 'tip'>Choose copy if you want to duplicate the modules or, select reuse to keep one copy of each module</div>
+	<p>
+	Copy Page Modules  <%=radio_button_tag 'options', 'copy', :checked => true%> <br />
+	Reuse Page Modules <%=radio_button_tag 'options', 'reuse'%>
+	</p>
+  </fieldset>
+  
+ <fieldset>
+ <h4> Page Metadata</h4>
+  <label for="page_page_description">Description <span class = 'more_help' onMouseover="fixedtooltip(PAGE_DESC, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+  <%= text_area 'page', 'page_description',"class" => 'mceNoEditor', :size => '40x2'  %>
+  
+   <label for="tags">Tags <span class = 'more_help' onMouseover="fixedtooltip(PAGE_TAGS, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+   <%= text_area_tag 'tags', @page.tag_list, {"class" => 'mceNoEditor', :size => '40x2'}  %>
+</fieldset>
+</div>
+<!--[eoform:page]-->
+<%= submit_tag 'Copy Page', :class => "submit"  %>
+<%end%>
+<p><%= link_to 'Cancel', :action => 'index' %></p>
+ </fieldset>

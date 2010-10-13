@@ -1,0 +1,11 @@
+	<h2><%=h @mod.module_title%></h2>
+	<div class="module">
+		<%unless @mod.description.blank?%><%= @mod.description%><%end%>
+		<div id ="quiz">
+		<%if @mod.graded == 1 and !@preview and !@tabs%>
+	  		<%=render :partial => '/quiz/grade_quiz' %>
+		<%else%>
+			<%=render :partial => '/quiz/practice_quiz' %>
+		<%end%>	
+		</div>
+	</div>

@@ -1,0 +1,6 @@
+<%= radio_button_tag question.id, answer.value, nil, 
+					:onclick => "$('feedback#{answer.id}').toggle()" ,
+					:onblur => "$('feedback#{answer.id}').toggle()"%>
+					<strong> <%= answer.value.blank? ? "" : answer.value.gsub("\n",'<br />')%> </strong>
+					 <div id ="feedback<%=answer.id%>" style="display: none;" class ="feedback">
+					 <%=answer.feedback.blank? ? "" : answer.feedback.gsub("\n",'<br />')%></div> 

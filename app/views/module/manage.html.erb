@@ -1,0 +1,110 @@
+<fieldset>
+	<div id="main">
+   <h3 class='title'> 
+	<%=render :partial => 'title_actions'%>
+	</h3>
+	<h4>
+		Add To/Used On
+	</h4>
+	<p>This page shows where the module is used at. You can also add the module to multiple pages, guides or tutorials at one time.</p>
+	<div id="product-list" >
+	<% if @course_pages%>
+				<div id="page_header">Used on <%=@course_pages.length%> Pages 
+				 <%= link_to image_tag("/images/icons/add.png", :title => 'Add to Pages', :alt => 'add', :border => 0)+'Add to Pages', {:controller => 'module', :action => 'add_to_page',  :id => @mod.id,:type => @mod.type}%> 
+	
+				<% if !@course_pages.blank?%>
+				<span class="hide">
+					   	  <%=link_to_function("Show List", nil, :id => 'page_details') do |page|
+											   page.visual_effect(:toggle_blind,"hide_page")
+											   page << "if($('hide_page').visible()){"
+											   page.replace_html 'page_details', "Show List"
+											   page << '}else{'
+											   page.replace_html 'page_details',  "Hide List"
+											   page << '}'
+											  end%> 
+				   </span>
+				<%end%></div>
+			<table id = "hide_page" style="display:none">
+		   		<%@course_pages.each do |page|%>
+					<tr class="<%= cycle('list-line-odd', 'list-line-even') %>">
+						<td>
+							<b><%=h page.header_title%></b>
+						</td>
+						<td width="5%">
+							<%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this Page', :alt => 'Edit', :border => 0), {:controller =>'page', :action => 'edit',  :id => page }, :class=>'space'%>
+							|
+							<%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this Page', :alt => 'View Page', :border => 0), { :controller => "ica", :action => 'index', :id => page}, :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes'],:class=>'space'%>
+						
+						</td>
+					</tr>
+				<%end%>
+			</table>
+	<%end%>
+	<%if @guides%>
+			<div id="guide_header">Used on <%=@guides.length%> Guides
+			<%= link_to image_tag("/images/icons/add.png", :title => 'Add to Guides', :alt => 'add', :border => 0)+'Add to Guides', {:controller => 'module', :action => 'add_to_guide',  :id => @mod.id,:type => @mod.type}%> 
+
+			 <%if !@guides.blank?%>
+			  <span class="hide">
+				   	  <%=link_to_function("Show List", nil, :id => 'guide_details') do |page|
+										   page.visual_effect(:toggle_blind,"hide_guide")
+										   page << "if($('hide_guide').visible()){"
+										   page.replace_html 'guide_details', "Show List"
+										   page << '}else{'
+										   page.replace_html 'guide_details',  "Hide List"
+										   page << '}'
+										  end%> 
+			   </span><%end%>
+			   </div>
+			<table id ="hide_guide" style="display:none">
+		   		<% @guides.each do |guide| %>
+				<tr class="<%= cycle('list-line-odd', 'list-line-even') %>">
+					<td>
+						<b><%= h guide.guide_name%></b>
+					</td>
+					<td width="5%">
+						<%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this Guide', :alt => 'Edit', :border => 0), {:controller =>'guide', :action => 'edit',  :id => guide}, :class=>'space'%>
+					|	<%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this Guide', :alt => 'View', :border => 0), { :controller => "srg", :action => 'index', :id => guide}, :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes'] , :class=>'space'%>
+					
+					</td>
+				</tr>
+				<%end%>
+			</table>
+	<%end%>		
+	<%if @tutorials%>
+		<div id="tut_header">Used on <%=@tutorials.length%> Tutorials 
+		<%= link_to image_tag("/images/icons/add.png", :title => 'Add to Tutorials', :alt => 'add', :border => 0)+'Add to Tutorials', {:controller => 'module', :action => 'add_to_tutorial',  :id => @mod.id,:type => @mod.type}%> 
+	   <%if !@tutorials.blank?%>
+		<span class="hide">
+					   	  <%=link_to_function("Show List", nil, :id => 'tutorial_details') do |page|
+											   page.visual_effect(:toggle_blind,"hide_tutorial")
+											   page << "if($('hide_tutorial').visible()){"
+											   page.replace_html 'tutorial_details', "Show List"
+											   page << '}else{'
+											   page.replace_html 'tutorial_details',  "Hide List"
+											   page << '}'
+											  end%> 
+		</span><%end%>
+		</div>
+		<table id="hide_tutorial" style="display:none">
+	   		<% @tutorials.each do |tutorial| %>
+			<tr  class="<%= cycle('list-line-odd', 'list-line-even') %>">
+				<td>
+					<b><%= h tutorial.full_name%></b>
+				</td>
+				<td width="5%">
+					<%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this Tutorial', :alt => 'Edit', :border => 0), {:controller =>'tutorial', :action => 'update',  :id => tutorial}, :class=>'space'%>
+				|	<%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this Tutorial', :alt => 'View', :border => 0), { :controller => "ort", :action => 'index', :id => tutorial}, :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes'] , :class=>'space'%>
+				
+				</td>
+			</tr>
+			<%end%>
+		</table>
+	<%end%>	
+  </div>
+  </div>
+  </fieldset> 
+  
+
+
+ 

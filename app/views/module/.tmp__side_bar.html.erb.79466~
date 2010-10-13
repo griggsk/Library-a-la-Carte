@@ -1,0 +1,31 @@
+<% content_for(:sidebar) do %> 
+<div id="my_menu" class="sdmenu blue_mod">
+      <div>
+		<%= link_to 'Edit Module', {:controller => 'module', :action => 'edit_content',  :id => @mod, :type => @mod.class }, :class => "top " + ( @ecurrent || "")%>
+		<%= link_to 'Manage Module', {:controller => 'module', :action => 'manage',  :id => @mod, :type => @mod.class, :sort =>'name' }, :class =>@cpcurrent%>
+		<%= link_to 'Tag Module', {:controller => 'module', :action => 'edit_tags',  :id => @mod, :type => @mod.class }, :class => @etcurrent%>
+		<%= link_to 'Share Module', {:controller => 'module', :action => 'share',  :id => @mod , :type => @mod.class}, :class =>@shcurrent%>
+	  <br />
+	  <span>Create New Module</span>
+	   <% form_tag :controller => 'module', :action => 'menu_new' do%>
+      	  <ul>
+      		<li <%= %(class="required") if flash[:mod_title_error] %>>
+				<label for="page_course_name">1. Name<span id="required">*</span></label>
+  				 <%= text_field_tag 'name',nil,"size" => 18, :value => flash[:mod_title]  %>
+			</li>
+			<li <%= %(class="required") if flash[:mod_type_error] %>> 
+			   <label for="mod_type">2. Type<span id="required">*</span></label>
+  				<%= select_tag('type',  %{<option value="">Select</option>} + options_for_select(@types), {:selected => flash[:mod_type], 'style'=>"width: 143px"}) %>
+			</li>
+			<li> 
+			   <label for="mod_type">3. Tags </label>
+  				<%= text_field_tag 'tags', @tags, "size" => 18  %></li>
+			<li>
+				<b>4.</b>  <%= submit_tag 'Create' %>
+			</li>
+      	</ul>	
+	  <%end%>
+	  </div>
+ </div>
+	
+<%end%>

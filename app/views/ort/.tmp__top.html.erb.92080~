@@ -1,0 +1,21 @@
+<h1><%=h @tutorial.name%></h1>
+
+<ul id="tabs">
+	<li><%=link_to '<span>Start</span>', :controller => :ort, :action => :index, :id => @tutorial%></li>
+	
+	<%@tutorial.unitizations.each do |uz| 
+			unit = uz.unit%>
+			<%resources = unit.resourceables%>
+			<%if !unit.slug.blank?%><li><%=link_to h unit.slug, {:controller => 'ort', :action => 'unit', :id =>@tutorial, :uid => unit.id}, :title =>unit.title%></li><%end%>
+	 <%end%>
+	
+	<%if @tutorial.graded?%>
+	 <li>
+		<%if @student%>
+			<%= link_to '<span>My Quizzes</span>', :controller => :ort, :action => :quizzes, :id => @tutorial %>
+		<%else%>
+			<%= link_to '<span>Login</span>', :controller => :ort, :action => :login, :id => @tutorial %>
+	   <%end%>
+	 </li>  
+	<%end%>
+</ul>

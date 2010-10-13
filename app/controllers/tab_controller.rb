@@ -1,3 +1,7 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class TabController < ApplicationController
   include Paginating
   before_filter :module_types, :only =>[ :add_modules, :page_add_modules]
@@ -9,90 +13,86 @@ class TabController < ApplicationController
   
   #create a new tab
   def create
-     if request.post?
+     if Guide.exists?(@guide) and request.post?
        if @guide.reached_limit?
           flash[:error] = "Could not create the tab. This guide has reached the 6 tab limit" 
           redirect_to :controller => 'guide', :action => 'edit', :id => @guide
        else
           tab =  Tab.new
           tab.attributes = params[:tab]
-          if tab.save
-            @guide.add_tab(tab)
-            session[:current_tab] = tab.id
-            redirect_to :controller => 'guide', :action => 'edit', :id => @guide
-          else
-           redirect_to :controller => 'guide', :action => 'edit', :id => @guide
-          end
-       end
+          tab.position = @guide.tabs.length + 1
+          @guide.tabs << tab
+          session[:current_tab] = tab.id
+          redirect_to :controller => 'guide', :action => 'edit', :id => @guide
+      end
+      else
+       flash[:notice] = "Please select a Guide"
+       redirect_to :controller => 'guide', :action => 'index'
      end
   end
   
     def page_create
-     if request.post?
+     if Page.exists?(@page) and request.post?
        if @page.reached_limit?
-          flash[:error] = "Could not create the tab. This guide has reached the tab limit" 
+          flash[:error] = "Could not create the tab. This page has reached the tab limit" 
           redirect_to :controller => 'page', :action => 'edit', :id => @page
        else
           tab =  Tab.new
           tab.attributes = params[:tab]
-          if tab.save
-            @page.add_tab(tab)
-            session[:current_tab] = tab.id
-            redirect_to :controller => 'page', :action => 'edit', :id => @page
-          else
-           redirect_to :controller => 'page', :action => 'edit', :id => @page
-          end
+          tab.position = @page.tabs.length + 1
+          @page.tabs << tab
+          session[:current_tab] = tab.id
+          redirect_to :controller => 'page', :action => 'edit', :id => @page
        end
+     else
+       flash[:notice] = "Please select a Page"
+       redirect_to :controller => 'page', :action => 'index'
      end
   end
   
   #show the selected tab. uses ajax to update the tab.
   def show
-    @ecurrent = 'current'
-    @tabs = @guide.tabs
-    begin
-     @tab  = @tabs.select{ |t| t.id == params[:id].to_i}.first
-    rescue ActiveRecord::RecordNotFound
-      logger.error("You are tring to access something that either doesn't exist or you don't have access to. #{params[:id]}" )
-      flash[:notice] = "You are tring to access something that either doesn't exist or you don't have access to."
-       redirect_to :controller => 'guide', :action => 'edit', :id => @guide and return
-    else 
+   if Guide.exists?(@guide)
+      @ecurrent = 'current'
+      @tabs = @guide.tabs
+      @tab  = @tabs.select{ |t| t.id == params[:id].to_i}.first
       session[:current_tab] = @tab.id
-      if @tab.template ==2
-        @mods_left  = @tab.left_resources
-        @mods_right = @tab.right_resources
+      if @tab and request.xhr?
+         if @tab.template ==2
+          @mods_left  = @tab.left_resources
+          @mods_right = @tab.right_resources
+        else
+          @mods = @tab.tab_resources
+        end
+        render :partial => 'guide/edit_tab', :layout => false 
       else
-        @mods = @tab.tab_resources
+        redirect_to :controller => 'guide', :action => 'edit', :id => @guide
       end
-    end
-    if request.xhr?
-      render :partial => 'guide/edit_tab', :layout => false 
     else
-      redirect_to :controller => 'guide', :action => 'edit', :id => @guide
+        render :text => "Please refresh your browser.", :layout => false 
     end
   end
   
-    def page_show
-    @ecurrent = 'current'
-    @tabs = @page.tabs
-    begin
-     @tab  = @tabs.select{ |t| t.id == params[:id].to_i}.first
-    rescue ActiveRecord::RecordNotFound
-       redirect_to :controller => 'page', :action => 'edit', :id => @page and return
-    else 
-      session[:current_tab] = @tab.id
-      if @tab.template ==2
-        @mods_left  = @tab.left_resources
-        @mods_right = @tab.right_resources
-      else
-        @mods = @tab.tab_resources
-      end
-    end
-    if request.xhr?
-      render :partial => 'page/edit_tab', :layout => false 
+def page_show
+    if Page.exists?(@page)
+        @ecurrent = 'current'
+        @tabs = @page.tabs
+        @tab  = @tabs.select{ |t| t.id == params[:id].to_i}.first
+        if @tab and request.xhr?
+           session[:current_tab] = @tab.id
+            if @tab.template ==2
+              @mods_left  = @tab.left_resources
+              @mods_right = @tab.right_resources
+            else
+              @mods = @tab.tab_resources
+            end
+            render :partial => 'page/edit_tab', :layout => false 
+        else
+            redirect_to :controller => 'page', :action => 'edit', :id => @page
+        end  
     else
-      redirect_to :controller => 'page', :action => 'edit', :id => @page
-    end
+         render :text => "Please refresh your browser.", :layout => false 
+    end     
   end
  
   def sort_tabs
@@ -107,41 +107,38 @@ class TabController < ApplicationController
  end
  
   def delete
+   if Guide.exists?(@guide)
     tabs = @guide.tabs
-    unless tabs.length == 1
-      begin
-       tab  = tabs.select{ |t| t.id == params[:id].to_i}.first
-      rescue ActiveRecord::RecordNotFound
-        logger.error("You are tring to access something that either doesn't exist or you don't have access to. #{params[:id]}" )
-        flash[:notice] = "You are tring to access something that either doesn't exist or you don't have access to."
-        redirect_to :back
-      else 
-      tabs.delete(tab)
-      end
+      unless tabs.length == 1
+           tab  = tabs.select{ |t| t.id == params[:id].to_i}.first
+          tabs.destroy(tab)
+          session[:current_tab] = nil
+      else
+          flash[:error] = "Can not delete the tab. A guide must have at least one tab." 
+      end  
+      redirect_to :controller => 'guide', :action => 'edit', :id => @guide
     else
-      flash[:error] = "Can not delete the tab. A guide must have at least one tab." 
-    end  
-    session[:current_tab] = nil
-    redirect_to :controller => 'guide', :action => 'edit', :id => @guide
+       flash[:notice] = "Please select a Guide"
+       redirect_to :controller => 'guide', :action => 'index'
+    end
+  
   end
   
  def page_delete
-    tabs = @page.tabs
-    unless tabs.length == 1
-      begin
-       tab  = tabs.select{ |t| t.id == params[:id].to_i}.first
-      rescue ActiveRecord::RecordNotFound
-        logger.error("You are tring to access something that either doesn't exist or you don't have access to. #{params[:id]}" )
-        flash[:notice] = "You are tring to access something that either doesn't exist or you don't have access to."
-        redirect_to :back
-      else 
-      tabs.delete(tab)
-      end
+   if Page.exists?(@page)
+      tabs = @page.tabs
+      unless tabs.length == 1
+         tab  = tabs.select{ |t| t.id == params[:id].to_i}.first
+        tabs.destroy(tab)
+        session[:current_tab] = nil
+      else
+        flash[:error] = "Can not delete the tab. A guide must have at least one tab." 
+      end  
+       redirect_to :controller => 'page', :action => 'edit', :id => @page
     else
-      flash[:error] = "Can not delete the tab. A guide must have at least one tab." 
-    end  
-    session[:current_tab] = nil
-    redirect_to :controller => 'page', :action => 'edit', :id => @page
+       flash[:notice] = "Please select a Page"
+        redirect_to :controller => 'page', :action => 'index'
+    end
   end
  
  #Sort modules function for drag and drop  
@@ -173,34 +170,41 @@ end
     s = params[:mid1] + params[:mid2]
     unless session[:add_mods].include?(s)
       session[:add_mods] << s
-   end
+  end
+   render :nothing => true 
  end  
  
   def add_modules
+     setSessionGuideId
      @amcurrent = 'current'
      @sort = params[:sort] || 'label'
      session[:add_mods] ||= []
      @mods = @user.sort_mods(@sort)
-      @mods = paginate_mods(@mods, params[:page] ||= 1, @sort)     
+      @mods = paginate_mods(@mods, params[:page] ||= 1, @sort)    
+      @search_value = "Search My Modules"
        if request.xhr? 
           render :partial => "shared/add_modules_list", :layout => false
        elsif request.post? and !session[:add_mods].nil?
          @tab.update_resource(session[:add_mods]) 
+         @guide.update_users if @guide and @guide.shared?
          session[:add_mods] = nil
          redirect_to :action => "show", :id => @tab.id
       end
   end 
   
   def page_add_modules
+     setSessionGuideId
      @amcurrent = 'current'
      @sort = params[:sort] || 'label'
      session[:add_mods] ||= []
      @mods = @user.sort_mods(@sort)
-      @mods = paginate_mods(@mods, params[:page] ||= 1, @sort)     
+      @mods = paginate_mods(@mods, params[:page] ||= 1, @sort)   
+      @search_term = "Search My Modules"
        if request.xhr? 
           render :partial => "shared/add_modules_list", :layout => false
        elsif request.post? and !session[:add_mods].nil?
          @tab.update_resource(session[:add_mods]) 
+         @page.update_users if @page and @page.shared?
          session[:add_mods] = nil
          redirect_to :action => "page_show", :id => @tab.id
       end
@@ -242,7 +246,7 @@ end
      rescue ActiveRecord::RecordNotFound
         redirect_to :back and return
       else 
-     @tab.resources.delete(resource)
+      @tab.resources.delete(resource)
       redirect_to :back
      end
   end
@@ -251,12 +255,23 @@ end
 
    #sets the template 
   def toggle_columns
-   if @tab.template == 2
-      @tab.update_attribute(:template, 1)
-   else
-      @tab.update_attribute(:template, 2)
-  end
-  redirect_to :back
+    num = (@tab.template == 2 ? 1 : 2)
+    @tab.update_attribute(:template, num)
+    redirect_to :back
  end
- 
+
+private
+  def setSessionGuideId
+    if @guide
+      session[:guide_id] = @guide.id 
+    else
+      session[:guide_id] = nil
+    end
+    if @page
+      session[:page_id] = @page.id
+    else
+      session[:page_id] = nil
+    end
+    session[:tutorial_id] = nil 
+  end
 end

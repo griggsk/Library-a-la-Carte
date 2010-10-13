@@ -1,0 +1,21 @@
+<%= render :partial => 'ort/top'%>
+<div id="content">
+		<!--<div id="item-corner"></div>-->
+	<div id="content-column">
+			 <h2 class="no-bar">End of <%=@tutorial.full_name%></h2>
+			 <div class="module">
+			 	<%if @tutorial.graded == true%>
+			 	<p>You have completed this tutorial.  You may return to this tutorial at any time to review the material, but you may not re-take the quizzes.  
+				You may view your quiz results any time by clicking on <%= link_to "My Quizzes", {:controller => :student, :action => :quizzes, :id => @tutorial}%></p>
+				<%else%>
+				<p> You have completed this tutorial. </p>
+				<%end%>
+				<p> Thank you!</p>
+				<p><%=image_tag("/images/icons/back.png", :title => 'Back to Tutorials', :alt => 'Back')%> <a href ="/tutorials/">Back to all Tutorials</a></p>   </div>
+			 </div>
+	<!-- end content-column1 -->
+	</div>
+	
+	
+<!-- end content -->
+<div class="bot"><div></div></div></div>

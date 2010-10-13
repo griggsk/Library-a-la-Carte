@@ -2,14 +2,17 @@
 <h2>Tutorial Grades</h2>
 	<% form_tag :action => 'grades' do%>
 	 <p>
-				 <strong>Sort by Section Number:</strong>  
+				 <h3>Sort by Section Number</h3>  
 				    <select id="section" name="section">
 				    <option value="00" selected="selected" >Select</option>
-				   	<%= options_for_select(@sections, @sect)%>
+				   	<strong>Course Section #:</strong><%= options_for_select(@sections, @sect)%>
 				  </select>
 				   <%= submit_tag 'Go' %>
 				   <%if @sect%>
 				       <small><%= link_to 'Show All Sections', :action => 'grades' %></small> 
+					 <h4> <%=link_to 'Export Section '+ @sect+ ' Grades',:controller => 'ort',  :action => 'export', :id => @tutorial.id, :section => @sect%></h4> 
+				   <%else%>
+				    <br /><br />
 				   <%end%>
 		</p>
 	<%end%>
@@ -18,7 +21,7 @@
 	<% else%>
         <%@students.each do |student|%>
 			<fieldset>
-			<h3>Name: <%=student.name%><br />Onid: <%=student.onid%><br />Section: <%=student.sect_num%> <br /> Email: <%=student.email%></h3>
+			<h3>Name: <%=student.name%><br />Section: <%=student.sect_num%> <br /> Email: <%=student.email%></h3>
 			<h3>Total Score: <%=student.final_score%> out of <%=@tutorial.possible_score%></h3>
 		<div id="quizes">
 			<%quizes, left = student.quizes(@tutorial)

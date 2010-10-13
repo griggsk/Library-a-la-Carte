@@ -1,7 +1,3 @@
 	
-			   	<label>	Answer: </label> <%=answer.value%> 
-					<label><% if answer.correct == 0%> 
-						Incorrect 
-						<%else%>
-						Correct 
-						<%end%></label>
+			   	<strong>Answer: <%= answer.value.blank? ? "" : answer.value.gsub('/\n/', '<br />')%> </strong> <br />
+				<strong><%= answer.correct? ? "Correct" : "Incorrect" %> </strong>

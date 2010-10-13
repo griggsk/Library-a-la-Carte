@@ -1,19 +1,19 @@
 <fieldset>
+<div id="main">
 <h3> 
 Save Guide As</h3>
 <% if flash[:error] -%>
 	  <div id="list_error" > <%= flash[:error] %></div>
 <% end -%>
+<div id ='share'>
 <% form_tag :action => 'copy' do%>
-<%= error_messages_for 'guide' %>
-<div id ='share'>	
 <fieldset>
 	<h4 <%= %(class="required") if flash[:error] %>>Title &amp; Subject <span class = 'more_help'  onMouseover="fixedtooltip(GUIDE_NAME_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></h4>
 	 <%=render  :partial => "guide_title"%>
 	<div id="vertical_inputs">
 		
 		<span>
-			<label for="guide_type">Group Guide Under Subjects<span class="required more_help">*</span></label>
+			<label for="guide_type">Subject Categories<span class="required more_help">*</span></label>
 			<select id="guide_type" name="types[]" multiple="multiple" class="page" size = 3>
 				<%= options_from_collection_for_select(@guide_types, 'id', 'value', @selected_types) %>
 		    </select>
@@ -21,44 +21,42 @@ Save Guide As</h3>
 		
 		<br />
    </div>
-   <div class = 'tip'>	(press Ctrl to select more than one item. press Ctrl to deselect an item.)</div>
 </fieldset>
 <fieldset>
- 	<h4>Copy Options</h4>
-	<div class = 'tip'>Choose copy if you want to make copies of the guide's modules or select reuse to add the modules without making copies.</div>
-	<p><b>
-	Copy Guide Modules  <%=radio_button_tag 'options', 'copy', :checked => true%> <br />
-	Reuse Guide Modules <%=radio_button_tag 'options', 'reuse'%>
-	</b></p>
+ 	<h4>Copy Options <span class = 'more_help'  onMouseover="fixedtooltip(GUIDE_COPY_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></h4>
+	<b>
+	 <%=radio_button_tag 'options', 'copy', :checked => true%> Copy the Modules </b>
+	<div class = 'tip' style="display:inline;"> Edits to the modules will not change the original guide's modules.</div><br />
+	<b> <%=radio_button_tag 'options', 'reuse'%> Link the Modules</b>
+	<div class = 'tip' style="display:inline;">
+     Whenever edits are made to the original modules, this guide's modules will be updated too.</div>
   </fieldset>
 
 <fieldset>
-	<h4>Related Courses</h4>
-<span>
-		<label for="guide_type">Add Related Course Subjects</label>
+	<h4>Related Courses <span class = 'more_help'  onMouseover="fixedtooltip(GUIDE_CLASS_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></h4>
+</h4>
+		<label for="guide_type">Associate Course Subjects</label>
 	  		<select id="guide_type" name="subjects[]" multiple="multiple" class="page" size = 3>
 	  			<%= options_from_collection_for_select(@subjects, 'id', 'subject_name', @selected_subjs)%>	<br />
 			</select>
-		</span>	
-		 <div class = 'tip'>	(press Ctrl to select more than one item. press Ctrl to deselect an item.)</div>
+		 <div class = 'tip'>(press Ctrl to select more than one item. press Ctrl to deselect an item.)</div>
 </fieldset>
  <fieldset>
  <h4> Guide Metadata </h4>
   <label for="guide_guide_description">Description <span class = 'more_help' onMouseover="fixedtooltip(PAGE_DESC, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
    <%= text_area 'guide', 'description',"class" => 'mceNoEditor', :size => '40x2'  %>
-   
+   <div class = 'tip'>Enter a short description about the guide.</div>
    <label for="tags">Tags <span class = 'more_help' onMouseover="fixedtooltip(PAGE_TAGS, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
    <%= text_area_tag 'tags', @guide.tag_list, {"class" => 'mceNoEditor', :size => '40x2'}  %>
+	<div class = 'tip'>	example: anthropology, insects, caves</div>
 </fieldset>	
-
-</div>
 
 
 <%= submit_tag 'Save As', :class => "submit"  %>
-
 <%end%>
+</div>
 <p><%= link_to 'Cancel', :action => 'index' %></p>
-
- </fieldset>
+</div>
+</fieldset>
 
  

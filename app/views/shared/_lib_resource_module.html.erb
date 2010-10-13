@@ -6,7 +6,10 @@
 				<%unless @mod.office_hours.blank? %><li>Office Hours: <%=h @mod.office_hours%></li><%end%>
 				<%unless @mod.office_location.blank? %><li>Office Location: <%=h @mod.office_location%></li><%end%>
 				<%unless @mod.chat_info.blank? and @mod.email.blank? %><li>Contact Info: <br />
-				<%unless @mod.chat_info.blank?%><%=@mod.chat_info%><br /><%end%><%=mail_to @mod.email, truncate(@mod.email,:length => 30), :encode => "javascript"%></li><%end%>
-				<%unless @mod.chat_widget.blank?%><li><br /><%= @mod.chat_widget%></li><%end%>
+				<%unless @mod.email.blank?%><%=mail_to @mod.email, truncate(@mod.email,:length => 30), :encode => "javascript"%><%end%>
+				<%unless @mod.chat_info.blank?%><br /><%=@mod.chat_info%><%end%></li><%end%>
+				<%unless @mod.chat_widget.blank?%><li><%= @mod.chat_widget %>
+				<noscript>You must have javascript enabled</noscript><noembed>You must allow embedded content.</noembed>
+				<%end%></li>
 			</ul>
    </div>

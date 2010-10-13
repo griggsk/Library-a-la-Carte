@@ -1,3 +1,7 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 # from http://allwaysbeginner.wordpress.com/2009/03/16/ruby-rails-beginner-try-active-youtube-activeyoutube/
 module ActiveResource
 # overrides the default ActiveResource Connection Class build_request_headers method because of this error:

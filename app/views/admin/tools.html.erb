@@ -1,3 +1,7 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
 <fieldset>
 	<h3>Admin Tools</h3>
 <div id ="share">
@@ -9,7 +13,9 @@
 		<li> 
 	      <%= link_to "View User Accounts" , :controller => 'admin', :action => 'users'%>
 		</li>
-		
+		<li> 
+	      <%= link_to "View Pending User Accounts" , :controller => 'admin', :action => 'pending_users'%>
+		</li>
 			<li>
 			  <%= link_to "View User Emails" ,  :action => 'email_list'%>
 		</li>
@@ -24,11 +30,12 @@
 	<ul class ="undeco">
 		<li>Number of users: <%=@user_count%></li>
 		<li>Number of pages: <%=@page_count%></li>
-		<li>Published pages: <%=@ppage_count%></li>	
-		<li>Archived pages: <%=@apage_count%></li>	
+		<li><%=link_to 'Published Pages', :controller => :ica , :action => 'published_pages', :title => "view portal of published pages"%>: <%=@ppage_count%></li>	
+		<li><%=link_to 'Archived Pages', :controller => :ica , :action => 'archived', :title => "view portal of archived pages"%>: <%=@apage_count%></li>	
 		<li>Number of guides: <%=@guide_count%></li>	
-		<li>Published guides: <%=@pguide_count%></li>
-		<li>Published tutorials: <%=@ptutorial_count%></li>
+		<li><%=link_to 'Published Guides', :controller => :srg , :action => 'published_guides', :title => "view portal of published guides"%>: <%=@pguide_count%></li>
+		<li>Number of tutorials: <%=@tutorial_count%></li>
+		<li><%=link_to 'Published Tutorials', :controller => :ort , :action => 'published_tutorials', :title => "view portal of published tutorials"%>: <%=@ptutorial_count%></li>
    </ul>
    
    </fieldset>
@@ -44,6 +51,12 @@
 		
 		<li> <%= link_to "Configure Content Types" , :controller => 'admin', :action => 'customize_content_types'%>  <br />
 		&nbsp; Configure the types of guides and modules users can create.</li>
+		
+		<li> <%= link_to "Configure Admin Email Addresses" , :controller => 'admin', :action => 'customize_admin_email'%>  <br />
+		&nbsp; Configure the email addresses that you want mail sent to/from.</li>
+		<li id="admin_search_customize">
+			<%=render :partial => "enable_search" ,:locals => {:local => @local} %>	
+		</li>
 	</ul>
    </fieldset>
    

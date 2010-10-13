@@ -1,0 +1,68 @@
+<%= render :partial => 'ort/top'%>
+
+<div id="content">
+	
+	<div id="content-column1">
+		<div id="login">
+		<h2>Log in</h2>
+		<p>
+				This Tutorial is for <b><%=@tutorial.full_name%></b>. <br />
+				Log in with your Onid and email and select the course section you're in.
+	        </p>
+			<div id="message" >
+			<% if flash[:notice] -%>
+          		 <div id="notice" ><%= flash[:notice] %></div>
+   			<% end -%>
+			</div>
+			<p>
+			<% form_tag :controller =>"ort", :action=>'login', :id =>@tutorial.id do%>
+				<label for="email">Course Section</label>
+	            <%= select "student","sect_num",@sections, :size =>15, :prompt => 'Select' %>
+				<label for="name">First Name
+	            <%= text_field "student","firstname", :size =>15 %> </label>
+				<label for="name">Last Name
+	            <%= text_field "student","lastname", :size =>15 %> </label>
+				<label for="onid">Username</label>
+	            <%= text_field "student","onid", :size =>25 %>
+				<div class='tip'>e.g. smithj</div>
+	            <label for="email">Email</label>
+	            <%= text_field "student","email", :size =>25 %>
+				<div class='tip'>e.g. smithj@email.edu</div>
+	            <br /><br />
+	            <%= submit_tag 'Sign in', :class => 'submit' %>
+	       <% end %>
+		  <p><%=link_to 'Sign in Help', :controller => 'ort', :action => 'forgot', :id => @tutorial%></p> 
+			</p>
+			
+		<h3>Why Sign in?</h3>
+		<p>This tutorial requires you to sign in so that you can take the graded quizzes. <b>Sign in with your onid name and email address and enter your first and lastname</b>. 
+		<br /> You will also need to know
+		the <b>section number</b> for the class your in. You can usually find that information on your course syllabus.  You will only be able to sign in for a single section, so please do not guess, else you may not receive a grade. </p>
+		
+		<h3>Having trouble signing in? </h3>
+		<% if flash[:forgotnotice] -%>
+          		 <div id="notice" ><%= flash[:forgotnotice] %></div>
+   			<% end -%>
+		<p>
+			 Enter the email address you previously logged in with and we'll send you your login information.
+		</p>
+		<p>
+			<% form_tag :action=>'forgot' do%>
+       
+            <label for="email">Email</label>
+            <%= text_field "student","email", :size =>54 %>
+            <br /><br />
+            <%= submit_tag 'Send it' %>
+       
+       <% end %>
+		</p>
+		<p> Need more help? Email your Librarian or Course Instructor. </p>
+	<!-- end content-column1 -->
+	</div>
+	</div>
+<!-- end content -->
+<div class="bot"><div></div></div></div>
+
+
+<!-- end wrap, wrap-inner -->
+</div></div>

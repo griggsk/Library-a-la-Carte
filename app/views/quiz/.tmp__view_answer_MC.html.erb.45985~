@@ -1,0 +1,1 @@
+<%= radio_button_tag question.id, answer.value%> <label> <%=answer.value%> </label>

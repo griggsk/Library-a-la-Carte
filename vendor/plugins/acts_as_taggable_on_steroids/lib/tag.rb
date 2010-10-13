@@ -45,12 +45,12 @@ class Tag < ActiveRecord::Base
       end_at = sanitize_sql(["#{Tagging.table_name}.created_at <= ?", options.delete(:end_at)]) if options[:end_at]
       
       conditions = [
-        options.delete(:conditions),
+        (sanitize_sql(options.delete(:conditions)) if options[:conditions]),
         start_at,
         end_at
       ].compact
       
-      conditions = conditions.any? ? conditions.join(' AND ') : nil
+      conditions = conditions.join(' AND ') if conditions.any?
       
       joins = ["INNER JOIN #{Tagging.table_name} ON #{Tag.table_name}.id = #{Tagging.table_name}.tag_id"]
       joins << options.delete(:joins) if options[:joins]
@@ -58,7 +58,7 @@ class Tag < ActiveRecord::Base
       at_least  = sanitize_sql(['COUNT(*) >= ?', options.delete(:at_least)]) if options[:at_least]
       at_most   = sanitize_sql(['COUNT(*) <= ?', options.delete(:at_most)]) if options[:at_most]
       having    = [at_least, at_most].compact.join(' AND ')
-      group_by  = "#{Tag.table_name}.id, #{Tag.table_name}.name, #{Tagging.table_name}.created_at HAVING COUNT(*) > 0"
+      group_by  = "#{Tag.table_name}.id, #{Tag.table_name}.name HAVING COUNT(*) > 0"
       group_by << " AND #{having}" unless having.blank?
       
       { :select     => "#{Tag.table_name}.id, #{Tag.table_name}.name, COUNT(*) AS count", 

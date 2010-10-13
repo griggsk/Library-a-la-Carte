@@ -1,4 +1,4 @@
 		<div class="bot"><div>   
-		Last Update: <%=@page.updated_at.to_formatted_s(:long)%> <%if @page.tag_list.length > 0 %> | Tagged with: <% @page.tag_list.each do |tag|%> <%= link_to tag, { :action => :tagged, :id => tag }%><%end%> <%end%>
+		Last Update: <%=@updated%> <%if @page.tag_list.length > 0 %> | Tagged with: <% @page.tag_list.each do |tag|%> <%= link_to tag, { :action => :tagged, :id => tag }%><%end%> <%end%>
 		</div></div>
 			

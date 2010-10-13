@@ -6,7 +6,7 @@
 	<%else%>
 		<%= link_to "Go To Screenreader Version" , {:action => 'print_portal', :from => @from} , :id => 'ada', :style=>"position:absolute;top:-1000px;" %>
 	<%end%>
-	<a href="#skip" id="skipNav" title="Skip Navigation and Jump to Content"></a>
+	<a href="#skip" id="skipNav" title="Skip Navigation and Jump to Content" style="position:absolute;top:-1000px;">Jump to Content</a>
 	 <div id="logo">
        <%= if !@local.image_map.blank? then @local.image_map end %>
 	<div id="top_links">

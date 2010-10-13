@@ -1,3 +1,6 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
 
 module Paginating 
    #return a list of modules for add modules in pages and guides
@@ -35,4 +38,13 @@ module Paginating
              objects = objects.paginate :per_page => items_per_page, :page => page , :order => sort         
          return objects
     end
+    
+  def paginate_mobile_search(mods,pagin,sort)
+    #read and set the variables 
+         page = (pagin).to_i
+         items_per_page = 10
+     #create a Paginator
+         mods = mods.paginate :per_page => items_per_page, :page => page , :order => sort
+      return  mods
+  end
 end

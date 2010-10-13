@@ -1,16 +1,31 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class Tab < ActiveRecord::Base
-belongs_to :guide
-belongs_to :page
+belongs_to :tabable, :polymorphic => true
 has_many :tab_resources, :order => :position, :dependent => :destroy
 has_many :resources, :through => :tab_resources
-acts_as_list :scope => :guide
-acts_as_list :scope => :page
+acts_as_list :scope => 'tabable_id=#{tabable_id} AND tabable_type=\'#{tabable_type}\'' 
+after_save :update_ferret
+after_destroy :update_ferret
 
 validates_presence_of  :tab_name
+
+#updates the ferret index because it was not happening automatically
+
+def update_ferret
+  search = Local.find(:first).enable_search?
+  if search
+   tabable.ferret_update
+  end
+end
+
 
 #add a resource to the HABTM relationship
 def add_resource(resource)
     resources << resource
+    update_users
 end
 
 #update a users resource list
@@ -26,7 +41,27 @@ end
 
 def add_module(id, type)
   resource = Resource.find_by_mod_id_and_mod_type(id,type)
-  resources << resource if resource
+ if resource
+  resources << resource 
+  update_users 
+ end
+end
+
+#returns true if the tab is on a page or guide that is shared
+def update_users
+ if guide != "" and guide.shared?
+   guide.update_users
+ elsif page != "" and page.shared?
+   page.update_users
+ end
+end
+
+def guide
+return (tabable_type == "Guide" and Guide.exists?(tabable_id))  ? Guide.find(tabable_id) : ""
+end
+
+def page
+  return (tabable_type == "Page" and Page.exists?(tabable_id))  ? Page.find(tabable_id) : ""
 end
 
 def find_resource(id, type)
@@ -40,7 +75,8 @@ end
 
 def recent_modules 
    sortable = "updated_at"
-   return resources.collect{ |a| a.mod}.sort! {|a,b|  a.send(sortable) <=> b.send(sortable)}
+   m = resources.collect{ |a| a.mod}.compact
+   return m.sort!{|a,b|  a.send(sortable) <=> b.send(sortable)}
 end
 
 def sorted_modules

@@ -1,0 +1,18 @@
+If you are unable to run the drb server, you can use lockfiles to avoid corrupt search indexes.
+
+Rename:
+  /vendor/plugins/acts_as_ferret/lib/local_index.rb to
+  /vendor/plugins/acts_as_ferret/lib/local_index.rb.old
+  
+  /config/ferret_server.yml to
+  /config/ferret_server.yml.old
+  
+Move /lib/locks/local_index.rb  into 
+/vendor/plugins/acts_as_ferret/lib	
+
+Move /lib/locks/ferret_server.yml into
+/config 
+
+In the root directory of the application, type:
+rake rebuild_all_indexes        					<= development mode command
+rake rebuild_all_indexes RAILS_ENV=production     	<= production mode command

@@ -6,7 +6,10 @@
 			                 <%=image_tag("/images/icons/document_preview.png", :title => 'Preview this Video in New Window', :alt => 'preview', :border => 0) %>
 			                 <%= link_to  @list.entry[i].title,{ :controller => 'video', :action => 'search_preview',:id => @mod, :vid => @list.entry[i].link[0].href},  :popup => ['', 'height=400,width=480,toolbar=yes, scrollbars =yes,resizable=yes']%>
 			                 <br />
-			                 <%=image_tag("/images/icons/add.png", :title => 'Add this video', :alt => 'preview', :border => 0) %><%=link_to_remote('Add Video',:update => "videos", :loading => "Element.show('add_spinner_search')", :complete => "Element.hide('add_spinner_search')",:url =>{:controller => :video,  :action => 'save_video', :id => @mod, :vid => @list.entry[i].link[0].href} , :update => "videos")%>
+			                 <%=image_tag("/images/icons/add.png", :title => 'Add this video', :alt => 'preview', :border => 0) %>
+							 <%=link_to_remote('Add Video', :update => "videos", :loading => "Element.show('add_spinner_search')",
+														    :complete => "Element.hide('add_spinner_search')",
+															:url =>{:controller => :video,  :action => 'save_video', :id => @mod, :vid => @list.entry[i].link[0].href})%>
 			
 			                  <%= image_tag "spinner.gif", :id => "add_spinner_search", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
 			
@@ -16,4 +19,4 @@
               <% else %>
                 No videos found.
               <% end %>
-			</ul>
+			</ul>	

@@ -1,0 +1,30 @@
+<%= error_messages_for 'mod' %>
+             <label for="librarian_name" >Librarian Name 
+             <span class = 'more_help' onMouseover="fixedtooltip(LIB_NAME, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span> </label>
+              <%= text_field 'mod', 'librarian_name',"size" => 54   %>
+			  <label for="librarian_photo" >Photo
+             <span class = 'more_help' onMouseover="fixedtooltip(LIB_IMAGE, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span> </label>
+
+              <%= text_area 'mod', 'image_info',:class => "mceEditor" %>
+
+
+           <label for="office_location" >Office Location
+            <span class = 'more_help' onMouseover="fixedtooltip(LIB_LOCATE, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span> </label>
+              <%= text_field 'mod', 'office_location' ,"size" => 54  %>
+            <label for="office_hours" >Office Hours
+             <span class = 'more_help'  onMouseover="fixedtooltip(LIB_HOURS, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span> </label>
+              <%= text_field 'mod', 'office_hours' ,"size" => 54  %>
+              <label for="chat_info" >Chat Info or Phone #
+              <span class = 'more_help'  onMouseover="fixedtooltip(LIB_CHAT, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span> </label>
+            <%= text_field 'mod', 'chat_info',"size" => 54   %>
+            
+            <label for="email" >Email Address
+            <span class = 'more_help' onMouseover="fixedtooltip(LIB_EMAIL, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span> </label>
+              <%= text_field 'mod', 'email',"size" => 54   %>
+             <label for="chat_widget"> Chat Widget Snippet
+            <span class = 'more_help'  onMouseover="fixedtooltip(LIB_WIDGET, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span> </label>
+            <%= text_area 'mod', 'chat_widget', "class" => 'mceNoEditor', :size => '40x5'%>
+           
+          
+
+        

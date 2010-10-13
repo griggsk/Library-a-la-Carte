@@ -1,0 +1,98 @@
+<div id="main"><div id="content">
+	<!--<div id="item-corner"></div>-->
+
+<h1><%=@local.tutorial_page_title %> </h1>
+
+<div class="item">
+	<h2>Browse Tutorials</h2>
+
+	<div class="module">
+		<ul id="tutorialList">
+			<%@subjects.each do |subject| %>
+			<li><%=link_to h(subject.subject_code+" : "+subject.subject_name+ " " + "Tutorials"), :controller => 'ort', :action => 'subject_list', :id => subject%>
+			<p>
+			<ul id="tutorialList">
+				<% tutorials = subject.get_tutorials
+				   tutorials.each do |tutorial|%>
+				   <li><%=link_to h(tutorial.full_name), :controller => 'ort', :action => 'index', :id => tutorial%>
+					  <div class="hide"><div class="no-image"><%=tutorial.description%></div></div>
+			        </li>
+				 <%end%>   
+			</ul>
+			</p>
+			</li>
+			<%end%>
+		<%@tutorials.each do |tutorial|%>
+			<li><%=link_to h(tutorial.full_name), :controller => 'ort', :action => 'index', :id => tutorial%>
+				  <div class="hide"><div class="no-image"><%=tutorial.description%></div></div>
+			</li>
+       <%end%>
+	    <li>
+	   	<a href="http://osulibrary.oregonstate.edu/instruction/tutorials/">Research Tutorial</a>
+	   <p>Confused about where to start? Not sure how things work in The Valley Library? The OSU Libraries Research Tutorial can help you. This tutorial's modular approach lets you review the entire scholarly research process from start to finish, or focus on individual skills and concepts.
+		</p>
+	   	</li>
+			<li><a href="http://osulibrary.oregonstate.edu/instruction/tutorials/agtutorial/">Tutorial for Computerized Information in Agriculture</a>
+				<p>
+					Planning, Searching and Learning & Evaluating. Each component covers different concepts, techniques/skills, and learning strategies needed in library research in agriculture and in general.
+				</p>
+			</li>
+		    <li><a href="http://osulibrary.oregonstate.edu/blog/deiteria">DIY Research</a>
+				<p>Blog-based tutorials to help at the point of need.</p>
+			</li>
+			 <li><a href="http://ica.library.oregonstate.edu/subject-guide/611-Keeping-Current-with-Research">Keeping Current with Research</a>
+				<p>Learn about social bookmarking, bibliographic management software, blogs, wikis, search alerts and feeds to help you keep up with and manage information for your research areas.
+				</p>
+			</li>
+			<li><a href="http://ica.library.oregonstate.edu/subject-guide/946-EndNote">Endnote</a>
+			<p>EndNote is a personal citation/bibliography manager software program that helps researchers organize references in a database, which can be used to format citation and create bibliographies automatically in word processing software. This guide provides an overview of EndNote along with training, support and purchase information for EndNote.
+			 </p>
+			</li>
+			<li><a href="http://ica.library.oregonstate.edu/subject-guide/986-Zotero-Research-Guide">Zotero Research Guide</a>
+				<p>Zotero is a free Firefox extension that collects, manages, and cites research sources. This guide provides an overview of Zotero along with training and support information for Zotero.</p>
+				
+			</li>
+			<li><a href="http://www.screencast.com/users/Maychau/folders/Jing/media/72bdc7b3-1667-4558-9f51-5a02d19e6bc9">Library Services Guide</a>
+            <p>The Library Services Guide provides a brief review of services available in the library. It is available in <a href="http://www.screencast.com/users/Maychau/folders/Jing/media/72bdc7b3-1667-4558-9f51-5a02d19e6bc9">English</a> and in the following languages:<br /> <br />
+			<a href="http://osulibrary.oregonstate.edu/services/arabic.doc">Arabic</a> | 
+			<a href="v/services/Bulgarian.doc">Bulgarian</a> | 
+			<a href="http://www.screencast.com/users/Maychau/folders/Jing/media/04197190-083e-494d-8df5-be18faa48565">Chinese</a> | 
+			<a href="http://osulibrary.oregonstate.edu/services/crotian.doc">Croatian</a> |
+			<a href="http://osulibrary.oregonstate.edu/services/german.doc">German</a> | 
+			<a href="http://osulibrary.oregonstate.edu/services/Indonesian.doc">Indonesian</a> | 
+			<a href="http://osulibrary.oregonstate.edu/services/Italian.doc">Italian</a> | 
+			<a href="http://www.screencast.com/users/Maychau/folders/Jing/media/c309648e-fb9d-4082-800e-34a4f4334972">Japanese</a> | 
+			<a href="http://osulibrary.oregonstate.edu/services/serbian.doc">Serbian</a> | 
+			<a href="http://www.screencast.com/users/Maychau/folders/Jing/media/38ce012b-e6e3-4474-9059-8715f0b7a4e8">Spanish</a> | 
+			<a href="http://osulibrary.oregonstate.edu/services/thai.doc">Thai</a> | 
+			<a href="http://osulibrary.oregonstate.edu/services/vietnam.doc">Vietnamese</a>
+			</p>
+
+			</li>
+		</ul>
+	</div>
+	<div class="bot"><div></div></div>
+</div>
+
+<div class="item">
+<h2>Browse by Tags</h2>
+	<div class="module">
+		<p><% tag_cloud @tags, %w(css1 css2 css3 css4) do |tag, css_class| %>
+		   			 <%= link_to tag.name, { :action => :tagged, :id => tag.name }, :class => css_class %>
+		  <% end %>
+	    </p>
+	</div>
+	<div class="bot"><div></div></div>
+</div>
+	
+</div></div>
+
+<div id="sidebar-left"><div id="sidebar-left-inner">
+	<%= render :partial => '/shared/left_side'%>
+</div></div> <!-- end sidebar-left-inner, end sidebar-left -->
+
+<div id="sidebar-right">
+<%= render :partial => '/shared/right_side'%>
+</div> <!-- end sidebar-right -->
+
+

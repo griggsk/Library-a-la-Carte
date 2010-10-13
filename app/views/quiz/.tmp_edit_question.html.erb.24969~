@@ -1,0 +1,57 @@
+	<fieldset>
+     <h3 class='title'> 
+	<%=render :partial => '/module/title_actions'%>
+	</h3>
+	<h4>
+		<%if @page || @guide%>
+		<%=link_to "Edit Content", :controller => if @page then 'page' elsif @tab then 'guide' end, :action =>'edit', :id => @page || @guide %> >> Edit <%=@mod.module_title%>
+		<%elsif @tutorial%>
+		<%=link_to "Units", :controller => 'unit', :action =>'units', :id => @tutorial %> >> Edit <%=@mod.module_title%>
+		<%else%>
+			<%=link_to "Quiz", :controller => 'quiz', :action =>'edit_quiz', :id => @mod %> >> Question
+		<%end%>
+	</h4>
+	<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+     <%= error_messages_for 'question' %>
+	 <%form_tag({:controller => 'quiz', :action => 'edit_question', :id => @mod, :qid => @question.id} , {:multipart => true})  do %>
+						
+						<label for="mod_label">Question Type </label>
+							    <%= select :question, :q_type, @choices %>
+						<label for="mod_label">Points</label>
+							    <%= text_field :question, :points, {:size => '5'} %>		
+								
+						<label for="mod_label">Question</label>
+							    <%= text_area :question, :question, {:class => 'mceNoEditor', :size => '40x2'} %>
+						<label for="mod_label">Question Image</label>
+							    <%= text_area :question, :image, {:class => "mceEditor"} %>
+							
+				  	
+		`<div id="submit_button">
+			  <%= submit_tag 'Save', :class => "submit" %>  
+			  <%unless (@question.q_type == 'TF' || @question.q_type == 'FW') and @question.answers.length > 0%>
+			 	 or  <%= submit_tag 'Save &amp; Add Answer', :class => "submit" %>
+			 <%end%>	 
+			  <p> <%= link_to 'Cancel', :controller => 'module', :action => 'index',:id => @mod, :type =>@mod.class, :list => 'mine', :sort => 'name' %></p>
+		  </div>				
+	   <% end -%> 
+	   
+	   
+	   <div id ='answer_container<%=@question.id.to_s%>'>
+							<%=render :partial => '/quiz/answers',  :locals => {:question => @question} %>
+				   </div>
+					  
+					  <%= sortable_element 'answer_container'+@question.id.to_s, 
+	  						:tag => 'div',
+			                :url => {:controller => 'quiz', :action => "sort_answers", :id => @mod, :qid => @question}, 
+			                :complete => visual_effect(:highlight, 'answer_container'+@question.id.to_s), 
+			                :handle => 'handle',
+			                :containment => ['answer_container'+@question.id.to_s], 
+			                :constraint => false %>	
+	   
+	   
+</fieldset>
+			  
+			  
+

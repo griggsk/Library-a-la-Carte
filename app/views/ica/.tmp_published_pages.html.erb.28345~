@@ -1,0 +1,101 @@
+<div id="main">
+	<h1><%=@local.ica_page_title %> </h1>
+	<div id="main-inner"><div id="content">
+		<a id="skip" name="skip"></a>
+		<div class="item">
+			<h2>Browse Course Guides</h2>
+			
+			<div class="module">
+			<p id="browse_by">
+					<a href="#subjects" rel="subjects" class ="selected">Browse by Subjects</a> | <a href="#az" rel="az">Browse by A-Z</a> 
+			</p>
+			<div class="list">
+				<noscript>
+					<p><strong><a name="subjects">Course Guides by Subjects</a></strong></p>
+				</noscript>
+					  <div id="subjects" class="tabcontent">
+					  <%@subjects.each_with_index do |m, i| %>
+					  <div class="expandable"><span id="subject<%=i%>-title" class="iconspan"><img src="/images/icons/minus.gif" alt="click to close" /></span><span class="title"><%=m.subject_code%> : <%=m.subject_name%></span>
+						<div id="subject<%=i%>" class="subject_list"> 
+							<ul class = 'indent-left '>
+								<li>
+								<% @pubpages = m.get_pages
+									@pubpages.each do |page| 
+										page_url = url_for :controller => 'ica', :action => 'index', :id => page%>
+								        <ul class = 'undeco'>
+								            <li class = 'undeco'><%= link_to page.browse_title(m.subject_code), page_url, :title => "#{h page.page_description}" %> </li>
+								        </ul>
+								   <%end%>
+								</li>
+							</ul>
+					    </div></div>
+					  <%end%>	
+					</div>
+				</div>	
+			  <div id="az" class="tabcontent">
+					<div class="list">
+						<noscript>
+					     <p><strong><a name="az">Guides by A-Z</a></strong></p>
+						</noscript>
+					<%@pages.each do |page|%>
+						        <%page_url = url_for :controller => 'ica', :action => 'index', :id => page%>
+						        <ul class = 'indent-left'>
+						            <li class = 'undeco'><%= link_to page.search_title, page_url, :title => "#{h page.page_description}" %> </li>
+						        </ul>
+					<%end%>
+					</div>
+				</div>	
+              <p>Didn't find what you were looking for? Try the  <%= link_to "Archived Course Guides", :action =>'archived' %>.</p>
+			  <p> Need help with your discipline, topic or format? Try the <%= link_to "Subject Research Guides", :controller => 'srg', :action =>'published_guides' %> </p>
+			</div>
+			<div class="bot"><div></div></div>
+		</div>
+		
+		<div class="item">
+		  <h2>Browse by Tags</h2>
+		  <div class="module">
+		  	<p>
+			<% tag_cloud @tags, %w(css1 css2 css3 css4) do |tag, css_class| %>
+   			 <%= link_to tag.name, { :action => :tagged, :id => tag.name }, :class => css_class %>
+ 		   <% end %>	
+		   </p>
+		  </div>
+		  <div class="bot"><div></div></div>
+		</div>
+			 
+    </div></div> <!-- end content, end main-inner -->
+</div> <!-- end main -->
+
+<div id="sidebar-right">
+	<%= render :partial => '/shared/right_side'%>
+</div> <!-- end sidebar-right -->
+
+<div id="sidebar-left"><div id="sidebar-left-inner">
+	<%= render :partial => '/shared/left_side'%>
+</div></div> <!-- end sidebar-left-inner, end sidebar-left -->
+
+
+
+	
+	<script type="text/javascript">
+//<![CDATA[
+
+var subject=new switchicon("subject_list", "div") //Limit scanning of switch contents to just "div" elements
+subject.setHeader('<img src="/images/icons/minus.gif" alt="click to close" />', '<img src="/images/icons/plus.gif" alt="click to open" />') //set icon HTML
+subject.collapsePrevious(false) //Allow only 1 content open at any time
+subject.setPersist(true) //No persistence enabled
+subject.defaultExpanded(0) //Set 1st content to be expanded by default
+subject.init()
+
+//]]>
+</script>
+	<script type="text/javascript">
+//<![CDATA[
+
+	var mybrowse=new ddtabcontent("browse_by") //enter ID of Tab Container
+	mybrowse.setpersist(true) //toogle persistence of the tabs' state
+	mybrowse.setselectedClassTarget("link") //"link" or "linkparent"
+	mybrowse.init()
+//]]>
+</script>
+	

@@ -1,3 +1,7 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 module AdminHelper
   def next_master
         link_to_function image_tag("/images/icons/add.png", :title => 'Click to add a 1 more Master', :alt => '', :border => 0 )+" Add 1 more" do |page| 

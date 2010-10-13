@@ -3,73 +3,63 @@
 <div class="module">
   
    <%= @mod.topic %>
+   <div><a href="#comment">Leave a Comment</a></div>
 
 <% form_for :comment, :url => {:controller => :comment, :action => :create,  :resource_id => @mod.id} do |f| %>  
- <ul class="undeco">  
-     <li> 	<%= render :partial => "comment/comments", :locals => {
+	 <span id="less_<%=@mod.id%>">
+	 	<%= render :partial => "comment/comments.html.erb", :locals => {
 	    :comments => @mod.ordered_comments, 
-	    :num_characters => 52 } %>
+	    :num_characters => 200 } %>
+	</span>
 		
   <% if @mod.ordered_comments.size >= @mod.num_displayed %>
     
-     	<div id="showing">Showing <b> <%= @mod.ordered_comments.size %> out of <%= @mod.comments.count %></b> Comments </div>
+     	<span id="showing">Showing <b> <%= @mod.ordered_comments.size %> out of <%= @mod.comments.count %></b> Comments |</span>
 			  
-			<div>  <%=link_to_function("Read more", nil, :id => 'more_link_'+@mod.id.to_s) do |page|
-								   page.visual_effect(:toggle_blind,"more_#{@mod.id}")
+			 <%=link_to_function("Read more", nil, :id => 'more_link_'+@mod.id.to_s) do |page|
+								page.visual_effect(:toggle_blind,"less_#{@mod.id}")  
+								 page.visual_effect(:toggle_blind,"more_#{@mod.id}")
 								   page << "if($('more_#{@mod.id}').visible()){"
 								   page.replace_html 'more_link_'+@mod.id.to_s, "Read more"
-								   page.replace_html 'showing', "Showing "+ @mod.ordered_comments.size.to_s + " out of " + @mod.comments.count.to_s + " Comments"
+								   page.replace_html 'showing', "Showing "+ @mod.ordered_comments.size.to_s + " out of " + @mod.comments.count.to_s + " Comments |"
 								   page << '}else{'
 								   page.replace_html 'more_link_'+@mod.id.to_s,  "Read less"
-								    page.replace_html 'showing', "Showing All Comments"
+								    page.replace_html 'showing', "Showing All Comments |"
 								   page << '}'
 								  end
 								%>
-					
+								
 				    <span id="more_<%=@mod.id%>" style="display:none">
-						<%= render :partial => "comment/comments", :locals => {
+						<%= render :partial => "comment/comments.html.erb", :locals => {
 	    						 :comments => @mod.more_comments, 
-	   							 :num_characters => 52 } %></span>
+	   							 :num_characters => 200 } %></span>
 		            <noscript>
 		            	<span id="more_<%=@mod.id%>">
-						<%= render :partial => "comment/comments", :locals => {
+						<%= render :partial => "comment/comments.html.erb", :locals => {
 	    						 :comments => @mod.more_comments, 
-	   							 :num_characters => 52 } %></span>
-		            </noscript>						 
-	    		</div>
+	   							 :num_characters => 200 } %></span>
+		            </noscript>			
 	<%end%>				  	
-  		</li>
-	   <li>Only the Comment field is required. Your
+	  <br />
+	   <div>
+	   	<a name="comment"></a>Only the Comment field is required. Your
 	    e-mail will not be shown; enter it if you wish to be contacted by the librarian.
-	    </li>
-   
-      <li>
+	    </div>
+        <div>
+      	     <label class="contacts" for="comment_author_name">Name</label>
 			 <%= f.text_field :author_name, :value => flash[:author_name] %>
-			 <label for="comment_author_name">Name</label>
 			  <%= %(<br /><span class="required">#{flash[:author_name_error]}</span>) if flash[:author_name_error] %>
-	  </li>
-	  <li>
-	     
+	      <label class="contacts" for="comment_author_email">Email</label>
 	      <%= f.text_field :author_email, :value => flash[:author_email] %>  
-		   <label for="comment_author_email">Email</label>
 	      <%= %(<br /><span class="required">#{flash[:author_email_error]}</span>) if flash[:author_email_error] %>
-	  </li>
-	  <li>
 	    
-		 
+		  <label class="contacts" for="comment_body">Comment </label>
 	      <%= f.text_area :body, :value => flash[:body], :size => "29x5" %>
-		  <span style="vertical-align:top"><label for="comment_body">Comment </label></span>
 		   <%= %(<br /><span class="required">#{flash[:body_error]}</span>) if flash[:body_error] %>
 	    
-      </li>
 
-      <li>
 	       <%= recaptcha_tags(:display => {:theme => 'white'})%> 
-	       
-	  </li>
-	  <li>
-	  	 <%= submit_tag "Post Comment" %>
-	  </li>
-   </ul>
+	      </div> 
+	  	 <div><%= submit_tag "Post Comment" %></div>
   <% end %>
 </div>

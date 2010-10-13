@@ -1,9 +1,15 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
 <fieldset>
 <h3>Course Pages for <%=h @user.name%> </h3>
+<p><b><%= link_to 'Back to Users', :action => 'users' %></b></p>
 <% if flash[:notice] -%>
 	   <div id="error_wrapper">   <div id="notice" ><%= flash[:notice] %></div></div>
 	<% end -%>
-<p>Total Pages: <%=@count%></p>
+<h4>Total Pages: <%=@count%></h4>
+
 <div id="product-list" >
 <table>
  <tr valign="top" class="<%= cycle('list-line-odd', 'list-line-even') %>" >

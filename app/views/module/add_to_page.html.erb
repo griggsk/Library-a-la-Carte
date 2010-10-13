@@ -3,7 +3,7 @@
 	<%=render :partial => 'title_actions'%>
 	</h3>
 	<h4>
-		<%=link_to "Course Pages", :controller => 'module', :action =>'course_pages', :id => @mod.id, :type => @mod.class %> >> Add to Course Pages
+		<%=link_to "Add To/Used On", :controller => 'module', :action =>'manage', :id => @mod.id, :type => @mod.class %> >> Add to Course Pages
 	</h4>
 	<% if flash[:error] -%>
 	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>

@@ -1,20 +1,17 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class AdminController < ApplicationController
   before_filter :authorize_admin
-  before_filter :clean, :only =>[:tools]
 
-  #randomly clear sessions table
-  def clean
-    ActiveRecord::Base.connection.execute( "
-      DELETE FROM sessions
-      WHERE NOW() - updated_at > 3600
-    " ) if rand( 1000 ) % 10 == 0
-  end 
-  
+
    def tools
       @tcurrent = 'current'
       @user_count = User.count
       @page_count = Page.count
       @guide_count = Guide.count
+      @tutorial_count = Tutorial.count
       @ppage_count = Page.count :all, :conditions => ["published=?", true]
       @apage_count = Page.count :all, :conditions => ["archived=?", true]
       @pguide_count = Guide.count :all, :conditions => ["published=?", true]
@@ -22,9 +19,28 @@ class AdminController < ApplicationController
    end
    
     def auto_archive
-     Page.auto_archive
-     redirect_to(:action => 'tools') 
-  end
+      pages = Page.find(:all,:conditions => {:published => true})
+      guides = Guide.find(:all,:conditions => {:published => true})
+      tutorials = Tutorial.find(:all,:conditions => {:published => true})
+      pages.each do |page|
+        if page.updated_at < Time.now.months_ago(6)
+           page.toggle!(:archived)
+           page.update_attribute(:published, false)
+        end
+      end
+       guides.each do |guide|
+        if guide.updated_at < Time.now.months_ago(12)
+           guide.toggle!(:published)
+        end
+      end
+       tutorials.each do |tutorial|
+        if tutorial.updated_at < Time.now.months_ago(12)
+           tutorial.toggle!(:archived)
+           tutorial.update_attribute(:published, false)
+        end
+      end
+      redirect_to :back
+    end 
   
 
    #User Accounts
@@ -38,7 +54,6 @@ class AdminController < ApplicationController
           begin
               Notifications.deliver_add_user(@user.email, @admin.email, @user.password, url)
            rescue Exception => e
-              logger.error("Exception in register user: #{e}}" )
               flash[:notice] = "Could not send email"
               redirect_to  :action => "register" and return
             end
@@ -50,7 +65,9 @@ class AdminController < ApplicationController
    
    def users
     @ucurrent = 'current'
-    @users = User.paginate :per_page => 30, :page => params[:page]
+    @all = params[:all]
+    users =  User.find(:all,:conditions => "role <> 'pending'", :order => 'name')
+    @users =  ( @all == "all" ? users : users.paginate( :per_page => 30, :page => params[:page]))
   end
   
     #edit User accounts
@@ -74,14 +91,62 @@ class AdminController < ApplicationController
    #delete User accounts
   def destroy
     User.find(params[:id]).destroy
-    flash[:notice] = "User(s) successfully deleted."
-    redirect_to :action => 'users'
+    flash.now[:notice] = "User(s) successfully deleted."
+    if request.xhr?
+        render :text => "" #delete the table row by sending back a blank string.  The <tr> tags still exist though       
+    else
+      redirect_to :action => 'users'      
+    end
   end
   
    def email_list
      user = User.find(:all)
      @emails = user.collect(&:email).join(', ') 
    end
+   
+   def pending_users
+    @ucurrent = 'current'
+    @users = User.find(:all,:conditions => "role = 'pending'").paginate :per_page => 30, :page => params[:page]
+  end
+  
+  def approve
+    @user = User.find(params[:id])  
+    if @user.update_attribute('role', 'author') #skipping validations by using update_attribute instead of update_attributes
+      begin 
+        if sso_enabled
+          url = url_for :controller => 'sso_login', :action => 'login'   #Set the url to the login page for the approval email
+          Notifications.deliver_accept_pending_user(@user.email, @local.admin_email_from, @user.password, url)
+        else
+          url = url_for :controller => 'login', :action => 'login'   #Set the url to the login page for the approval email
+          Notifications.deliver_accept_nonsso_pending_user(@user.email, @local.admin_email_from, @user.password, url)
+        end
+
+      rescue Exception => e
+        logger.error("Exception in register user: #{e}}" )
+        flash[:notice] = "User was successfully approved but email was not able to be sent"
+      end
+      flash[:notice] = 'User was successfully approved.'
+    else
+      flash[:notice] = 'User was not approved.'
+    end
+    redirect_to :action => 'pending_users' and return
+  end
+  
+  #delete User accounts
+  def deny
+    @user = User.find(params[:id])
+    email = @user.email
+    @user.destroy
+    begin 
+      Notifications.deliver_reject_pending_user(email, @local.admin_email_from)
+    rescue Exception => e
+      logger.error("Exception in register user: #{e}}" )
+      flash.now[:notice] = "User was successfully deleted but email was not able to be sent"
+    end
+    
+    flash[:notice] = "User successfully deleted."
+    redirect_to :action => 'pending_users'
+  end
 
 #Masters
 
@@ -286,7 +351,7 @@ def guide_update
           params[:users].each do |p|
             new_user = User.find(p)
             if new_user and !@guide.users.include?(new_user)
-                new_user.add_guide_tabs(@guide)
+                @guide.share(new_user.id,nil) #add_guide_tabs(@guide)
                 to_users << new_user
             end
           end
@@ -317,10 +382,10 @@ def guide_update
     begin
       @guide = Guide.find(params[:id])
     rescue Exception => e
-     logger.error("Exception in remove_from_user: #{e}" )
      redirect_to :action => 'tool', :list=> 'mine'
    else
     user = @guide.users.find_by_id(params[:uid])
+    @guide.update_attribute(:created_by, @guide.users.at(1).name) if @guide.created_by.to_s == user.name.to_s
     user.delete_guide_tabs(@guide)
     flash[:notice] = "User(s) successfully removed."
     redirect_to :action => 'assign_guide', :id => @guide
@@ -359,7 +424,6 @@ def guide_update
    begin
       @page = Page.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-      logger.error("You are tring to access something that doesn't exist . #{params[:id]}" )
       redirect_to :action => 'tools' and return
   else
     session[:page] = @page.id
@@ -376,7 +440,7 @@ def page_update
           params[:users].each do |p|
             new_user = User.find(p)
             if new_user and !@page.users.include?(new_user)
-              new_user.add_page_tabs(@page)
+              @page.share(new_user.id,nil) #user.add_page_tabs(@page)
               to_users << new_user
             end
           end
@@ -410,6 +474,7 @@ def page_update
      redirect_to :action => 'index', :list=> 'mine'
    else
     user = page.users.find_by_id(params[:uid])
+    page.update_attribute(:created_by, page.users.at(1).name) if page.created_by.to_s == user.name.to_s
     user.delete_page_tabs(page)
     flash[:notice] = "User(s) successfully removed."
     redirect_to :action => 'assign_page', :id => page
@@ -419,8 +484,8 @@ def page_update
  def tutorials
     @user = User.find(params[:id])
      session[:author] = @user.id
-   @tutorials = @user.tutorials
-   @count = @tutorials.size
+    @tutorials = @user.tutorials
+    @count = @tutorials.size
  end
  
  def destroy_tutorial
@@ -498,6 +563,7 @@ def page_update
       redirect_to :action => 'tools' and return
     else
        user = User.find(params[:uid])
+       @tutorial.update_attribute(:created_by, @tutorial.users.at(1).id) if @tutorial.created_by.to_s == @user.id.to_s
        @tutorial.remove_from_shared(user)
        flash[:notice] = "User(s) successfully removed."
        redirect_to :action => 'assign_tutorial', :id => @tutorial
@@ -526,7 +592,6 @@ def page_update
    @guide_types = [['Course Guides', 'pages'], ['Subject Guides', 'guides'], ['Research Tutorials', 'tutorials']]
    @types = MODULES
    @selected = @local.types_list
-   logger.debug("Here: #{@selected}")
    @selected_guides = @local.guides_list
    if request.post?
     @local.update_attributes(params[:local])
@@ -535,6 +600,25 @@ def page_update
    
  end
  
+ def customize_admin_email
+   if request.post?
+     @local.update_attributes(params[:local])
+     redirect_to(:action => 'view_customizations')  if @local.save   
+   end
+ end
  
-
+#called from tools to enable or disable the search.
+ def enable_search 
+   begin
+     @local.toggle!(:enable_search)
+     if request.xhr? #if ajax request
+        render :partial => "enable_search" ,:locals => {:local => @local} 
+     else
+        redirect_to_index
+      end
+    rescue Exception => e
+      logger.error("Exception in enable search: #{e}" )
+      redirect_to :action => 'index' and return     
+    end
+ end
 end

@@ -1,0 +1,30 @@
+<fieldset>
+	<h3 class='title'> 
+	<%=render :partial => '/guide/title_actions'%>
+	</h3>
+	<h4>Add Modules</h4>
+	<% if flash[:error] -%>
+		  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+	<p> <b>On Tab: <%=@tab.tab_name%> </b>
+		<span class = 'tip'><%= link_to 'Choose a different tab.', {:controller => 'guide', :action => 'edit',  :id => @guide.id}%></span>
+	</p>
+	<p>Check the box next to the modules you want to add to this tab or create a new module to add.</p>	
+		
+	<%=render :partial => "shared/new_module"%>	
+		   
+	<%unless @mods.size <1%>
+		<div id="product-list" >
+			<% form_tag :controller => 'tab', :action => 'add_modules', :id => @tab.id do%> 	
+				<div id="table">
+			      <%=render :partial => "shared/add_modules_list"%>
+			   </div>
+				 <%= submit_tag 'Add to Tab', :class=> "submit" %>
+			<%end%>
+	<%else%>
+			<p><b>You currently have no Modules. Create a new module or copy a global module to get started.</b></p>
+		</div>	
+	<%end%>
+	
+	<%=render :partial => 'guide/side_bar'%>
+</fieldset>

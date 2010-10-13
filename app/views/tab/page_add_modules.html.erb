@@ -9,8 +9,6 @@
 	<p> <b>On Tab: <%=@tab.tab_name%> </b> 
 	| <%=link_to 'Select a different tab', :controller => 'page', :action => 'edit', :id => @page%>
 	</p>
-	<p>Check the box next to the modules you want to add to this tab or create a new module to add.</p>	
-		
 	<%=render :partial => "shared/new_module"%>	
 		   
 	<%unless @mods.size <1%>

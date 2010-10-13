@@ -3,7 +3,7 @@
 <h3 class='title'> 
 <%=render :partial => 'title_actions'%>
 </h3>	
-<h4><%=link_to 'Edit Content', :controller => 'page', :action => 'edit',  :id => @page%> >> Related Subject Guides</h4>
+<h4><%=link_to 'Edit Page', :controller => 'page', :action => 'edit',  :id => @page%> >> Related Subject Guides</h4>
    	<% if flash[:notice] -%>
 	    <div id="error_wrapper">    <div id="notice" ><%= flash[:notice] %></div></div>
 	<% end -%>

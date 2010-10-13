@@ -1,0 +1,51 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
+<%= error_messages_for 'user' %>
+<% if flash[:error] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+<% end -%>
+<% if flash[:notice] -%>
+	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:notice] %></div></div>
+	<% end -%>
+    <fieldset>
+      <h3>My Account</h3>
+	  <div id ='share'>
+	  	<fieldset>
+        <h4>Edit Your Account Information</h4>
+		<% if sso_enabled && used_sso %>
+			<div class = 'tip'> 
+				This will only edit your Library a la Carte information and not your Onid information. You will only be able to login with this account at ..../login/login
+			</div>
+		<% end %>
+           <%= render :partial => 'account_info' %>
+     </fieldset>
+           <br /><br />
+      <fieldset>
+
+        <h4>Change Your Password</h4>
+		<% if sso_enabled && used_sso %>
+        	<div class = 'tip'> 
+				This will only edit your Library a la Carte password and not your Onid password. You will only be able to login with this account at ..../login/login
+			</div>
+		<% end %>
+           <%form_tag :action => 'my_account', :id => @user do%>
+            <label for="user_password">New Password</label>
+            <%= password_field "user", "password", :size => 54, :value=>"" %>
+      
+      
+            <label for="user_password_confirmation">Confirm Password</label>
+            <%= password_field "user", "password_confirmation", :size => 54, :value=>"" %>
+      
+            <br />  <br />
+            <%= submit_tag "Change Password", :class => "submit"  %>
+      
+         </fieldset>
+        <% end%>
+        
+         <p>
+            <b><%= link_to 'Cancel', :action => 'index' %></b>
+         </p>
+		 </div>
+</fieldset>

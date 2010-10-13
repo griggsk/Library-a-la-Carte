@@ -1,10 +1,14 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class Tutorial < ActiveRecord::Base
   acts_as_taggable
   has_many :units, :through => :unitizations
   has_many :unitizations, :order => :position, :dependent => :destroy
   has_many :users, :through => :authorships
   has_many :authorships,  :dependent => :destroy
-  has_many :students, :order => :onid, :dependent => :destroy
+  has_many :students, :order => :lastname, :dependent => :destroy
   belongs_to :subject
   serialize :section_num
   after_create :password_protect
@@ -20,10 +24,10 @@ class Tutorial < ActiveRecord::Base
   validates_format_of :course_num,
                       :with => /^(\d{1,}\/?\d{1,})*$/,
                       :message => "must be a number or number/number."
+                      
     
    attr_protected :id
-   
-    
+  
    def to_param
       "#{id}-#{full_name.gsub(/[^a-z0-9]+/i, '-')}"
    end
@@ -60,15 +64,15 @@ class Tutorial < ActiveRecord::Base
   end
   
    def self.get_archived_tutorials
-    return self.find(:all,:conditions => {:archived => true}, :order => 'name')
+    return self.find(:all,:conditions => {:archived => true}, :order => 'name', :select =>'id, name, description')
   end
   
   def self.get_subjects(tuts)
   return tuts.collect {|t| t.subject}.flatten.uniq
 end
   
-  def share(role, user, c)
-     if c  == "1"
+  def share(role, user, copy)
+     if copy  == "1"
        tutorial_copy = clone
        tutorial_copy.name = name + '-copy'
        tutorial_copy.created_by = user.id
@@ -84,12 +88,12 @@ end
    end
  end
  
- def copy(copy, user)
-  copy.users << user
+ def copy(tut_copy, user)
+  tut_copy.users << user
   units.each do |unit|
     mod_copies = unit.resources.collect{|r| r.copy_mod(unit.title)}.flatten
     unit_copy = unit.clone
-    copy.units << unit_copy
+    tut_copy.units << unit_copy
     if unit_copy.save
            mod_copies.each do |mod|
               mod.update_attribute(:created_by, user.name)
@@ -102,6 +106,7 @@ end
 end
 
 def remove_from_shared(user)
+  update_attribute(:created_by, users.at(1).id) if created_by.to_s == user.id.to_s
    users.delete(user)
    mods = units.collect{|u| u.resources}
        mods.each do |r|
@@ -118,7 +123,7 @@ end
   end
   
   def creator
-    return User.find(created_by)
+    return User.exists?(created_by) ? User.find(created_by).name : ""
   end
  
  
@@ -126,6 +131,14 @@ end
    return published == 1 ? true : false
  end
  
+ #update resources with shared users
+def update_users
+  resources =  units.collect{|t| t.resources}.compact
+   resources.each do |resource|
+     users.collect{|user| user.add_resource(resource) unless (user.id == @user || user.resources.include?(resource) == true)}
+   end
+end
+
   def add_units(uids)
     uids.each do |uid|
       u = Unit.find(uid)
@@ -180,9 +193,16 @@ end
  end
  
  def password_protect
-   words = ["William Shakespeare","Ken Kesey", "Mark Twain", "Virginia Woolf", "J.K. Rowling"]
+   words = ["p@ssword","passw0rd", "p@ssw0rd", "pa33word"]
    self.pass = words.rand
    self.save
  end
- 
+
+#Used to create the search index
+def index_unit_title
+  units.map{|unit| unit.title}.join(", ")
+end
+def index_unit_slug
+  units.map{|unit| unit.slug}.join(", ")
+end
 end

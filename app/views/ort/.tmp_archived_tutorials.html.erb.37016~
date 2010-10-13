@@ -1,0 +1,32 @@
+<div id="main">
+<h1><%=@local.tutorial_page_title %> </h1>
+<div id="content">
+	<!--<div id="item-corner"></div>-->
+<div class="item">
+	<h2>Browse Tutorials</h2>
+
+	<div class="module">
+		<ul id="tutorialList">
+			<%@tutorials.each do |tutorial|%>
+				<li><%=link_to h(tutorial.full_name), :controller => 'ort', :action => 'index', :id => tutorial%>
+					  <div class="hide"><div class="no-image"><%=tutorial.description%></div></div>
+				</li>
+	       <%end%>
+		</ul>	 
+	</div>
+	<div class="bot"><div></div></div>
+</div>
+
+<div class="item">
+<%= render :partial => '/shared/tag_cloud'%>
+</div>
+	
+</div></div>
+
+<div id="sidebar-right">
+<%= render :partial => '/shared/right_side'%>
+</div> <!-- end sidebar-right -->
+
+<div id="sidebar-left"><div id="sidebar-left-inner">
+	<%= render :partial => '/shared/left_side'%>
+</div></div> <!-- end sidebar-left-inner, end sidebar-left -->

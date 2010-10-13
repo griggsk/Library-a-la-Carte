@@ -1,0 +1,53 @@
+	<fieldset>
+     <h3 class='title'> 
+	<%=render :partial => '/module/title_actions'%>
+	</h3>
+	<h4>
+		 	Edit Question
+	</h4>
+	 <div id ="share">
+	 <fieldset>
+		<% if flash[:error] -%>
+		  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+		<% end -%>
+	     <%= error_messages_for 'question' %>
+		 <%form_tag({:controller => 'quiz', :action => 'edit_question', :id => @mod, :qid => @question.id} , {:multipart => true})  do %>
+							
+			<label for="mod_label">Question Type </label>
+				    <%= select :question, :q_type, @choices %>
+			<%if @mod.graded?%>
+			<label for="mod_label">Points</label>
+				    <%= text_field :question, :points, {:class => 'mceNoEditor', :size => '5'} %>		
+			<%else%>
+			<label>This Quiz is not graded.  <span class = 'more_help' onMouseover="fixedtooltip(NOT_QUIZ_GRADE_MSSG, this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+			</label>
+			<%end%>		
+			<label for="mod_label">Question</label>
+				    <%= text_area :question, :question, {:class => 'mceEditor'} %>
+	  	
+			`<div id="submit_button">
+				  <%= submit_tag 'Save', :class => "submit" %>  
+				  <%unless (@question.q_type == 'TF' || @question.q_type == 'FW') and @question.answers.length > 0%>
+				 	 or  <%= submit_tag 'Save &amp; Add Answer', :class => "submit" %>
+				 <%end%>	 
+			</div>				
+		  <% end -%> 
+   </fieldset> 
+   </div>   
+   <div id ='answer_container<%=@question.id.to_s%>'>
+			<%=render :partial => '/quiz/answers',  :locals => {:question => @question} %>
+	</div>
+					  
+  <%= sortable_element 'answer_container'+@question.id.to_s, 
+			:tag => 'div',
+        :url => {:controller => 'quiz', :action => "sort_answers", :id => @mod, :qid => @question}, 
+        :complete => visual_effect(:highlight, 'answer_container'+@question.id.to_s), 
+        :handle => 'handle',
+        :containment => ['answer_container'+@question.id.to_s], 
+        :constraint => false %>	
+	   
+	   
+</fieldset>
+			  
+			  
+

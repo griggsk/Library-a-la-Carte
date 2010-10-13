@@ -1,0 +1,45 @@
+<%= render :partial => 'ort/top'%>
+
+<div id="content">
+	<!--<div id="item-corner"></div>-->
+	<div id="content-column2">
+		<div class="item"><div class="item2"><div class="item3">
+		
+		</div></div></div>
+	</div>
+	
+	<div id="content-column1">
+		<h2>About this tutorial</h2>
+		<p>
+			<%=@tutorial.description%>
+		</p>
+			<div class="start"><%=link_to 'Login', :controller => 'student', :action => 'login', :id => @tutorial %></div>
+		
+	<!-- end content-column1 -->
+	</div>
+	
+	<div id="content-column1">
+		<h2>What to expect</h2>
+			<% unless @tutorial.unitizations.blank? %>
+			<ol id="toc" class="hover">
+			<%
+		        @tutorial.unitizations.each do |uz| 
+				unit = uz.unit%>
+					<li><%=link_to unit.title, {:controller => 'ort', :action => 'unit', :id =>@tutorial, :uid => unit.id}%>
+					<p><%=unit.description%></p>
+					</li>
+				<%end%>
+			 </ol> 
+		   <%end%>
+	<!-- end content-column1 -->
+	</div>
+	
+	<div id="update">   
+		<p>	 <%if @tutorial.tag_list.length > 0 %> Tagged with: <% @tutorial.tag_list.each do |tag|%> <%= link_to tag, { :action => :tagged, :id => tag }%><%end%> <%end%></p>
+		<p>Last Update: <%=@tutorial.updated_at.to_formatted_s(:long)%></p>
+    </div>
+		
+	
+	
+<!-- end content -->
+<div class="bot"><div></div></div></div>

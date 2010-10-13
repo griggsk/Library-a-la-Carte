@@ -1,0 +1,15 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
+<%
+	search = false if search.nil?	#avoiding null errors for a local variable
+	guide_params = guide_search_params(search,guide) #if request came from a search, add search term to parameters
+%>
+<%if guide.published%>
+    <%= link_to_remote image_tag("/images/icons/Plus.png", :title => 'Remove this Guide from the published list', :alt => 'remove from published list', :border => 0),{:url => guide_params['publish'], :confirm => 'Are you sure you want to unpublish this guide?'}, 
+	:href => url_for(guide_params['publish']),:method => :post %> 
+<%else%> 
+	<%= link_to_remote image_tag("/images/icons/Minus.png", :title => 'Add this Guide to the published list', :alt => 'add to published list', :border => 0),{:url => guide_params['publish'] , :confirm => 'Are you sure you want to publish this guide?'}, 
+	:href => url_for(guide_params['publish']), :method => :post %>
+<%end%>	

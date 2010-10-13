@@ -1,0 +1,87 @@
+<div id="main">
+	<h1><%=@local.guide_page_title %> </h1>
+	<div id="main-inner"><div id="content">	
+	<a id="skip" name="skip"></a>	
+		<div class="item">
+			<h2>Browse Subject Guides</h2>
+			
+			<div class="module">
+				<p id="browse_by">
+						<a href="#subjects" rel="subjects" class ="selected">Browse by Subjects</a> | <a href="#az" rel="az">Browse by A-Z</a> 
+				</p>
+				<div class="list">
+					<noscript>
+						<p><strong><a name="subjects">Guides by Subjects</a></strong></p>
+					</noscript>
+					  <div id="subjects" class="tabcontent" >
+					  	 <%@masters.each_with_index do |m, i| %>
+								  <div class="expandable"><span id="subject<%=i%>-title" class="iconspan"><img src="/images/icons/minus.gif" alt="click to close" /></span><span class="title"><%=m.value%></span>
+									<div id="subject<%=i%>" class="subject_list"> 
+										<%unless m.pub_guides.blank?%>
+											<ul class = 'indent-left '>
+											 <% m.pub_guides.each do |guide|%>
+										        <%guide_url = url_for :controller => 'srg', :action => 'index', :id => guide%>
+										            <li class = 'undeco'>
+										            	<%= link_to guide.guide_name, guide_url, :title => "#{h guide.description}" %>
+												    </li>
+											   <%end%>
+											</ul>
+										<%end%>
+								    </div></div>
+							 <%end%>	
+					</div>
+				</div>
+				<div id="az" class="tabcontent">
+					   	<noscript>
+							<p><strong><a name="az">Guides by A-Z</a></strong></p>
+						</noscript>
+		
+						  <ul class = 'indent-left'>
+						   	 <% for guide in @guides %>
+							        <%guide_url = url_for :controller => 'srg', :action => 'index', :id => guide%>
+							        <li class = 'undeco'>
+							        	<%= link_to guide.guide_name, guide_url, :title => "#{h guide.description}" %>
+								    </li>
+							 <%end%>
+						 </ul>
+				</div>
+			   <p> Need help with your course assignment? Try the <%= link_to "Course Guides", :controller => 'ica', :action =>'published_pages' %> </p>
+	    </div>
+		<div class="bot"><div></div></div>
+	</div>
+	
+	<div class="item">
+		<%= render :partial => '/shared/tag_cloud'%>
+	</div>
+	</div></div> <!-- end content, end main-inner -->
+</div> <!-- end main -->
+
+<div id="sidebar-right">
+	<%= render :partial => '/shared/right_side'%>
+</div> <!-- end sidebar-right -->
+
+<div id="sidebar-left"><div id="sidebar-left-inner">
+	<%= render :partial => '/shared/left_side'%>
+</div></div> <!-- end sidebar-left-inner, end sidebar-left -->
+	<script type="text/javascript">
+//<![CDATA[
+
+var subject=new switchicon("subject_list", "div") //Limit scanning of switch contents to just "div" elements
+subject.setHeader('<img src="/images/icons/minus.gif" alt="click to close" />', '<img src="/images/icons/plus.gif" alt="click to open" />') //set icon HTML
+subject.collapsePrevious(false) //Allow only 1 content open at any time
+subject.setPersist(true) //No persistence enabled
+subject.defaultExpanded(0) //Set 1st content to be expanded by default
+subject.init()
+
+//]]>
+</script>
+	<script type="text/javascript">
+//<![CDATA[
+
+	var mybrowse=new ddtabcontent("browse_by") //enter ID of Tab Container
+	mybrowse.setpersist(true) //toogle persistence of the tabs' state
+	mybrowse.setselectedClassTarget("link") //"link" or "linkparent"
+	mybrowse.init()
+
+//]]>
+</script>

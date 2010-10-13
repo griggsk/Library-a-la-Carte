@@ -1,40 +1,40 @@
-<div id="main"><div id="content">
-
-<h1>Demos and Guides </h1>
+<div id="main">
+<h1><%=@local.tutorial_page_title %> </h1>
+<div id="content">
+<!--<div id="item-corner"></div>-->
 
 <div class="item">
-	<h2>Browse Tutorials by Tag Results</h2>
+	<h2>Browse by Tag Results</h2>
 
 	<div class="module">
-		<p>Tutorials tagged with: <b><%=@tag%></b></p>
+		<p> Tutorials tagged with <strong><%=@tag%></strong></p>
 		<ul class = 'indent-left'>
 		<%@tutorials.each do |tutorial|%>
 			<li class = 'undeco'><%=link_to h(tutorial.full_name), :controller => 'ort', :action => 'index', :id => tutorial%>
 				<br />
-					<%=h(tutorial.description)%>
+					<div class="no-image"><%= tutorial.description %></div>
 				    <small><b>Tags: </b><% tutorial.tag_list.each do |tag|%> <%= link_to tag, { :action => :tagged, :id => tag }%>  <%end%></small>
 			</li>
        <%end%>
 		</ul>
-	</div>
-	<div class="bot"><div></div></div>
+		<p><%=image_tag("/images/icons/back.png", :title => 'Back to Tutorials', :alt => 'Back')%> <a href ="/tutorials/">Back to all Tutorials</a></p>
+   </div>
+   <div class="bot"><div></div></div>
 </div>
 
+
 <div class="item">
-<h2>Browse by Tags</h2>
-	<div class="module">
-		<p><% tag_cloud @tags, %w(css1 css2 css3 css4) do |tag, css_class| %>
-		   			 <%= link_to tag.name, { :action => :tagged, :id => tag.name }, :class => css_class %>
-		  <% end %>
-	    </p>
-	</div>
-	<div class="bot"><div></div></div>
+<%= render :partial => '/shared/tag_cloud'%>
 </div>
 	
 </div></div>
 
-<%= render :partial => '/shared/left_side'%>
-<%= render :partial => 'right_side'%>
+<div id="sidebar-right">
+<%= render :partial => '/shared/right_side'%>
+</div> <!-- end sidebar-right -->
 
-<!-- end wrap, wrap-inner -->
-</div></div>
+<div id="sidebar-left"><div id="sidebar-left-inner">
+	<%= render :partial => '/shared/left_side'%>
+</div></div> <!-- end sidebar-left-inner, end sidebar-left -->
+
+

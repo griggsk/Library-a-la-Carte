@@ -3,7 +3,7 @@
 	<% if flash[:error] -%>
 	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
 	<% end -%>
-	<%= error_messages_for 'mod' %>
+	<%= error_messages_for 'mod', 'link' %>
      <%form_tag({:controller => 'url', :action => 'update_url', :id => @mod} , {:multipart => true , :onKeyPress=> 'return disableEnterKey(event)'})  do %>
 
         <%=render :partial => '/module/mod_title'%>     
@@ -15,6 +15,13 @@
 		<div id ='links'>
 			<%=render :partial => '/url/link', :collection => @mod.links %>
 		</div>
+			 <%= sortable_element 'links', 
+                :url => {:controller => 'url' ,:action => "sort" }, 
+                :complete => visual_effect(:highlight, 'links'), 
+                :handle => 'handle',
+                :containment => ['links'], 
+                :constraint => false,
+				:tag => :div %>
 		
 		
 		<label><%= link_to_function image_tag("/images/icons/add.png", :title => 'Click to add an link', :alt => '', :border => 0)+" Add Link" do |page| 

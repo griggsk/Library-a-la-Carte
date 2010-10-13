@@ -5,38 +5,46 @@
 </h3>
 <% if flash[:error] -%>
 	  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
-	<% end -%>
-<% form_tag :action => 'copy' do%>
-  <!--[form:page]-->
+<% end -%>
 <div id ='share'>
+
+<% form_tag :action => 'copy' do%>
 <fieldset>
+  <!--[form:page]-->
 <h4 <%= %(class="required") if flash[:error] %>>Page Title</h4>
-<div class = 'tip'>A course page title must be unique. Press Ctrl to select or deselect multiple subjects. <span class = 'more_help'  onMouseover="fixedtooltip(PAGE_TITLE_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label></div>
+<div class = 'tip'>
+	A course page title must be unique. Press Ctrl or Command to select or deselect multiple subjects. 
+	<span class = 'more_help'  onMouseover="fixedtooltip(PAGE_TITLE_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+</div>
   <div id="vertical_inputs">
   <%=render  :partial => "page_title"%> 
   </div>
  </fieldset>
  
  <fieldset>
- 	<h4>Copy Options</h4>
-	<div class = 'tip'>Choose copy if you want to make copies of the modules or select reuse to add the modules without making copies.</div>
-	<p>
-	Copy Page Modules  <%=radio_button_tag 'options', 'copy', :checked => true%> <br />
-	Reuse Page Modules <%=radio_button_tag 'options', 'reuse'%>
-	</p>
+	<h4>Copy Options <span class = 'more_help'  onMouseover="fixedtooltip(GUIDE_COPY_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></h4>
+	<b>
+	<%=radio_button_tag 'options', 'copy', :checked => true%> Copy the Modules  </b>
+	<div class = 'tip' style="display:inline;"> Edits to the modules will not change the original page's modules.</div><br />
+	<b> <%=radio_button_tag 'options', 'reuse'%> Link the Modules </b>
+	<div class = 'tip' style="display:inline;"> 
+     Whenever edits are made to the original modules, this page's modules will be updated too.</div>
   </fieldset>
   
  <fieldset>
  <h4> Page Metadata</h4>
-  <label for="page_page_description">Description <span class = 'more_help' onMouseover="fixedtooltip(PAGE_DESC, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+  <label for="page_page_description">Description 
+  <span class = 'more_help' onMouseover="fixedtooltip(PAGE_DESC, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
   <%= text_area 'page', 'page_description',"class" => 'mceNoEditor', :size => '40x2'  %>
-  
+   <div class = 'tip'>Enter a short description about the page.</div>
    <label for="tags">Tags <span class = 'more_help' onMouseover="fixedtooltip(PAGE_TAGS, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
    <%= text_area_tag 'tags', @page.tag_list, {"class" => 'mceNoEditor', :size => '40x2'}  %>
+   <div class = 'tip'>	example: WR121, databases, Smith</div>
 </fieldset>
-</div>
 <!--[eoform:page]-->
 <%= submit_tag 'Copy Page', :class => "submit"  %>
 <%end%>
+</div>
 <p><%= link_to 'Cancel', :action => 'index' %></p>
+</div>
  </fieldset>

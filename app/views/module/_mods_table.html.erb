@@ -1,0 +1,68 @@
+ <table>
+ 	<thead>
+ 		<tr>
+ 		<th   class= '<%= sort_th_class_helper "shared" %>'>
+        <%= sort_link_helper "Shared?", "shared" %></th>
+ 		<th  class= '<%= sort_th_class_helper "used" %>'>  
+        <%= sort_link_helper "In Use?", "used" %></th>
+        <th   class= '<%= sort_th_class_helper "name" %>'>
+        <%= sort_link_helper "Label", "name" %>
+		<%= image_tag "spinner.gif", :id => "spinner_sort", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
+		</th>
+ 	<th>
+	<span class="tip">edit | view | copy | delete</span></th>
+	
+	
+	<th   class= '<%= sort_th_class_helper "date" %>'>
+        <%= sort_link_helper "Last Update", "date" %></th>
+	<th   class= '<%= sort_th_class_helper "type" %>'>
+        <%= sort_link_helper "Content Type", "type" %></th>
+	
+	<th   class= '<%= sort_th_class_helper "global" %>'>
+        <%= sort_link_helper "Global?", "global" %></th>
+
+	<th   class= ' <%= sort_th_class_helper "publish" %>'>
+        <%= sort_link_helper "Published?", "publish" %></th>
+	</tr>
+	</thead>
+	
+  <% for mod in @mods %>
+  <% row_id = "row#{mod.id}#{mod.class}" %>
+     <tr id="<%= row_id %>" class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+      <td width ="2.5%" class= 'center'>
+	        <%unless mod.shared?%>
+			  <%= link_to image_tag("/images/icons/user_add.png", :title => 'Click to Share this Module', :alt => 'Share', :border => 0), :controller => 'module', :action => 'share',  :id => mod, :type => mod.class%>
+			<%else%>
+			  	<%= link_to image_tag("/images/icons/users.png", :title => 'This module has been shared. Click to Share with others.', :alt => 'Share', :border => 0), :controller => 'module',  :action => 'share',  :id => mod, :type => mod.class %>
+			<%end%>
+	   </td>
+	   <td width ="2.5%" class= 'center'>
+			 <%if mod.used?%>
+			  	 <span class = 'more_help' onMouseover="fixedtooltip('<%=render_used_tooltip(mod)%>', this, event, '325px');" onMouseout="delayhidetip();">	 <%= link_to image_tag("/images/icons/star.png", :alt => 'Used', :border => 0), :controller => 'module', :action => 'manage',  :id => mod, :type => mod.class%></span>
+			  <%else%>
+			  	<span class = 'more_help' onMouseover="fixedtooltip('<strong><%=mod.module_title%></strong> is not currently being used. Click to add this module to a guide, page or tutorial', this, event, '325px');" onMouseout="delayhidetip();">	 <%= link_to image_tag("/images/icons/no-star.png", :alt => 'Not Used', :border => 0), :controller => 'module', :action => 'manage',  :id => mod, :type => mod.class%></span>
+			 <%end%>
+       </td>
+	   <td  width ="45%" class= '<%= sort_th_class_helper "name" %> '>
+	   		<%= truncate(h(mod.label),:length => 55) %>
+	  </td>
+	   <td width ="15%" class= 'center'>
+	   	<%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this Module', :alt => 'edit', :border => 0),{ :controller => 'module', :action => 'edit_content', :id => mod, :type => mod.class}, :class =>'space' %>
+	   	 | <%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this Module in New Window', :alt => 'preview', :border => 0),{ :controller => 'module',  :action => 'view', :id => mod, :type => mod.class}, :class =>'space', :popup => ['', 'height=400,width=480,toolbar=yes, scrollbars =yes,resizable=yes']%>
+	     | <%= link_to image_tag("/images/icons/application_add.png", :title => 'Copy this Module', :alt => 'copy', :border => 0), { :controller => 'module', :action => 'copy',  :id => mod, :type => mod.class },:class =>'space'%>
+		 | <%= link_to_remote image_tag("/images/icons/remove.png", :title => 'Delete this Module', :alt => 'delete', :border => 0), 
+										{:url => { :controller => 'module', :action => 'remove_from_user', :id => mod,  :type => mod.class, :page => @page, :sort => @sort,  :all => @all },:update => row_id , :confirm => 'Are you sure you want to delete this module from your list?'},
+										:href => url_for(:action => 'remove_from_user', :controller => 'module',:id => mod, :type => mod.class, :page => @page, :sort => @sort , :all => @all)%>
+	   </td>
+	   <td width ="8%" class= '<%= sort_th_class_helper "date" %>' > <%= mod.updated_at.to_date %>	</td>
+	   <td width ="8%" class= '<%= sort_th_class_helper "type" %>'> <%= mod.content_type%>	</td>	
+	   
+	    <td width ="2.5%" class='center' id="global<%= mod.id %><%=  mod.class %>">
+			<%=render :partial => "/module/global" ,:locals => {:mod => mod, :page => @page, :sort => @sort , :all => @all} %>	
+		</td>
+		<td width ="2.5%" class="center"   id="publish<%= mod.id %><%= mod.class %>">
+			<%=render :partial => "/module/publish" ,:locals => {:mod => mod, :page => @page, :sort => @sort , :all => @all} %>	
+		</td>	
+    </tr>
+ <% end %>
+</table>

@@ -15,11 +15,11 @@
 	<% form_tag :action => 'create', :id => @tutorial do%>
 	<%= error_messages_for 'tutorial' %>
 		<div id="vertical_inputs" class="index">
-			<h4>Tutorial Title</h4><span class="more_help" onMouseover="fixedtooltip(TUTORIAL_TITLE_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span> 
-			  <%= link_to_function 'cancel', "$('new').toggle();$('new_button').toggle();; return false;" %>
+			<h4>Create Tutorial<span class="more_help" onMouseover="fixedtooltip(TUTORIAL_TITLE_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span> 
+			  <%= link_to_function 'cancel', "$('new').toggle();$('new_button').toggle();; return false;" %></h4>
 			  <span <%= %(class="required") if flash[:tutorial_title_error] %>>
 			<label for="tutoral_name">Title <span class="required more_help">*</span></label>
-		   <%= text_field 'tutorial','name',"size" => 30 %> 
+		   <%= text_field 'tutorial','name',"size" => 50 %> 
 		   </span>
 			<span><label>&nbsp;</label><%= submit_tag 'Create Tutorial' %></span>
 			<br />  
@@ -28,12 +28,34 @@
 	</div> 	
 	
 	<%unless @tutorials.size <1%>
+		<div id ="second_tabs">
+		<ul id="second_tabs">
+			<% if @local.enable_search? %>
+			<li  class = 'current'>	
+				<% form_tag :controller => 'search', :action => 'search_tutorials' do%>	
+			  		<%= text_field 'mod', 'search',"size" => 35, 
+						 :style => "color:#aaa;",
+	     				 :value => @search_value,
+	      				 :onfocus => "if(this.getValue()=='#{@search_value}'){this.clear();this.style.color = '#000';}",
+	     				 :onblur => "if(this.getValue()==''){this.setValue('#{@search_value}');this.style.color = '#aaa';}"%>
+					<%= submit_tag 'Search' %>
+				<%end%>
+			</li>
+			<%end%>
+			 <li class="guide_pag pagination">
+				<%if !@all and @tutorials.total_pages > 1%>
+				<%= will_paginate @tutorials, :params => params.merge({:sort=> @sort}).except(:authenticity_token), :page_links => false %>	  
+			<%end%>
+		</li>
+		</ul>
+	</div>	
+	<div class="clearer"></div>	
 		<div id="product-list" >
 		<div id="table">
 		   <%=render  :partial => "tutorials_list"%>  
 		</div>
 		</div>
 	<%else%>
-		<p><b>You currently have no Tutorials. Create a new tutorial to get started.</b></p>
+		<div id="notice" > You currently have no Tutorials. Create a new tutorial to get started. </div>
 	<%end%>
 </div>

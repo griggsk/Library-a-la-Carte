@@ -1,3 +1,7 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class ReserveController < ApplicationController
   include ReservesScraper
   before_filter :module_types
@@ -31,21 +35,20 @@ def edit_reserves
      begin
         @mod = find_mod(params[:id], "ReserveResource")
      rescue ActiveRecord::RecordNotFound
-        logger.error("Attempt to access invalid module #{params[:id]}" )
         flash[:notice] = "You are trying to access a module that doesn't yet exist. "
         redirect_to  :back
      else   
       @ecurrent = 'current'
       @subj_list = Subject.get_subject_values
+      if request.xhr?
+        @mod.update_attribute(:course_title,nil)
+        render :partial => "add_reserves" and return
+      end
        unless @mod.course_title.blank? #already have a course set?
             @course_title = @mod.course_title
             @reserves = search_reserves(@mod.course_title)
             session[:reserves] =  @reserves
        end
-      if request.xhr?
-        @mod.update_attribute(:course_title,nil)
-        render :partial => "add_reserves" and return
-      end
     end
  end
  

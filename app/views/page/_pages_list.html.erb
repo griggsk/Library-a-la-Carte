@@ -1,61 +1,9 @@
 
 <table>
- 	<thead>
- 		<tr>
- 	<th></th>	
-	<th class= '<%= sort_th_class_helper "name" %>'  >  
-        <%= sort_link_helper "Title", "name" %>
-    </th>
-	
- 	<th><%= image_tag "spinner.gif", :id => "spinner_sort", :class => 'image', :alt => "Spinner", :style => 'display:none;'%></th>
-	
-	<th  class= '<%= sort_th_class_helper "date" %>'>
-        <%= sort_link_helper "Last Update", "date" %></th>
-	<th  class= '<%= sort_th_class_helper "publish" %> center'>
-        <%= sort_link_helper "Published?", "publish" %></th>
-	<th  class= '<%= sort_th_class_helper "archive" %> center'>
-        <%= sort_link_helper "Archived?", "archive" %></th>
-	</tr>
-	</thead>
+ 	<%=render :partial => "t_head"%>	
   <% for page in @pages %>
-     <tr class="<%= cycle('list-line-odd', 'list-line-even') %>" >
-        <td class="center"  width ="5%">
-       	
-       	<%if page.users.length < 2%>
-		  <%= link_to image_tag("/images/icons/user_add.png", :title => 'Click to share this page.', :alt => 'Share', :border => 0),  :action => 'share', :id => page %>
-		<%else%>
-		  <%= link_to image_tag("/images/icons/users.png", :title => 'This page is shared. Click to share this page with others.', :alt => 'Share', :border => 0),  :action => 'share',  :id => page %>
-		<%end%>
-       </td>
-	   <td class= '<%= sort_th_class_helper "name" %>'  width ="40%"><%= truncate(h(page.search_title),:length => 65) %>
-	   </td>
-	  <td  width ="15%">
-       	<%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this page', :alt => 'Edit', :border => 0), {:action => 'edit',  :id => page },:class =>'space'%> 
-		|  <%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this Page in a new window.', :alt => 'preview', :border => 0), { :controller => 'page', :controller => "ica", :action => 'index', :id => page.id}, :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes'], :class=> 'space'%>
-		| <%= link_to image_tag("/images/icons/application_add.png", :title => 'Copy this page', :alt => 'Copy Page', :border => 0),{ :action => 'copy',  :id => page},:class =>'space' %> 
-		| <%= link_to image_tag("/images/icons/remove.png", :title => 'Delete this Page', :alt => 'Delete Page', :border => 0), { :action => 'destroy', :id => page, :page => @pag, :sort => @sort}, :class =>'space', :confirm => 'Are you sure you want to delete this page from your list?', :method => :post %>
-       </td>
-	   
-       <td class= '<%= sort_th_class_helper "date" %>'  width ="10%"> <%= page.updated_at.to_date%></td>
-        <td class="center"  width ="5%">
-        <% unless page.published? %>
-    
-            <%= link_to image_tag("/images/icons/Minus.png", :title => 'Publish this Page', :alt => 'publish this page', :border => 0), {:action => 'publish', :id => page, :page => @pag, :sort => @sort}, :confirm => 'Are you sure you want to publish this page?', :method => :post %> 
-        <%else%> 
-            
-            <%= link_to image_tag("/images/icons/Plus.png", :title => 'Unpublish this Page', :alt => 'unpublish this page', :border => 0), {:action => 'publish', :id => page, :page => @pag, :sort => @sort}, :confirm => 'Are you sure you want to unpublish this page?', :method => :post %> 
-        <%end%>
-		</td>
-		<td class="center"  width ="5%">
-           <% unless page.archived? %>
-    
-            <%= link_to image_tag("/images/icons/Minus.png", :title => 'Archive this Page', :alt => 'archive this page', :border => 0), {:action => 'archive', :id => page,:page => @pag, :sort => @sort}, :confirm => 'Are you sure you want to archive this page?', :method => :post %> 
-        <%else%> 
-            
-            <%= link_to image_tag("/images/icons/archive.png", :title => 'Remove from Archive', :alt => 'remove from archive', :border => 0), {:action => 'archive', :id => page,:page => @pag, :sort => @sort}, :confirm => 'Are you show you want to remove this page from archive?', :method => :post %> 
-        <%end%>
-        </td>
-		
+     <tr class="<%= cycle('list-line-odd', 'list-line-even') %>" id="row<%= page.id %>">
+		<%=render :partial => "index_row" ,:locals => {:id => page,:page => @pag, :sort => @sort} %>	
     </tr>
  <% end %>
 </table>

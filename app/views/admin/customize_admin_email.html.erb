@@ -1,0 +1,28 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
+<fieldset>
+	<h2> Customize Admin Email Addresses</h2>
+	<% form_tag :action => 'customize_admin_email', :id => @local do%>
+	    <%= error_messages_for 'local' %>
+      <div id ="share">
+      	<fieldset>
+      		<h4>Admin Email Addresses</h4>
+			
+			<label for="admin_email_to">Admin Email Address to</label>
+			<div class = 'tip'>Enter the email address that you want administrative emails sent to.</div> <br />
+            <%= text_field 'local','admin_email_to',  :size => '63'%>
+			
+			<label for="admin_email_from">Admin Email Address from</label>
+			<div class = 'tip'> Enter the email address that you want administrative emails sent from. </div> <br />
+          	<%= text_field 'local', 'admin_email_from' , :size => '63'%>
+      	</fieldset>
+
+      </div>
+		
+	   <%= submit_tag 'Customize Email', :class => "submit"  %>
+	<%end%>	 
+	<%= link_to 'Cancel', :action => 'tools' %>
+		 
+</fieldset>

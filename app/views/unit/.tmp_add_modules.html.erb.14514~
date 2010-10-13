@@ -1,0 +1,31 @@
+<fieldset>
+	<h3 class='title'> 
+	<%=render :partial => '/tutorial/title_actions'%>
+	</h3>
+	<h4>Add Modules</h4>
+	<% if flash[:error] -%>
+		  <div id ="error_wrapper">    <div id="list_error" ><%= flash[:error] %></div></div>
+	<% end -%>
+	<p> <b>On Unit: <%=@unit.title%> </b>
+		<span class = 'tip'><%= link_to 'Choose a different Unit.', {:controller => 'unit', :action => 'units',  :id => @unit}%></span>
+	</p>
+	
+	<p>Check the box next to the modules you want to add to this lesson.</p>	
+	
+	<%=render :partial => "shared/new_module"%>	
+		   
+	<%unless @mods.size <1%>
+		<div id="product-list" >
+			<% form_tag :controller => 'unit', :action => 'add_modules', :id => @unit do%> 	
+				<div id="table">
+			      <%=render :partial => "shared/add_modules_list"%>
+			   </div>
+				 <%= submit_tag 'Add to Unit', :class=> "submit" %>
+			<%end%>
+	<%else%>
+			<p><b>You currently have no Modules.</b></p>
+		</div>	
+	<%end%>
+	
+	<%=render :partial => 'tutorial/side_bar'%>
+</fieldset>

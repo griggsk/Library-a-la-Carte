@@ -1,0 +1,71 @@
+<%= render :partial => 'ort/top'%>
+
+<div id="content">
+	<!--<div id="item-corner"></div>-->
+	<div id="content-column2">
+		<div class="item"><div class="item2"><div class="item3">
+			<p>
+				This account information will be saved for  <b><%=@tutorial.full_name%></b>.</p>
+			<p>
+				<%=image_tag("/images/icons/warning.png", :title => 'Quiz Warning', :alt => 'Quiz Warning')%> 
+				You will need to know the section number for your class. 
+	        </p>
+			<p>Already have an account?  <%=link_to 'Login', {:controller => 'student', :action => 'login', :id =>@tutorial}%></p>
+		</div></div></div>
+	</div>
+	
+	
+	
+		<div id="content-column1">
+			<h3>Create an Account</h3>
+			 <% if flash[:notice] -%>
+	   			 <div id="notice" ><%= flash[:notice] %></div>
+			<% end -%>
+			<%= error_messages_for 'student' %>
+			<% form_tag :controller =>"student", :action=>'create_account', :id =>@tutorial.id do %>
+				<fieldset>
+					<legend>About You</legend>
+				<label for="student_sect_num" <%= %(class="required") if flash[:selection_error]%>> 
+				Course Section #
+	            <%= select "student","sect_num",@sections, :prompt => 'Select', :selected => flash[:selection] %>
+				<%=!flash[:selection_error].blank? ? flash[:selection_error] : "" %>
+				</label>
+				<div id="vertical_inputs">
+					<span><label for="student_firstname" <%= %(class="required") if flash[:fname_error]%>>First Name
+					<%=!flash[:fname_error].blank? ? flash[:fname_error] : "" %>
+					</label>
+		            <%= text_field "student","firstname", :size =>25, :value => flash[:fname] %> 
+					</span>		
+					<span><label for="student_lastname" <%= %(class="required") if flash[:lname_error]%>>Last Name
+					<%=!flash[:lname_error].blank? ? flash[:lname_error] : "" %></label>
+		            <%= text_field "student","lastname", :size =>25, :value => flash[:lname] %> </span>
+					
+				<br />
+				</div>
+				</fieldset>
+				<fieldset>
+				<legend>Account Login</legend>
+				<label for="student_onid" <%= %(class="required") if flash[:uname_error]%>>Username 
+				<%=!flash[:lname_error].blank? ? flash[:uname_error] : "" %></label>
+	            <%= text_field "student","onid", :size =>45, :value => (flash[:uname] || @onid) %>
+				<div class='tip'>e.g. smithj</div>
+	            <label for="student_email" <%= %(class="required") if flash[:email_error]%>>Email
+				<%=!flash[:email_error].blank? ? flash[:email_error] : "" %></label>
+	            <%= text_field "student","email", :size =>45, :value => (flash[:email] || @email) %>
+				<div class='tip'>e.g. smithj@email.edu</div>
+	           </fieldset>
+	            <%= submit_tag 'Create Account', :class => 'submit' %> 	       <% end %>
+		<!-- end content-column1 -->
+	   </div>	
+		
+		<div id="content-column1">
+			<h3>Why Create an Account?</h3>
+			<p>To ease the submission of your quiz scores to your instructor, please create an account. 
+			 If you log back into this tutorial, your account information will be remembered.  You are required to log in so that you can take the graded quizzes. 
+			 If you have not previously logged into this tutorial, please create an account at this time.
+			</p>
+		<!-- end content-column1 -->
+		</div>
+	
+<!-- end content -->
+<div class="bot"><div></div></div></div>

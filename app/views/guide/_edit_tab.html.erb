@@ -1,10 +1,13 @@
-<% unless @guide.tabs.length == 1%>
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
 <div id="guide_tabs">
 <ul id="drag">
  <% for tab in @tabs%>
 	<%unless tab.id == @tab.id%>
 		<li id = "item_<%=tab.id%>">
-		 <span class='tabs'><%= link_to_remote h(tab.tab_name), {:update => 'tab_content', :url => {:controller =>'tab', :action => 'show', :id => tab.id}},{:title => 'Edit This Tab',:href => url_for({:controller =>'tab', :action => 'show', :id => tab.id})} %>
+		 <span class='tabs'><%= link_to_remote tab.tab_name, {:update => 'tab_content', :url => {:controller =>'tab', :action => 'show', :id => tab.id}},{:title => 'Edit This Tab',:href => url_for({:controller =>'tab', :action => 'show', :id => tab.id})} %>
 		 <span class="hand"><%=image_tag("/images/icons/move.png", :title => 'Drag and Drop', :alt => 'Drag and Drop', :border => 0)%></span>  </span>
 		 </span>
 		 </li>
@@ -28,7 +31,7 @@
                 :handle => 'hand',
                 :containment => ['drag'], 
                 :constraint => false %>
-<%end%>
+
 <div id="mock_content" class="clear_left">
 	<div class="tab_actions">
 	 <%= link_to image_tag("/images/icons/add.png", :title => 'Add Modules', :alt => 'add modules', :border => 0)+'Add Modules', {:controller => 'tab', :action => 'add_modules',  :id => @guide.id,:sort => 'name'}%> 
@@ -39,6 +42,9 @@
 	<ul class="no_indent">
 		<li class = "list-item">
 			 <%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this Module', :alt => 'Edit', :border => 0)+ ' Contact Module', {:controller => 'guide', :action => 'edit_contact', :id => @guide} %> 
+		</li>
+		<li class = "list-item">
+			 <%= link_to image_tag("/images/icons/edit.png", :title => 'Edit Related Guides', :alt => 'Edit', :border => 0)+ ' Related Guides', {:controller => 'guide', :action => 'edit_relateds', :id => @guide} %> 
 		</li>
 	</ul>
 </div>

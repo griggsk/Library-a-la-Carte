@@ -3,7 +3,7 @@
 	<%=render :partial => 'title_actions'%>
 	</h3>
 	<h4>
-		<%=link_to "Subject Guides", :controller => 'module', :action =>'subject_guides', :id => @mod.id, :type => @mod.class %> >> Add to Subject Guides
+		<%=link_to "Add To/Used On", :controller => 'module', :action =>'manage', :id => @mod.id, :type => @mod.class %> >> Add to Subject Guides
 		
 	</h4>
 	<% if flash[:error] -%>

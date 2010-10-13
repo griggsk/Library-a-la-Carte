@@ -19,3 +19,10 @@
      ["2015",      "15"]
    ]
    
+  CAMPUS = [
+     ["All",       "A"],
+     ["Cascades",   "CAS"],
+     ["Corvallis",   "COR"],
+     ["ECampus",    "E"],
+     ["Hatfield",   "HMSE"]
+   ]

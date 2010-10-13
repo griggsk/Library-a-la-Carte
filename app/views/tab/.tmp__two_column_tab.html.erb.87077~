@@ -1,0 +1,53 @@
+<div id="mock_left">
+  <ul id = "left">
+    <%@mods_left.each do |pr| 
+	   mod = pr.resource.mod %>
+       <li id = "item_<%=pr.id%>" class = "list-item">
+             <span class="list-title" ><%=truncate(h(mod.module_title) ,:length => 40) %></span>   <span class = 'handle'><%=image_tag("/images/icons/move.png", :title => 'Drag and Drop', :alt => 'Drag and Drop', :border => 0)%>  </span>
+          <br />
+		     <span class = 'more_help' onMouseover="fixedtooltip('Label: <%=mod.label%> <br \/> Last update: <%=mod.updated_at.to_date%>', this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+			 | <%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this Module', :alt => 'Edit', :border => 0), { :controller => 'module', :action => 'edit_content', :id => mod, :type => mod.class} %> |
+             <%= link_to image_tag("/images/icons/document_preview.png", :title => 'View this Module', :alt => 'View Module', :border => 0), {:controller => 'module', :action => 'view', :id => mod, :type => mod.class}, :popup => ['', 'height=400,width=350,toolbar=yes, scrollbars =yes,resizable=yes'] %> |
+             <%= link_to image_tag("/images/icons/remove.png", :title => 'Delete this Module from Page', :alt => 'Delete Module', :border => 0), {:controller => 'tab', :action => 'remove_module', :id => mod, :type => mod.class, :tab => @tab.id }, :confirm => 'Are you sure you want to remove this module from the tab?', :method => :post %>
+          
+        </li>
+    <% end %>
+   </ul>
+  </div>
+
+ 
+<div id="mock_right">
+   <ul id = "right" valign="top">
+    <%@mods_right.each do |pr|
+	  mod = pr.resource.mod %>
+      <li  id = "item_<%=pr.id%>" class = "list-item">
+            <span class="list-title" ><%=truncate(h(mod.module_title) ,:length => 40) %></span>   <span class = 'handle'><%=image_tag("/images/icons/move.png", :title => 'Drag and Drop', :alt => 'Drag and Drop', :border => 0)%>  </span>
+           <br />
+		    <span class = 'more_help' onMouseover="fixedtooltip('Label: <%=mod.label%> <br \/> Last update: <%=mod.updated_at.to_date%>', this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+			 | <%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this Module', :alt => 'Edit', :border => 0), :controller => 'module', :action => 'edit_content', :id => mod, :type => mod.class %> |
+             <%= link_to image_tag("/images/icons/document_preview.png", :title => 'View this Module', :alt => 'View Page', :border => 0), {:controller => 'module', :action => 'view', :id => mod, :type => mod.class}, :popup => ['', 'height=400,width=350,toolbar=yes, scrollbars =yes,resizable=yes'] %> |
+             <%= link_to image_tag("/images/icons/remove.png", :title => 'Delete this Module from Page', :alt => 'Delete module', :border => 0), {:controller => 'tab', :action => 'remove_module', :id => mod, :type => mod.class, :tab => @tab.id }, :confirm => 'Are you sure you want to remove this module from the tab?', :method => :post %>
+          
+     </li>
+    <% end %>
+   </ul>
+  </div>
+
+
+
+</div>
+
+
+<%= sortable_element 'left', 
+                :url => {:controller => 'tab', :action => "sort" }, 
+                :complete => visual_effect(:highlight, 'left'), 
+                :handle => 'handle',
+                :containment => ['left', 'right'], 
+                :constraint => false %>
+                
+ <%= sortable_element 'right', 
+                :url => {:controller => 'tab', :action => "sort" }, 
+                :complete => visual_effect(:highlight, 'right'), 
+                :handle => 'handle',
+                :containment => ['left', 'right'], 
+                :constraint => false %>

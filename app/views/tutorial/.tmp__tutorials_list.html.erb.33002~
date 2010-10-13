@@ -1,0 +1,39 @@
+<table>
+ 	<thead>
+ 		<tr>
+ 	<th class='shared'></th>	
+	<th class= '<%= sort_th_class_helper "name" %>'  >  
+        <%= sort_link_helper "Title", "name" %>
+    </th>
+	
+ 	<th><%= image_tag "spinner.gif", :id => "spinner_sort", :class => 'image', :alt => "Spinner", :style => 'display:none;'%></th>
+	
+	<th  class= '<%= sort_th_class_helper "date" %>'>
+        <%= sort_link_helper "Last Update", "date" %></th>
+	<th  class= '<%= sort_th_class_helper "publish" %> center'>
+        <%= sort_link_helper "Published?", "publish" %></th>
+	<th  class= '<%= sort_th_class_helper "archive" %> center'>
+        <%= sort_link_helper "Archived?", "archive" %></th>
+	</tr>
+	
+	</thead>
+  <% for tutorial in @tutorials %>
+     <tr class="<%= cycle('list-line-odd', 'list-line-even') %>" id="row<%= tutorial.id %>">
+		<%=render :partial => "index_row" ,:locals => {:tutorial => tutorial,:page => @pag, :sort => @sort} %>
+    </tr>
+ <% end %>
+</table>
+<div class="pagination">
+<%if !@all and @tutorials.total_pages > 1%>
+	<ul>
+		<li><%=will_paginate @tutorials, :params => params.merge({:sort=> @sort}).except(:authenticity_token)%></li>
+		<li><%=link_to_remote 'show all', :loading => "Element.show('spinner_links')",
+        :complete => "Element.hide('spinner_links')", :url => {:action => 'index_all', :sort => @sort },:update => 'table'%></li>
+		  <li><%= image_tag "spinner.gif", :id => "spinner_links", :class => 'image', :alt => "Spinner", :style => 'display:none;'%></li>
+	</ul>	  
+<%elsif @all%>
+	<ul>
+		<li><%=link_to 'show less', :action => 'index', :sort => @sort %></li>
+	</ul>	
+<%end%>
+</div>

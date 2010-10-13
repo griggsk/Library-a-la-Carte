@@ -1,0 +1,20 @@
+
+	<div id = 'search_list'>	
+		<% form_tag :controller => 'mobile', :action => 'index' do%>	
+		  	<%= text_field 'mod', 'search',"size" => 45    %>
+			<%= submit_tag 'Search' %>
+		<%end%>
+	</div>
+	<%if @search_results%>
+		<% for mod in @search_results %>
+			<%= link_to(mod[:module_title], :controller => 'module' , :action => 'view', :id => mod, :type => mod.class,:search => @search_term) %><br />
+			<%= truncate_description(mod,@search_term) %><br />
+		<%end%>
+		<div class="pagination">
+			<%if  @search_results.total_pages > 1%>
+			<ul>
+				<li><%=will_paginate @search_results, :params => params.merge({:sort=> @sort}).except(:authenticity_token)%></li>
+			</ul>
+			<%end%>	  
+		</div>
+	<%end%>

@@ -1,3 +1,7 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class ImageManager < ActiveRecord::Base
   has_attached_file :photo, 
                   :styles => { :original => '505x425>', :thumb => '75x75>' },

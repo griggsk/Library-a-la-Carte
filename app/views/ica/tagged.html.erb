@@ -3,31 +3,23 @@
 	<div id="main-inner"><div id="content">
 		<a id="skip" name="skip"></a>
 		<div class="item">
-			<h2>Browse Course Guides by Tag Results</h2>
+			<h2>Browse by Tag Results</h2>
 			<div class="module">
-			<p>Course Guides tagged with: <b><%=@tag%></b></p>
-				 <% for page in @pages %>
-				        <%page_url = url_for :controller => 'ica', :action => 'index', :id => page%>
-				        <ul class = 'indent-left'>
-				            <li class = 'undeco'><%= link_to page.search_title, page_url, :title => "Click to view" %><br />
-							<%=page.page_description%> <small><b>Tags: </b><% page.tag_list.each do |tag|%> <%= link_to tag, { :action => :tagged, :id => tag }%>  <%end%></small></li>
-				        </ul>
-				    <%end%>
-			<p><%=image_tag("/images/icons/back.png", :title => 'Back to Guides', :alt => 'Back')%> <a href ="/course-guides/">Back to all Course Guides</a></p>
+				<p>Course Guides tagged with: <b><%=@tag%></b></p>
+					 <% for page in @pages %>
+					        <%page_url = url_for :controller => 'ica', :action => 'index', :id => page%>
+					        <ul class = 'indent-left'>
+					            <li class = 'undeco'><%= link_to page.search_title, page_url, :title => "Click to view" %><br />
+								<%=page.page_description%> <small><b>Tags: </b><% page.tag_list.each do |tag|%> <%= link_to tag, { :action => :tagged, :id => tag }%>  <%end%></small></li>
+					        </ul>
+					    <%end%>
+				<p><%=image_tag("/images/icons/back.png", :title => 'Back to Guides', :alt => 'Back')%> <a href ="/course-guides/">Back to all Course Guides</a></p>
 			</div>
 			<div class="bot"><div></div></div>
 		</div>
 		
 		<div class="item">
-		  <h2>Browse by Tags</h2>
-		  <div class="module">
-		  	<p>
-			<% tag_cloud @tags, %w(css1 css2 css3 css4) do |tag, css_class| %>
-   			 <%= link_to tag.name, { :action => :tagged, :id => tag.name }, :class => css_class %>
- 		   <% end %>	
-		   </p>
-		  </div>
-		  <div class="bot"><div></div></div>
+		 <%= render :partial => '/shared/tag_cloud'%>
 		</div>
 			 
     </div></div> <!-- end content, end main-inner -->

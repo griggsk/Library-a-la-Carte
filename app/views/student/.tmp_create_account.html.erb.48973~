@@ -1,0 +1,71 @@
+<%= render :partial => 'ort/top'%>
+
+<div id="content">
+	<div id="content-column2">
+		<div class="item"><div class="item2"><div class="item3">
+			<p>
+				This Account is for <b><%=@tutorial.full_name%></b>. <br />
+				 You will need to know
+		        the <b>section number</b> for the class your in. 
+				You can usually find that information on your course syllabus.  
+	        </p>
+			<p>Already have an account?  <%=link_to 'Login', {:controller => 'student', :action => 'login', :id =>@tutorial}%></p>
+		</div></div></div>
+	</div>
+	
+	
+	
+		<div id="content-column1">
+			<h3>Create an Account</h3>
+			 <% if flash[:notice] -%>
+	   			 <div id="notice" ><%= flash[:notice] %></div>
+			<% end -%>
+			<%= error_messages_for 'student' %>
+			<% form_tag :controller =>"student", :action=>'create_account', :id =>@tutorial.id do %>
+				<fieldset>
+					<legend>About You</legend>
+				<label for="student_sect_num" <%= %(class="required") if flash[:selection_error]%>> 
+				Course Section #
+	            <%= select "student","sect_num",@sections, :prompt => 'Select', :selected => flash[:selection] %>
+				<%=!flash[:selection_error].blank? ? flash[:selection_error] : "" %>
+				</label>
+				<div class='tip'>Find the section number on your course syllabus</div>
+				<div id="vertical_inputs">
+					<span><label for="student_firstname" <%= %(class="required") if flash[:fname_error]%>>First Name
+					<%=!flash[:fname_error].blank? ? flash[:fname_error] : "" %>
+					</label>
+		            <%= text_field "student","firstname", :size =>25, :value => flash[:fname] %> 
+					</span>		
+					<span><label for="student_lastname" <%= %(class="required") if flash[:lname_error]%>>Last Name
+					<%=!flash[:lname_error].blank? ? flash[:lname_error] : "" %></label>
+		            <%= text_field "student","lastname", :size =>25, :value => flash[:lname] %> </span>
+					
+				<br />
+				</div>
+				</fieldset>
+				<fieldset>
+					<legend>Onid Login</legend>
+				<label for="student_onid" <%= %(class="required") if flash[:uname_error]%>>Onid Username 
+				<%=!flash[:lname_error].blank? ? flash[:uname_error] : "" %></label>
+	            <%= text_field "student","onid", :size =>45, :value => (flash[:uname] || @onid) %>
+				<div class='tip'>e.g. smithj</div>
+	            <label for="student_email" <%= %(class="required") if flash[:email_error]%>>Onid Email
+				<%=!flash[:email_error].blank? ? flash[:email_error] : "" %></label>
+	            <%= text_field "student","email", :size =>45, :value => (flash[:email] || @email) %>
+				<div class='tip'>e.g. smithj@email.edu</div>
+	           </fieldset>
+	            <%= submit_tag 'Create Account', :class => 'submit' %> <a href="https://secure.onid.oregonstate.edu/cgi-bin/chpw?type=want_auth">Forgot your Onid?</a>
+	       <% end %>
+		<!-- end content-column1 -->
+	   </div>	
+		
+		<div id="content-column1">
+			<h3>Why Create an Account?</h3>
+			<p>This tutorial requires you to log in so that you can receive a grade on the quizzes. 
+				If you have not previously logged in to this tutorial, you will need to <b>create an account</b>. 
+			</p>
+		<!-- end content-column1 -->
+		</div>
+	
+<!-- end content -->
+<div class="bot"><div></div></div></div>

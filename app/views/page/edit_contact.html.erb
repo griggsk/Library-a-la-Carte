@@ -3,11 +3,11 @@
 	<h3 class='title'> 
 		<%=render :partial => 'title_actions'%>
 	</h3>	
-   	<% if flash[:notice] -%>
+	<h4><%=link_to 'Edit Page', :controller => 'page', :action => 'edit',  :id => @page%> >> Contact Module</h4>
+ 	<% if flash[:notice] -%>
 	    <div id="error_wrapper">    <div id="notice" ><%= flash[:notice] %></div></div>
 	<% end -%>
-	<h4><%=link_to 'Edit Page', :controller => 'page', :action => 'edit',  :id => @page%> >> Contact Module</h4>
-
+	
 	<div id="hide" <% if @page.resource%> style="display:none" <%end%> >
 		<% form_tag :action => 'edit_contact'  do%>
 				<label>Contact Module <span class = 'more_help'  onMouseover="fixedtooltip(CONTACT_MOD_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
@@ -25,6 +25,12 @@
 	</div>
 
 	<%if @page.resource%>
+			<div id="contact_actions">
+			<%=link_to 'Edit Contact Module', {:controller => 'module', :action => 'edit_content', :id => @mod, :type => @mod.class}%>
+			|
+			<a href="#" onclick="$('hide').toggle();; return false;">Select New Contact Module</a> 
+					<span class = 'more_help'  onMouseover="fixedtooltip(NEW_CONTACT_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+			</div>
 		   <div id="boxes">
 			<div class="item">
 				<div class ="item2">
@@ -32,13 +38,7 @@
 				    <div class="bot"><div></div></div>
 				</div>
 			</div>
-	</div>
-	<div id="actions">
-			<%=link_to 'Edit Contact Module', {:controller => 'module', :action => 'edit_content', :id => @mod, :type => @mod.class}%>
-			|
-			<a href="#" onclick="$('hide').toggle(); $('actions').toggle();$('boxes').toggle();; return false;">Select New Contact Module</a> 
-					<span class = 'more_help'  onMouseover="fixedtooltip(NEW_CONTACT_MSSG, this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
-			</div>	
+			</div>
 	<%end%>
 
 		<div id="submit_button">

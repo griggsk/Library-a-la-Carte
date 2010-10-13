@@ -1,3 +1,7 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
 <fieldset>
 	<h2> Customize Search Engines</h2>
 	<% form_tag :action => 'customize_layout', :id => @local do%>
@@ -6,10 +10,13 @@
       	<fieldset>
       		<h4>Local Search</h4>
 			 <label for="local_site_search">Library Site Search</label>
+			  <div class = 'tip'>Enter the label for your library site search.  </div> <br />
+			 <%= text_field 'local', 'site_search_label'%>
 			 <div class = 'tip'>Enter the code snippet for your library site search.  </div> <br />
             <%= text_area 'local','site_search',  :size => '48x5'%>
-       
             <label for="local_book_search">Library Catalog Search</label>
+			<div class = 'tip'>Enter the label for your library catalog search.  </div> <br />
+			 <%= text_field 'local', 'book_search_label'%>
 			<div class = 'tip'>Enter the code snippet to search your library's catalog. </div> <br />
             <%= text_area 'local','book_search',  :size => '48x5'%>
              

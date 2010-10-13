@@ -1,0 +1,20 @@
+<thead>
+ 		<tr>
+ 	<th class= '<%= sort_th_class_helper "shared" %>'  >  
+        <%= sort_link_helper "Shared?", "shared" %>		
+	<th class= '<%= sort_th_class_helper "name" %>'  >  
+        <%= sort_link_helper "Title", "name" %>
+		<%= image_tag "spinner.gif", :id => "spinner_sort", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
+    </th>
+	
+ 	<th>
+	<span class="tip">edit | view | copy | delete</span></th>
+	
+	<th  class= '<%= sort_th_class_helper "date" %>'>
+        <%= sort_link_helper "Last Update", "date" %></th>
+	<th  class= '<%= sort_th_class_helper "publish" %> center'>
+        <%= sort_link_helper "Published?", "publish" %></th>
+	<th  class= '<%= sort_th_class_helper "archive" %> center'>
+        <%= sort_link_helper "Archived?", "archive" %></th>
+	</tr>
+	</thead>

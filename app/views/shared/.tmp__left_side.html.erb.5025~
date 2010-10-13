@@ -1,0 +1,17 @@
+  <%unless @local.name_one.blank? and @local.name_two.blank? and @local.name_three.blank? %>
+			<div class="item"><div class="item2">
+				<div class='module'>
+				<ul class = "undeco noindent">
+					 <%unless @local.name_one.blank? and @local.link_one.blank? %>
+					 <li><a href = "<%=@local.link_one%>"><%=@local.name_one%></a></li>
+					 <%end%>
+					 <%unless @local.name_two.blank? and @local.link_two.blank? %>
+					 <li><a href = "<%=@local.link_two%>"><%=@local.name_two%></a></li>
+					 <%end%>
+					 <%unless @local.name_three.blank? and @local.link_three.blank? %>
+					 <li><a href = "<%=@local.link_three%>"><%=@local.name_three%></a></li>
+					 <%end%>
+				</ul>			 
+				</div>
+		   </div></div>
+   <%end%>

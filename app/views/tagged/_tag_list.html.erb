@@ -1,0 +1,22 @@
+<div id="notice">
+			<% @tags.each  do |tag| %>
+   			 <%if @tag == tag then css_class ='highlight' else css_class = '' end%>
+			 <%= render_tag_list(tag,css_class) %>
+ 		   <% end %>
+		   <%if @tags.empty?%>
+		   You have no tagged modules.
+		   <%end%>	
+</div>
+<%unless @mods.blank?%>
+ <%=render :partial => "/module/mods_table"%>
+<div class="pagination">
+<%if @mods.total_pages > 1%>
+	<ul>
+		<li><%=will_paginate @mods, :params => params.merge({:sort=> @sort}).except(:authenticity_token)%></li>
+		  <li><%= image_tag "spinner.gif", :id => "spinner_links", :class => 'image', :alt => "Spinner", :style => 'display:none;'%></li>
+	</ul>	  	
+<%end%>
+</div>
+<%else%>
+			<div id="notice"><b>No Modules Found</b></div>
+<%end%>

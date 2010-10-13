@@ -1,0 +1,72 @@
+<%= render :partial => 'ort/top'%>
+<div id="content">
+
+	<div id="content-column2">
+		<div class="item"><div class="item2"><div class="item3">
+	      <p> You registered as being in section <%=@student.sect_num%>
+		 		<% form_tag :controller =>"ort", :action=>'edit_section', :id =>@tutorial.id do%>
+				<label for="email">Change Section #</label>
+	            <%= select "student","sect_num",@sections, :size =>15 %>
+	            <%= submit_tag 'Change', :class => 'submit' %>
+	       <% end %>
+		   </p>
+		</div></div></div>
+	</div>
+	
+	<div id="content-column1">
+	   <h2 class="no-bar">Hello <%=@student.name%></h2>
+	   <p> This Tutorial is for <%=@tutorial.course%>. Remember, you can only take the graded quizzes once. Do not Grade the Quiz until you are satisfied with your answers.</p>
+			<%if !@quizes.blank?%>
+				<h3>You have taken the following quizzes:</h3>
+				<ul>
+				   <%@quizes.each do |quiz|%>
+					<li><%=quiz.module_title%></li>
+				<%end%>
+			<%else%>
+				<h3>You have not taken any of this tutorial's quizzes yet.</h3>
+			<%end%>	
+			</ul>
+			<%if !@left.blank?%>
+				<h3>You have the following quizzes left to take:</h3>
+				<ul>
+				<%@left.flatten.each do |quiz|%>
+					<li><%=quiz.module_title%> </li>
+				<%end%>
+				</ul>
+			<%end%>	
+			
+		<h2>My Quiz Results <span class ='printer'><img src="/images/icons/printer.png" alt="Printer"  class="printer" /> <%= link_to "Print" , :controller => 'ort', :action => 'print_quiz', :id =>@tutorial %></span></h2>
+		<h4>Tutorial Score: <%=@student.final_score%> out of <%=@tutorial.possible_score%></h4>
+		<div id="quizes">
+			<%@quizes.each do |quiz|
+			total = 0%>
+			<fieldset>
+			<h4><%=quiz.module_title%></h4>
+			<%results = @student.get_results(quiz.id)%>
+				<%results.each do |result|%>
+				   <%question = quiz.questions.find(result[0])%>
+				   <label><%=question.question%></label>
+				 <ul>
+				  <li>
+					 <label>Correct Answer: </label> <%=question.correct_answer%>
+					  <br /> <label>Your Answer: </label><%=h result[1]%>
+					  <%unless question.points == 0%><br /> <label>
+						 <%=result[2]%>
+						 out of <%=h question.points%></label> 
+					<%end%>	
+				 </li> 	 
+				</ul>  
+				   <% total = result[2] + total %>
+				<%end%>
+				
+				<h5>Score: <span class="required"><%=total%> / <%=quiz.possible_points%></span> </h5>
+				<p> Taken on: <%=@student.taken_on.to_formatted_s(:long)%></p>
+			</fieldset>	
+			<%end%>
+		</div>
+		
+	<!-- end content-column1 -->
+	</div>
+
+<!-- end content -->
+<div class="bot"><div></div></div></div>

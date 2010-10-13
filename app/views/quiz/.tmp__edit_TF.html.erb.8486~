@@ -1,0 +1,4 @@
+<label>
+The correct answer is:</label>
+<b>True </b> <%= radio_button :answer,  :correct, true%> or
+<b>False</b> <%= radio_button :answer,  :correct, false%>

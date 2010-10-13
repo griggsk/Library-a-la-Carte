@@ -1,0 +1,50 @@
+<fieldset>
+<h3 class = 'title'><%=render :partial => 'title_actions'%></h3>
+<h4>Quiz Manger</h4>
+<% if flash[:notice] -%>
+	  <div id ="error_wrapper">    <div id="notice" ><%= flash[:notice] %></div></div>
+	<% end -%>
+<div id ='share'>	
+<p>
+<strong>Quiz Results:</strong> <%=link_to 'View Responses', {:controller => 'ort', :action => 'grades', :id => @tutorial}, :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes']%><br />
+<strong>Grades Login/Password:</strong> <%=@tutorial.id%> / <%=@tutorial.pass%>
+</p>
+	<% form_tag :action => 'quizes' do%>
+	 <p>
+				 <strong>Sort by Section Number:</strong>  
+				    <select id="section" name="section">
+				    <option value="00" selected="selected" >Select</option>
+				   	<%= options_for_select(@sections, @sect)%>
+				  </select>
+				   <%= submit_tag 'Go' %>
+				   <%if @sect%>
+				       <small><%= link_to 'Show All Sections', :action => 'quizes' %></small> 
+					   <p><%=link_to 'Export Grades', :action => 'export', :id => @tutorial, :section => @sect%> | <%=link_to 'Clear Grades', {:action => 'clear_grades', :id => @tutorial, :section => @sect},:confirm => 'Are you sure you want to delete the grades for this section?', :method => :post %></p>
+				   <%else%>
+				   	 <p><%=link_to 'Export All Grades', :action => 'export', :id => @tutorial%> | <%=link_to 'Clear All Grades', {:action => 'clear_grades', :id => @tutorial},:confirm => 'Are you sure you want to delete all grades for this tutorial?', :method => :post %></p>
+				   <%end%>
+		</p>
+	<%end%>
+	<% if @students.size < 1%>
+		 <p> Sorry there are no quiz results for this section.</p>
+	<% else%>
+	
+	<ol>
+		<%@students.each do |student| %>
+		<li>
+			<label>
+			Name: <%=student.name%><br />
+			Onid: <%=student.onid%><br />
+			Total Score: <%=student.final_score%> out of <%=@tutorial.possible_score%> <br />
+			Section: <%=student.sect_num%><br />
+			</label>
+		</li>
+		<%end%>	
+   </ol>		
+<%end%>	
+</div>
+<p><%= link_to 'Cancel', :action => 'index' %></p>
+
+ </fieldset>
+ <%=render :partial => 'side_bar'%>
+ 

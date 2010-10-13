@@ -1,6 +1,10 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class TutorialController < ApplicationController
 include Paginating
-before_filter :clear_sessions, :only => [:index]
+before_filter :clear_sessions, :only => [:index, :new]
 layout 'tool'
 
   def index
@@ -8,6 +12,7 @@ layout 'tool'
    @sort = params[:sort] || 'name'
    @tutorials = @user.sort_tutorials(@sort)
    @tutorials = paginate_list(@tutorials,(params[:page] ||= 1),@sort)
+   @search_value = "Search My Tutorials"
    if request.xhr?
       render :partial => "tutorials_list", :layout => false
     end
@@ -33,7 +38,7 @@ layout 'tool'
            @user.add_tutorial(@tutorial)
            case params[:commit]
               when "Save" 
-                redirect_to :action => "preview", :id =>@tutorial and return
+                redirect_to :controller => 'unit', :action => 'units' , :id =>@tutorial and return
               when "Save & Add Unit" 
                 redirect_to :controller => 'unit', :action => 'add', :id =>@tutorial and return
             end
@@ -51,7 +56,7 @@ layout 'tool'
         if @tutorial.save 
            session[:tutorial] = @tutorial.id
            @user.add_tutorial(@tutorial)
-           redirect_to  :action => 'update', :id => @tutorial.id
+           redirect_to  :action => 'update', :id => @tutorial.id and return
          else
           flash[:error] = "Could not create the tutorial. There were problems with the following fields:
                            #{@tutorial.errors.full_messages.join(", ")}" 
@@ -79,12 +84,28 @@ layout 'tool'
          if @tutorial.save
            case params[:commit]
               when "Save" 
-                redirect_to :action => "preview", :id =>@tutorial and return
+                 redirect_to :controller => 'unit', :action => 'units' , :id =>@tutorial and return
               when "Save & Add Unit" 
                 redirect_to :controller => 'unit', :action => 'add', :id =>@tutorial and return
             end
          end
       end
+ end
+ 
+   def set_owner
+    begin
+     @tutorial = @user.tutorials.find(params[:id])
+    rescue 
+     redirect_to :action => 'index'and return
+    end 
+    @owner = User.find(params[:uid])
+    @tutorial.update_attribute(:created_by, @owner.id) 
+    @owners = @tutorial.users 
+   if request.xhr?
+     render :partial => 'owners', :layout => false 
+   else
+     redirect_to :action => 'share', :id => @tutorial.id
+   end  
  end
  
  def share
@@ -166,7 +187,7 @@ layout 'tool'
     respond_to do |format|
             format.csv do
               response.headers["Content-Type"]        = "text/csv; charset=UTF-8; header=present"
-              response.headers["Content-Disposition"] = "attachment; filename=#{@tutorial.name}-grades-report.csv"
+              response.headers["Content-Disposition"] = "attachment; filename=#{@tutorial.to_param}-grades-report.csv"
             end
    end
  end
@@ -193,7 +214,7 @@ layout 'tool'
       redirect_to  :action => 'index' and return
     else
       @tag_list = @tutorial.tag_list
-      @selected_subj =  @tutorial.subject
+      @selected_subj = @tutorial.subject || "" #added in || "" to fix a nil object error when no subject was specified
     end
     if request.post?
          @new_tutorial = @tutorial.clone
@@ -205,7 +226,7 @@ layout 'tool'
            session[:tutorial]= @new_tutorial.id
            case params[:commit]
               when "Save" 
-                redirect_to :action => "preview", :id =>@new_tutorial and return
+                redirect_to :controller => 'unit', :action => 'units' , :id =>@tutorial and return
               when "Save & Add Unit" 
                 redirect_to :controller => 'unit', :action => 'add', :id =>@new_tutorial and return
             end
@@ -227,14 +248,25 @@ end
 
   #delete the tutorial from a user. deal with the assocations.
   def destroy
-      begin
+     begin
       @tutorial =  @user.tutorials.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      redirect_to :action => 'index' and return
-    else
-       @user.tutorials.delete(@tutorial)
-       @tutorial.destroy if !@tutorial.shared? == true  # if only one owner or only one editor delete the tutorial
-      redirect_to :action => 'index', :sort=> params[:sort], :page => params[:page] and return
+     rescue ActiveRecord::RecordNotFound
+       redirect_to :action => 'index' and return
+     else
+      @user.tutorials.delete(@tutorial)
+      if @tutorial.shared?
+         @tutorial.update_attribute(:created_by, @tutorial.users.at(1).id) if @tutorial.created_by.to_s == @user.id.to_s
+         @tutorial.destroy  # if only one owner or only one editor delete the tutorial 
+      end
+      if request.xhr?
+        render :text => "" #delete the table row by sending back a blank string.  The <tr> tags still exist though         
+      else
+        if params[:search]#if the delete request came from the search screen, redirect back to search otherwise go to the regular tutorial list
+          redirect_to :controller => 'search',:action => 'search_tutorials' , :sort => params[:sort], :page => params[:page],  :all => params[:all],:mod => {:search => params[:search]}
+        else
+          redirect_to :action => 'index', :sort=> params[:sort], :page => params[:page] and return      
+        end         
+      end
     end
   end
   
@@ -246,7 +278,20 @@ def publish
      else
        tutorial.toggle!(:published)
        tutorial.update_attribute(:archived, false)
-       redirect_to :back, :page => params[:page], :sort => params[:sort]
+       if request.xhr?
+         @sort = params[:sort] #set the sort variable to make sure the proper sort class is set for the updated row
+           if params[:search]#if the request came from search, send back the search term
+              render :partial => "index_row" ,:locals => {:id => params[:id], :tutorial => tutorial, :sort => @sort , :all => params[:all],:mod => {:search => params[:search]}}         
+           else
+              render :partial => "index_row" ,:locals => {:id => params[:id], :tutorial => tutorial, :sort => @sort , :all => params[:all]}           
+           end
+       else
+         if params[:search]#if the publish request came from the search screen, redirect back to search otherwise go to the regular tutorial list
+              redirect_to :controller => 'search',:action => 'search_tutorials' , :sort => params[:sort], :page => params[:page],  :all => params[:all],:mod => {:search => params[:search]}
+            else
+               redirect_to :back, :sort=> params[:sort], :page => params[:page]        
+         end
+       end
      end
    end
   
@@ -257,8 +302,21 @@ def publish
       redirect_to  :action => 'index' and return
      else
        @tutorial.toggle!(:archived)
-       @tutorial.update_attribute(:published, false)
-       redirect_to :back, :page => params[:page], :sort => params[:sort]
+       @tutorial.update_attribute(:published, false)  
+       if request.xhr?
+         @sort = params[:sort] #set the sort variable to make sure the proper sort class is set for the updated row
+           if params[:search]#if the request came from search, send back the search term
+              render :partial => "index_row" ,:locals => {:id => params[:id], :tutorial => @tutorial, :sort => @sort , :all => params[:all],:mod => {:search => params[:search]}}         
+           else
+              render :partial => "index_row" ,:locals => {:id => params[:id], :tutorial => @tutorial, :sort => @sort , :all => params[:all]}           
+           end
+       else
+          if params[:search]#if the archive request came from the search screen, redirect back to search otherwise go to the regular tutorial list
+            redirect_to :controller => 'search',:action => 'search_tutorials' , :sort => params[:sort], :page => params[:page],  :all => params[:all],:mod => {:search => params[:search]}
+          else
+            redirect_to :back, :page => params[:page], :sort => params[:sort]       
+          end
+      end
      end
    end
   

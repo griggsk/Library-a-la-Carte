@@ -2,9 +2,14 @@
 User-agent: *
 Disallow: /cgi-bin/
 Disallow: /tmp/
-Disallow: /images/
-Disallow: /stylesheets/
-Disallow: /javascripts/
-Disallow: /tinymce/
+Disallow: /images
+Disallow: /stylesheets
+Disallow: /javascripts
+Disallow: /tinymce
+Disallow: /ort
+Disallow: /srg
+Disallow: /ica
+Disallow: /sso_login
+
 
 

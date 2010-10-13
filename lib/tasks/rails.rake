@@ -264,6 +264,38 @@ desc 'This task moves the resources in style_resources, recom_resources, plag_re
     end
   end
 
+#######Polymorphic Tabs#################
+desc 'This task moves the guide_id and page_id into the polymorphic fields tabable'
+task :tabs_update => :environment do
+  #####guides######
+  tabs = Tab.find(:all, :conditions => {:page_id => nil})
+  tabs.each do |tab|
+    tab.tabable_id = tab.guide_id
+    tab.tabable_type = 'Guide'
+    tab.save
+  end
+  tabs = Tab.find(:all, :conditions => {:guide_id => nil})
+  tabs.each do |tab|
+    tab.tabable_id = tab.page_id
+    tab.tabable_type = 'Page'
+    tab.save
+  end
+  puts"##Guides and pages moved to polymorphic fields. You may now run update_tab.sql to finish cleaning up the database##"
+end
+
+desc 'This task moves the guide_id and page_id into the polymorphic fields tabable'
+task :tabs_update2 => :environment do
+  puts "Starting..."
+   #####guides######
+  Tab.update_all("tabable_id = guide_id,tabable_type = 'Guide'", "guide_id > 0")
+   #####pages######
+  Tab.update_all("tabable_id = page_id,tabable_type = 'Page'", "page_id > 0")
+  puts"##Guides and pages moved to polymorphic fields. You may now run update_tab.sql to finish cleaning up the database##"
+end
+
+
+#############Update Local##############
+
 desc 'This task initializes the types and guides fields in the locals table.  This task needs to be run when
       updating from version 1.3 to version 1.4'
   task :locals_update => :environment do
@@ -275,3 +307,14 @@ desc 'This task initializes the types and guides fields in the locals table.  Th
       puts "Types and Guides failed to initialize in locals"
     end
   end
+ 
+  ######## Build Ferret Index######
+desc "Rebuild all Indexes"
+task :rebuild_all_indexes => [:environment] do
+  puts "Creating new indexes.  This could take a while..."
+  %w(BookResource CourseWidget CommentResource DatabaseResource ImageResource InstResource LibResource 
+  MiscellaneousResource QuizResource ReserveResource RssResource UploaderResource UrlResource VideoResource 
+  Page Guide Tutorial).each { |s|
+  s.constantize.rebuild_index}
+  puts "Finished creating the indexes"
+end

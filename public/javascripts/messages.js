@@ -7,9 +7,11 @@ ADD_RELATED_MSSG="Select the guides you want to to add to the related guides lis
 
 /*GUIDE Messages*/
 GUIDE_TITLE_MSSG='Enter a unique name for the guide. Do not include the word \'Guide\' in the title.'
-GUIDE_NAME_MSSG="Enter a unique name for the guide. If the guide is for a subject, choose the subject(s) it falls under."
-CONTACT_MOD_MSSG="The contact module should contain contact information for the person or cluster available to answer questions about the guide's content and subject area. The module must already be created before you can add it as the contact module."
-GUIDE_CLASS_MSSG ="Select courses that are related to this guide and that would find the guide helpful for research or writing assignments."
+GUIDE_NAME_MSSG="Enter a unique name for the guide. If the guide is for a subject, choose the subject categories it should be listed under and related to."
+CONTACT_MOD_MSSG="The contact module should contain contact information for the person or cluster available to answer questions about the guide's content and subject area."
+GUIDE_CLASS_MSSG ="Select courses to associate this guide with. This will relate this guide to courses in the subject areas you select."
+GUIDE_SHARE_MSSG="Share the original when you want to co-author a guide. Share a template if you do not want to give editing rights. Edits to the template will not effect the original. NOTE: You will not have access to the template."
+GUIDE_COPY_MSSG="Copy the modules if you want to make a distinct copy. Link the modules if you want edits to one guide to effect the other."
 /*Page Messages*/
 PAGE_TITLE_MSSG="The title of a page consists of subject, course number, and course name. The page title is what will appear at the top of the course page. Tip: To make a cross discipline page press Ctrl to select multiple subjects.  Section number is not required. "
 PAGE_INDEX_TITLE_MSSG='The title of a page consists of subject, course number, and course name. The page title is what will appear at the top of the coursepage. Tip: Section number is not required.'
@@ -23,13 +25,15 @@ TUTORIAL_TAG_MSSG="Tags are keywords that highlight content on the tutorial. Tip
 TUTORIAL_CLASS_MSSG='If the tutorial is for a specific course enter the data. Leave blank if the tutorial is not for a specific course.'
 TUTORIAL_GRADED_MSSG='Click yes if the tutorial will be graded for a specific course. You must enter course data for the tutorial to offer a graded option.'
 /*Unit*/
-UNIT_NAME_MSSG='Enter a unique name for the unit.'
+UNIT_NAME_MSSG='Enter a unique name for the unit.This name is what will appear as the unit\'s full title.'
+UNIT_SLUG_MSSG='Enter a shorten name for the unit. This name should not exceed 15 character. This name is what will appear in the navigation.'
 UNIT_TAG_MSSG="Tags are keywords that highlight content on the Unit. Tips: Seperate individual tags with a comma. Only add 3-5 tags. Use the same tag on similar tutorials to help discovery."
 UNIT_DESC_MSSG='The unit description is a short teaser that describes the unit. Tips:  Write complete sentences. Highlight special content on the tutorial'
 
 
 /*MODULE MESSAGES*/
-MOD_TITLE_MSSG= 'This is the module\'s title that will appear to the public.<br /> Enter a  title that explains the content in this module. Shorter titles should be used in two column layouts.'
+MOD_TITLE_MSSG= 'This is the module\'s title that will appear to the public.<br /> Shorter titles should be used in two column layouts.'
+MOD_SLUG_MSSG='Enter a shorten name for the module. This name should not exceed 25 character. This name is what will appear in the navigation.'
 MOD_LABEL_MSSG= 'This is a unique descriptive label for the module. This is the name the module will be listed under in the tool.'
 MOD_TAGS='Tags are keywords that highlight content on the module or organize the modules into a category. Tips: Seperate individual tags with a comma. Only add 3-5 tags.'
 /*Video*/
@@ -50,19 +54,25 @@ BOOK_RESULTS_MSSG='Click on the title to view and then add a book.'
 IMAGE_INFO_MSSG='Enter information about the module or images. This information will appear at the top of the module.'
 IMAGE_ALT_MSSG='Enter a title or short description about the image.'
 IMAGE_URL_MSSG='Enter the URL to the image. Check that the URL displays only the image.'
-IMAGE_DESC_MSSG ='Enter information about the image. This information will appear below the image.'
+IMAGE_DESC_MSSG ='Enter information about the image. This information will appear below the image. Tip: Hide the descriptions by adding them to the alternative label instead of the description field.'
+IMAGE_SIZE_MSSG='Select a size to display the images you add by URL or Flickr search. Note: Select square or thumbnail size for a horizontal layout in a two column template. Full size images will not display horizontally.'
+IMAGE_ORIEN_MSSG='Select a layout orientation for the images you add by URL or Flickr search.'
 /*Quiz Module*/
 QUIZ_INFO_MSSG='Enter information about the module or the quiz. This information will be appear at the top of the module'
 QUIZ_ANSWERS_MSSG='Click to edit this answer. Or click to remove it.'
 QUIZ_QUESTIONS_MSSG='Click to edit this question. Or click to remove it.'
 QUIZ_GRADE_MSSG='Select Yes if you want to view submitted answers to the question. Note: A graded quiz requires the tutorial to be graded too so that people can sign in.'
-
+NOT_GRADE_MSSG='The Tutorial must be marked as graded, before the quiz can marked as graded.'
+NOT_QUIZ_GRADE_MSSG='The Quiz must be marked as graded, before the question can be given points.'
 /*URL Module*/
 LINK_INFO_MSSG='Enter information about the module or the links. This information will appear at the top of the module.'
-NEW_LINK_MSSG='Enter link title. This will be used as the alt label and as the link text. You should enter text for longer links.'
+NEW_LINK_MSSG='Enter a link title. This will be used as the link text. You should enter text for longer links.'
 NEW_URL_MSSG='Enter a valid URL'
 LINK_MSSG='Click to edit or remove the link from the module. You will need to save the module after.'
 LINK_DESC_MSSG='Enter information about the link. This information will appear below the link.'
+LINK_TARGET_MSSG='Click Yes if you want the link to open in a different window than the guide. Tip: It is not recommended to open links in a new window. Do so sparingly.'
+ORDER_LINK_MSSG='Enter a position to order the links in this module. NOTE: After you save you will be able to drag and drop the links to order them.'
+
 /*Database Module*/
 DB_MSSG = "Edit the description of the databases (note: coverage dates are already included), reorder how the databases, or select a database to remove it from the module. Remember to save the module afterwards."
 DB_INFO_MSSG ='Enter information about the module or the databases. This information will appear at the top of the list of databases.'
@@ -94,18 +104,6 @@ MORE_MSSG= 'Enter information, instructions, links, and images. This information
 COMMENTS_NUM_MSSG ="Select the number of comments you want to display. The rest of the comments will be hidden, but available through a read more link"
 COMMENTS_MSSG="Enter a discussion topic or a message."
 PAGE_COMMENTS_MSSG ="Submitted Comments. Select to delete one or all if needed."
-
-/*Learning objects*/
-LEARN_MSSG ='Enter information about the learning objects.  Use the formatting icons to format it. If you are unfamiliar with the rich text editor, click on the <b>Help</b> link at the top of this page and read the \'How Do I Use the Rich-text Editor\' help topic.'
-
-/*Plagerism*/
-PLAG_MSSG = 'Enter information about plagiarism.  Use the formatting icons to format it. If you are unfamiliar with the rich text editor, click on the <b>Help</b> link at the top of this page and read the \'How Do I Use the Rich-text Editor\' help topic.'
-
-/*Style Guides*/
-STYLE_MSSG = 'Enter information about style guides.  Use the formatting icons to format it. If you are unfamiliar with the rich text editor, click on the <b>Help</b> link at the top of this page and read the \'How Do I Use the Rich-text Editor\' help topic.'
-
-/*Instructor Recommendation*/
-RECOMMENDS_MSSG='Enter information about books, websites, and anything else that you or the instructor recommends.  Use the formatting icons to format it. If you are unfamiliar with the rich text editor, click on the <b>Help</b> link at the top of this page and read the \'How Do I Use the Rich-text Editor\' help topic.'
 
 /*Course Reserves*/
 RESERVES_MSSG='Enter information about course reserves.'

@@ -4,7 +4,13 @@
 		<ul class = 'undeco'> 
 		<% @mod.links.each do |link|%>
 			<li>
-			<a href = "<%=link.url%>"><%= link.label.blank? ? h(link.url) : h(link.label) %></a>
+			<% if link.target == true%>
+			 <a href = "<%=h link.url%>" rel = "external"  title = "Link opens in a new window." class ="external">
+			 <%else%>
+			  <a href = "<%=h link.url%>">
+			 <%end%>	
+				<%= link.label.blank? ? h(link.url) : h(link.label) %>
+			  </a>
 			<%unless link.description.blank?%><br /> <%=h(link.description)%><%end%>
 			</li>
 		<%end%>

@@ -1,3 +1,7 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class UrlController < ApplicationController
   before_filter :module_types
   before_filter :current_page
@@ -39,8 +43,8 @@ def copy_url
    else
       @mod = @old_mod.clone
       @mod.global = false
+      @mod.label =  @old_mod.label+'-copy'
      if @mod.save
-       @mod.label =  @old_mod.label+'-copy'
         @mod.links << @old_mod.links.collect{|l| l.clone if l}
         create_and_add_resource(@user,@mod)
           flash[:notice] = "Saved as #{@mod.label}"
@@ -48,6 +52,19 @@ def copy_url
      end
    end  
  end
+ 
+   #Sort modules function for drag and drop  
+def sort
+  if params['links'] then 
+     sortables = params['links'] 
+     sortables.each do |id|
+      link = Link.find(id)
+      link.update_attribute(:position, sortables.index(id) + 1 )
+     end
+   end
+   render :nothing => true 
+end
+
 
 
 end

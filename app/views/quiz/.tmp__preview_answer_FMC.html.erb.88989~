@@ -1,0 +1,3 @@
+<strong>Answer: <%= answer.value.blank? ? "" : answer.value.gsub("\n",'<br />')%></strong>  <br />
+<strong>Feedback: </strong> <%= answer.feedback.blank? ? "" : answer.feedback.gsub("\n",'<br />')%> <br />
+<strong><%= answer.correct? ? "Correct" : "Incorrect"%> </strong>

@@ -1,0 +1,7 @@
+<%if mod.published == false %>
+	<%=  link_to_remote image_tag("/images/icons/Minus.png", :title => 'Add this Module to the published list', :alt => 'add to published list', :border => 0),{:url => {:controller => 'module',:action => 'publish', :id => mod,  :type => mod.class, :page => @page, :sort => @sort,  :all => @all },:update => "publish#{mod.id}#{mod.class}" , :confirm => 'Are you sure you want to add this module to the published list?'}, 
+	:href => url_for(:action => 'publish', :controller => 'module',:id => mod,	:type =>	mod.class, :page => @page,	:sort => @sort , :all => @all), :method => :post %>
+<%else%> 
+    <%= link_to_remote image_tag("/images/icons/Plus.png", :title => 'Remove this Module from the published list', :alt => 'remove from published list', :border => 0),{:url => {:controller => 'module',:action => 'publish', :id => mod , :type => mod.class, :page => @page, :sort => @sort,  :all => @all },:update => "publish#{mod.id}#{mod.class}", :confirm => 'Are you show you want to remove this module from the published list?'}, 
+	:href => url_for(:action => 'publish', :controller => 'module',:id => mod, :type => mod.class, :page => @page, :sort => @sort , :all => @all),:method => :post %> 
+<%end%>	

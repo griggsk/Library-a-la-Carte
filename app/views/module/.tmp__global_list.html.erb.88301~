@@ -1,0 +1,63 @@
+
+<%= image_tag "spinner.gif", :id => "spinner_list", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
+<div id ="global">
+<div id="product-list" class="mod-list">
+	
+ <table class="my_lists">
+ 	<thead>
+	  <tr>
+		<th class= '<%= sort_th_class_helper "name" %>' >
+	        <%= sort_link_helper "Label", "name" %></th>
+				<th><%= image_tag "spinner.gif", :id => "spinner_sort", :class => 'image', :alt => "Spinner", :style => 'display:none;'%></th>
+	
+		<th   class= '<%= sort_th_class_helper "date" %>'>
+	        <%= sort_link_helper "Last Update", "date" %></th>
+		<th   class= '<%= sort_th_class_helper "type" %> '>
+	        <%= sort_link_helper "Content Type", "type" %></th>
+			
+		
+		<th  class= '<%= sort_th_class_helper "author" %> '>
+	        <%= sort_link_helper "Author", "author" %></th>
+	 </tr>  		
+	</thead>
+	
+  <% for mod in @mods %>
+     <tr class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+       
+	 
+	   
+	   <td  class= '<%= sort_th_class_helper "name" %> ' width ="45%"><%= truncate(h(mod.label),:length => 55) %>
+	    </td>
+	   <td class ='center' width ="15%">
+	    
+		<%= link_to image_tag("/images/icons/application_add.png", :title => 'Copy this Module', :alt => 'Copy', :border => 0),{:action => 'copy', :id => mod, :type => mod.class},:class =>'space' %>
+	   | <%= link_to image_tag("/images/icons/document_preview.png", :title => 'View this Module in a new window', :alt => 'View', :border => 0),{ :action => 'view', :id => mod, :type => mod.class} , :class =>'space', :popup => ['', 'height=500,width=400,toolbar=no, scrollbars =yes,resizable=yes'] %>
+	   	
+	   </td>
+	   <td class= '<%= sort_th_class_helper "date" %>' width ="10%"> <%= mod.updated_at.to_date %>	</td>
+	   <td class= '<%= sort_th_class_helper "type" %>' width ="10%"> <%= mod.content_type%>	</td>	
+	   
+	    	
+		<td class= '<%= sort_th_class_helper "author" %>' width ="10%"> <%= mod.created_by%>	</td>
+	   
+    </tr>
+ <% end %>
+</table>
+
+<div class="pagination">
+<%if !@all and @mods.total_pages > 1%>
+	<ul>
+		<li><%=will_paginate @mods, :params => params.merge({:sort=> @sort}).except(:authenticity_token)%></li>
+		 <li><%=link_to 'show all', {:action => 'index', :sort => @sort, :all => 'all', :list => 'global'  } %></li>
+		  <li><%= image_tag "spinner.gif", :id => "spinner_links", :class => 'image', :alt => "Spinner", :style => 'display:none;'%></li>
+	</ul>	  
+<%elsif @all%>
+	<ul>
+		<li><%=link_to 'show less', :action => 'index', :sort => @sort, :list => 'global' %></li>
+	</ul>	
+<%end%>
+</div>
+
+</div>
+	
+</div>	

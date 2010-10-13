@@ -1,12 +1,12 @@
 <div id="footer-wrapper"><div id="footer">
 	 <%= if !@local.footer.blank? then @local.footer end %>
-<%unless @tutorials || @tutorial%>
 	 <%if @guide%>
 		<%= link_to "Screenreader, Printer &amp; Mobile Version" , {:action => 'print', :id => @guide} , :id => 'alt-version' %>
 	<%elsif @page%>
 		<%= link_to "Screenreader, Printer &amp; Mobile Version" , {:action => 'print', :id => @page} , :id => 'alt-version' %>
+	<%elsif @tutorial%>
+		<%= link_to "Screenreader, Printer &amp; Mobile Version" , {:controller => 'ort', :action => 'print', :id => @tutorial} , :id => 'alt-version' %>
 	<%else%>
 		<%= link_to "Screenreader, Printer &amp; Mobile Version" , {:action => 'print_portal', :from => @from} , :id => 'alt-version' %>
 	<%end%>
-<%end%>	
 </div></div>

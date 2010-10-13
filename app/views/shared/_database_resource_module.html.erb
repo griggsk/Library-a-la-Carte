@@ -1,7 +1,7 @@
 	<h2><%=h @mod.module_title%></h2>
 	<div class="module">
-			<ul class="undeco">
-				<%unless @mod.info.blank?%><li><%=@mod.info%></li><%end%>
+				<%unless @mod.info.blank?%><%=@mod.info%><%end%>
+				<ul class="undeco">
 				<%for db in @mod.database_dods
 					dod = db.dod 
 					if dod %>

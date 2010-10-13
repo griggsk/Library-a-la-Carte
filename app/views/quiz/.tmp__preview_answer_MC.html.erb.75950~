@@ -1,0 +1,7 @@
+	
+			   	<label>	Answer: </label> <%=answer.value%> 
+					<label><% if answer.correct == 0%> 
+						Incorrect 
+						<%else%>
+						Correct 
+						<%end%></label>

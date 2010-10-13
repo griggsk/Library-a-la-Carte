@@ -1,10 +1,15 @@
 	<h2><%=h @mod.module_title%></h2>
 	<div class="module">
 		<%unless @mod.information.blank?%><%= @mod.information%><%end%>
+		<div id="<%=@mod.orientation%>">
 		<%@mod.images.each do |image|%>
-			<a href="<%=image.url%>" title ="Go to original image"><img src="<%=image.url%>" alt="<%=image.alt%>" class = '<%=@class%>'/></a> 
-			<%unless image.description.blank?%><p> <%=image.description%> <br /></p><%end%>
+		<p>
+			<a href="<%=image.url%>" title ="Go to original image: <%=image.alt%>">
+			<img src="<%=image.url.gsub(/(.jpg)/,@mod.fk_size)%>" alt="<%=image.alt%>" /></a> 
+			<%unless image.description.blank?%><span class = '<%=@mod.size%>'><%=image.description%></span><%end%>
+		</p>
 		<%end%>
-
+		</div>
+		<%if @mod.orientation == "H"%><br class="clearer" /><%end%>
 	</div>
 	

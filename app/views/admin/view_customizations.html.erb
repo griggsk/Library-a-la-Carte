@@ -1,17 +1,24 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
 <fieldset>
 	<h2>Customizations</h2>
-	<p><b>View:</b> <%= link_to "Course Guide Template" , :controller => 'ica', :action => 'published_pages'%> | <%= link_to "Subject Guide Template" , :controller => 'srg', :action => 'published_guides'%> | 
+	<h3>View</h3>
+	<div><%= link_to "Course Guide Template" , :controller => 'ica', :action => 'published_pages'%> | <%= link_to "Subject Guide Template" , :controller => 'srg', :action => 'published_guides'%> | 
 	<%= link_to "Tutorial Template" , :controller => 'ort', :action => 'published_tutorials'%>
-	</p>
+	</div>
+	 <h3>Edit</h3>
+	<div><%= link_to "Template" , :controller => 'admin', :action => 'customize_layout'%> | <%= link_to "Search" , :controller => 'admin', :action => 'customize_search'%> | 
+	<%= link_to "Content Types" , :controller => 'admin', :action => 'customize_content_types'%> |
+	<%= link_to "Admin Email Addresses" , :controller => 'admin', :action => 'customize_admin_email'%>
+	</div>
 	<p>
 	
 	   <% for column in Local.content_columns %> 
          <%unless @local.send(column.name).blank? || column.human_name == 'Types'%><b><%= column.human_name %>:</b>  <%=h @local.send(column.name) %> <br /><%end%>
 	  <%end%>
 	
-	</p>
-	<p><b>Edit:</b> <%= link_to "Template" , :controller => 'admin', :action => 'customize_layout'%> | <%= link_to "Search" , :controller => 'admin', :action => 'customize_search'%> | 
-	<%= link_to "Content Types" , :controller => 'admin', :action => 'customize_content_types'%>
 	</p>
 	
 </fieldset>

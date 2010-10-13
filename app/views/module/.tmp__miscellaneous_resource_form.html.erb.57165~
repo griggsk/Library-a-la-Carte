@@ -1,0 +1,16 @@
+
+            <label for="description">Information
+			<span class = 'more_help'  onMouseover="fixedtooltip(CUSTOM_MSSG, this, event, '325');" onMouseout="delayhidetip()"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span> </label>
+                 <%= text_area('mod', 'content', :class => "mceEditor") %>
+             <br />
+             <p><b>Add a <i>Read More</i> link?
+                No <%= radio_button_tag 'more',true, checked = is_more?, :onclick =>'hide_more()' %>
+                Yes<%= radio_button_tag 'more',false, checked = !is_more?, :onclick => 'show_more()'  %>
+                <span class = 'more_help'  onMouseover="fixedtooltip(POP_UP_MSSG, this, event, '115');" onMouseout="delayhidetip()"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+             </b></p>
+                <div id = "more_info", style=<%=is_more? ? 'display:none;' : 'display:block;' %>>
+                  <label for="description">Linked Content <span class = 'more_help'  onMouseover="fixedtooltip(MORE_MSSG, this, event, '');" onMouseout="delayhidetip()"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span></label>
+                  <%= text_area('mod', 'more_info', :class => "mceEditor") %>
+                </div>   
+            
+     

@@ -5,7 +5,9 @@
  <table class="my_lists">
  	<thead>
  		<tr>
- 			<th><%= image_tag "spinner.gif", :id => "spinner_sort", :class => 'image', :alt => "Spinner", :style => 'display:none;'%></th>
+ 			<th><%= image_tag "spinner.gif", :id => "spinner_sort", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
+			Add <span class = 'more_help' onMouseover="fixedtooltip('Check the box next to the units you want to add to this tutorial or create a new unit to add.', this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+			</th>
 	<th  class= '<%= sort_th_class_helper "name" %> ' >  
         <%= sort_link_helper "Label", "name" %>
     </th>

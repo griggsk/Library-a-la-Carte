@@ -1,8 +1,13 @@
 	<h2><%=h @mod.module_title%></h2>
 	<div class="module">
-		    <%unless @mod.widget ==""%><%= @mod.widget%><%end%>
-			<%unless @mod.information ==""%> <%= @mod.information%> <%end%>
-	<noscript>
-		You must have javascript enabled to view this content
-	</noscript>
+		    <%unless @mod.widget.blank?%><%= @mod.widget %>
+			<noscript>
+			You must have javascript enabled to view this content.
+			</noscript>
+			<noembed>
+			You do allow embedded content.
+			</noembed>
+			<%end%>
+			<%unless @mod.information.blank?%> <%= @mod.information%> <%end%>
+	
 	</div>

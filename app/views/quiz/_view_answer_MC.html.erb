@@ -1,1 +1,4 @@
-<%= radio_button_tag question.id, answer.value%> <label> <%=answer.value%> </label>
+<%result = Result.get_answer(question.id, session[:saved_student])%>
+<%= radio_button_tag question.id, answer.value, result == answer.value ? true : false, :onclick => 
+					remote_function(:url => {:controller => "quiz", :action => "save_question_answer", :id => question.id, :guess =>  answer.value})%>
+					 <strong> <%=answer.value.blank? ? "" : answer.value.gsub('/\n/', '<br />')%> </strong>

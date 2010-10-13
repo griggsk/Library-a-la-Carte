@@ -1,0 +1,66 @@
+		<% unless @local.book_search.blank? and @local.site_search.blank? and @local.g_search.blank?%>
+		<div class="item search"><div class="item2">
+		    <div id="search">
+			<ul>
+		      <% unless @local.g_search.blank?%>  <li class="selected"> <a href="#" rel="guides"><span>Guides</span></a></li><%end%>
+		     <% unless @local.book_search.blank?%>   <li> <a href="#" rel="books"><span>Books</span></a></li><%end%>
+		     <% unless @local.site_search.blank?%>   <li class="last"> <a href="#" rel="library"><span>Library</span></a></li><%end%>
+		    </ul>
+			</div>
+		    <div class="module">
+		       <% unless @local.g_search.blank?%>
+				   <div id="guides" class="tabcontent">
+			        <label>Search Library Guides</label> 
+					 <%= @local.g_search%>
+				  </div>
+				<%end%>  
+			  <% unless @local.book_search.blank?%>
+			  <div id="books" class="tabcontent">
+		        <label>Search Books, Articles, Journals</label>
+				  <%=@local.book_search%>
+			  </div>
+			  <%end%>
+			  <% unless @local.site_search.blank?%>
+			  <div id="library" class="tabcontent">
+		        <label>Search Library Website</label> 
+				  <%=@local.site_search%>
+			  </div>
+			 <%end%> 
+		    </div>    
+		</div></div>
+		
+<script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&amp;lang=en">
+</script>
+<script type="text/javascript">
+//<![CDATA[
+
+	var mysearch=new ddtabcontent("search") //enter ID of Tab Container
+	mysearch.setpersist(true) //toogle persistence of the tabs' state
+	mysearch.setselectedClassTarget("linkparent") //"link" or "linkparent"
+	mysearch.init()
+
+//]]>
+</script>
+<%end%>	
+   
+   <%unless @local.lib_chat.blank? and @local.lib_help.blank?%>	
+		<div class="item"><div class="item2">
+			<div class="module">
+				<%unless @local.lib_chat.blank?%>
+				 <%= @local.lib_chat%>
+				 <br />
+				<%end%>
+				<%unless @local.lib_help.blank?%>
+				<%= image_tag("/images/icons/small_help.png", :alt => 'get help from a librarian')%> <a href="<%=@local.lib_help%>">Ask a Librarian</a>
+				<%end%>
+				
+			</div>
+		</div></div>
+  <%end%>
+  
+	<div class="item"><div class="item2"><div class="item3">
+
+		<h2>About These Tutorials</h2> 
+		<p>These online tutorials are for students looking to learn more about the process of academic research.  Many of these tutorials were designed to help students working on specific class assignments find the information sources they need to be successful.  Check here to see if your class has its own research tutorial.
+		</p>
+	</div></div></div>

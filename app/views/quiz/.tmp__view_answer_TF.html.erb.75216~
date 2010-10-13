@@ -1,0 +1,5 @@
+ <%= radio_button_tag question.id, 1, false%><label>True </label>   <br />
+  <%= radio_button_tag question.id, 0, false%> <label>False</label> 
+<%= observe_field question.id,  
+							  :url => {:controller => "quiz", :action => "save_question_answer", :id => question.id},
+							  :with => 'guess' %>

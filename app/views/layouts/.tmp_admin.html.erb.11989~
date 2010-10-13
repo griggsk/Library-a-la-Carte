@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<title> <%=params[:controller].humanize|| ""%> : Library &agrave; la Carte Tool</title>
+<%= stylesheet_link_tag "tool", :media => "all" %>
+<%= javascript_include_tag 'messages' %>
+<script src="/javascripts/prototype.js" type="text/javascript"></script>
+<script src="/javascripts/scriptaculous.js" type="text/javascript"></script>
+</head>
+<body >
+
+<div id="wrapper"> <!--  start wrapper -->
+
+<div id="header_small">
+<span class="subtitle"><%=image_tag("/images/LogoSmall.png", :title => 'Information made to order', :alt => 'logo')%></span>
+
+<div id="login_bar">
+<b><%unless @admin%><%=h @user.name%><%else%>Admin <%end%></b> IS LOGGED IN  | 
+	<% if sso_enabled && used_sso %>
+		<%=link_to "LOGOUT" ,{:controller => "sso_login", :action => "logout"}, {:confirm => "This will log you out of OSU single sign on.  Are you sure you want to log out?"}%>
+	<%else%>  
+		<%=link_to "LOGOUT" , :controller => 'login', :action => 'logout'%>
+	<%end%>
+</div>
+</div>
+
+<div id="tab_container">
+<ul id="tabs">
+	<li  class = "<%=@dcurrent || "dashboard_tab"%>"><%= link_to_unless_current "Dashboard" , :controller => 'dashboard', :action => 'index'%></li>
+	<li  class = "<%=@tcurrent || "quide_tab"%>"><%= link_to_unless_current "Admin Tools" , :controller => 'admin', :action => 'tools'%></li>
+</ul>
+</div>
+
+
+<div id="content_full">
+  	<%= yield :layout %>
+</div>
+
+<div id="footer">
+
+</div> 
+
+</div> <!--  end wrapper -->
+
+</body>
+</html>

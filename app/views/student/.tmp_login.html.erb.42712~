@@ -1,0 +1,43 @@
+<%= render :partial => 'ort/top'%>
+
+<div id="content">
+	<div id="content-column2">
+		<div class="item"><div class="item2"><div class="item3">
+			<h2>Register</h2>
+			<p>
+				New to <b><%=@tutorial.full_name%></b>? <br />
+				<%=link_to 'Create an Account', {:controller => 'student', :action => 'create_account', :id =>@tutorial}%>
+	        </p>
+		</div></div></div>
+	</div>
+	
+	
+	
+		
+		<div id="content-column1">
+			<h3>Onid Log in</h3>
+			<% if flash[:notice] -%>
+          		 <div id="notice" ><%= flash[:notice] %></div>
+   			<% end -%>
+			<p></p>
+			<% form_tag :controller =>"student", :action=>'login', :id =>@tutorial.id do%>
+				<label for="onid">Onid Username</label>
+	            <%= text_field "student","onid", :size =>25 %>
+				<div class='tip'>e.g. smithj</div>
+	            <label for="email">Onid Email</label>
+	            <%= text_field "student","email", :size =>25 %>
+				<div class='tip'>e.g. smithj@onid.oregonstate.edu</div>
+	            <br />
+	            <%= submit_tag 'Login', :class => 'submit' %> <a href="https://secure.onid.oregonstate.edu/cgi-bin/chpw?type=want_auth">Forgot your Onid?</a>
+	       <% end %>
+		<!-- end content-column1 -->
+	</div>	
+	<div id="content-column1">
+		<h3>Why Log in?</h3>
+		<p>This tutorial requires you to login so that you can take the graded quizzes. <b>Log in with your onid name and email address.</b>. 
+		</p>
+	<!-- end content-column1 -->
+	</div>
+	
+<!-- end content -->
+<div class="bot"><div></div></div></div>

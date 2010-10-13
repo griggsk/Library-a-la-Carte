@@ -1,11 +1,13 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+
 <% @results ||= results %>
 <% @mod ||= mod %>
 <% if @results and !@results.empty? %>
   <% if @results.first[:course] %>
       <div id="catalog_title">
-      <%= image_tag "spinner.gif", :id => "spinner_select", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
-      </label>
-         <div class="reserves_results">
+       <div class="reserves_results">
        <p>
        	There is more than one result for <b> <%= @query%>.</b>
         Click on the correct title
@@ -24,9 +26,6 @@
           </div>
       </div>
     <% else %>
-      <%= image_tag "spinner.gif", :id => "spinner_select", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
-      
-      </label>
       <div class="results_results">
         
           <p class="bolded">Result for <%= @title%> 

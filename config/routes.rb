@@ -11,8 +11,9 @@ ActionController::Routing::Routes.draw do |map|
 
   # You can have the root of your site routed by hooking up '' 
   # -- just remember to delete public/index.html.
+  
    map.connect '' ,:controller => 'login', :action => 'login'
-
+	
   # Allow downloading Web Service WSDL as a file with an extension
   # instead of a file named 'wsdl'
   map.connect ':controller/service.wsdl', :action => 'wsdl'
@@ -50,13 +51,13 @@ ActionController::Routing::Routes.draw do |map|
     :controller => "srg",
     :action => "search" 
     
-    map.connect 'tutorials/archived/',
-    :controller => "ort",
-    :action => "archived_tutorials"
-    
     map.connect 'tutorials',
     :controller => "ort",
     :action => "published_tutorials"
+    
+    map.connect 'tutorials/archived/',
+    :controller => "ort",
+    :action => "archived_tutorials"
       
     map.connect 'tutorials/:id',
     :controller => "ort",
@@ -74,13 +75,21 @@ ActionController::Routing::Routes.draw do |map|
     :controller => "ort",
     :action => "tagged"
     
-    map.connect 'tutorials/search/',
+     map.connect 'tutorials/subject/:id',
     :controller => "ort",
-    :action => "search"
+    :action => "subject_list"
     
     map.connect 'tutorials/my-quizzes/:id',
-    :controller => "ort",
+    :controller => "student",
     :action => "quizzes"  
+    
+    map.connect 'tutorials/login/:id',
+    :controller => "student",
+    :action => "login"
+    
+    map.connect 'tutorials/create-account/:id',
+    :controller => "student",
+    :action => "create_account"
     
     map.connect '/javascripts/tiny_mce/plugins/advimage_uploader/image.htm',
     :controller => "image_manager",

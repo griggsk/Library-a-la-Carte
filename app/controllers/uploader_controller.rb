@@ -1,3 +1,7 @@
+#Library a la Carte Tool (TM).
+#Copyright (C) 2007 Oregon State University
+#See license-notice.txt for full license notice
+
 class UploaderController < ApplicationController
   before_filter :module_types
   before_filter :current_page
@@ -38,8 +42,8 @@ def copy_uploader
    else
       @mod = @old_mod.clone
       @mod.global = false
+      @mod.label =  @old_mod.label+'-copy'
      if @mod.save
-       @mod.label =  @old_mod.label+'-copy'
         @mod.uploadables << @old_mod.uploadables
         create_and_add_resource(@user,@mod)
           flash[:notice] = "Saved as #{@mod.label}"

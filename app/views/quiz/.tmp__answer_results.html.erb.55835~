@@ -1,0 +1,22 @@
+<%total = 0%>
+<fieldset>
+<%results.each do |result|%>
+   <%question = mod.questions.find(result[0])%>
+   <label><%=question.question%></label>
+  <ul>
+				  <li>
+					<%unless question.correct_answer.blank? %> <label>Correct Answer: </label> <%=question.correct_answer%> <br /> <%end%>
+					 <label>Your Answer: </label><%=result[1]%>
+					  <%unless question.points == 0%><br /> <label>
+						 <%=result[2]%>
+						 out of <%=h question.points%></label> 
+					<%end%>	
+				 </li> 	 
+				</ul>  
+				   <% total = result[2] + total %>
+				<%end%>
+	<%unless @mod.possible_points == 0%>	<h5>Total Score: <span class="required"><%=total%> / <%=@mod.possible_points%></span> </h5>  <%end%>
+    
+
+<%unless @student%><%=link_to 'retake quiz', :back, :id => @mod.id%><%end%>
+</fieldset>

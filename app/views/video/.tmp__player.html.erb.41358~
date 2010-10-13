@@ -1,0 +1,12 @@
+                    
+					       <object type="application/x-shockwave-flash" style="<%=@style%>" data="<%=@vid%>">
+						   <param name="movie" value="<%=@vid%>" />
+						   <param name="allowScriptAcess" value="sameDomain" />
+						  <param name="quality" value="best" />
+						  <param name="bgcolor" value="#FFFFFF" />
+						  <param name="scale" value="noScale" />
+						  <param name="salign" value="TL" />
+						  <param name="allowFullScreen" value="true"></param>
+						  <param name="FlashVars" value="playerMode=embedded" />
+						 </object> 
+					 

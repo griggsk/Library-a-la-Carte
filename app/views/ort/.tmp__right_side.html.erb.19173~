@@ -1,0 +1,12 @@
+<% unless @local.g_search.blank?%>
+		<div class="item"><div class="item2"><div class="item3">
+			<h2>Search Tutorials</h2> 
+						 <%= @local.g_search%>
+		</div></div></div>
+	<%end%> 
+	<div class="item"><div class="item2"><div class="item3">
+
+		<h2>About These Tutorials</h2> 
+		<p>These online tutorials are for students looking to learn more about the process of academic research.  Many of these tutorials were designed to help students working on specific class assignments find the information sources they need to be successful.  Check here to see if your class has its own research tutorial.
+		</p>
+	</div></div></div>

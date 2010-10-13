@@ -1,0 +1,42 @@
+<td class="center"  width ="5%">
+	<%if tutorial.shared? == false%>
+		<%= link_to image_tag("/images/icons/user_add.png", :title => 'Click to share this tutorial', :alt => 'Share', :border => 0),  :action => 'share', :id => tutorial %>
+	<%else%>
+		<%= link_to image_tag("/images/icons/users.png", :title => 'This Tutorial is Shared. Click to share this tutorial with others.', :alt => 'Share', :border => 0),  :action => 'share',  :id => tutorial %>
+	<%end%>
+</td>
+<td class= '<%= sort_th_class_helper "name" %>'  width ="40%">
+	<%= truncate(h(tutorial.name),:length => 65) %>
+</td>
+	<%
+	search = false if search.nil?	#avoiding null errors for a local variable
+	tutorial_params = tutorial_search_params(search,tutorial) #if request came from a search, add search term to parameters
+	%>
+<td  width ="15%">
+	<%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this Tutorial', :alt => 'Edit', :border => 0), {:controller=> 'tutorial',:action => 'update',  :id => tutorial },:class =>'space'%> 
+	| <%= link_to image_tag("/images/icons/document_preview.png", :title => 'Preview this Tutorial in a New Window', :alt => 'preview', :border => 0), { :controller => "ort", :action => 'index', :id => tutorial}, :popup => ['', 'height=800,width=980,toolbar=yes, scrollbars =yes,resizable=yes'], :class =>'space'%>
+ 	| <%= link_to image_tag("/images/icons/application_add.png", :title => 'Copy this tutorial', :alt => 'Copy Tutorial', :border => 0),{ :controller=> 'tutorial',:action => 'copy',  :id => tutorial},:class =>'space' %> 
+	| <%= link_to_remote image_tag("/images/icons/remove.png", :title => 'Delete this tutorial', :alt => 'delete', :border => 0), {:url => tutorial_params['destroy'],:update => "row#{tutorial.id}" , :confirm => 'Are you sure you want to delete this tutorial from your list?'},
+	:href => url_for(tutorial_params['destroy']),:class =>'space', :method => :post %>
+</td>
+<td class= '<%= sort_th_class_helper "date" %>'  width ="15%"> 
+	<%= tutorial.updated_at.to_date%>
+</td>
+<td class="center"  width ="5%">
+
+	<% unless tutorial.published? %>
+		<%= link_to_remote image_tag("/images/icons/Minus.png", :title => 'Publish this Tutorial', :alt => 'publish this tutorial', :border => 0), {:url => tutorial_params['publish'],:update => "row#{tutorial.id}", :confirm => 'Are you sure you want to publish this tutorial?'}, 
+		:href => url_for(tutorial_params['publish']),:method => :post %>  
+    <%else%> 
+		<%= link_to_remote image_tag("/images/icons/Plus.png", :title => 'Unpublish this Tutorial', :alt => 'unpublish this tutorial', :border => 0),  {:url => tutorial_params['publish'],:update => "row#{tutorial.id}", :confirm => 'Are you sure you want to unpublish this tutorial?'}, 
+		:href => url_for(tutorial_params['publish']),:method => :post %> 
+    <%end%>
+<td class="center"  width ="5%">
+    <% unless tutorial.archived? %>
+		<%= link_to_remote image_tag("/images/icons/Minus.png", :title => 'Archive this Tutorial', :alt => 'archive this tutorial', :border => 0), {:url => tutorial_params['archive'],:update => "row#{tutorial.id}", :confirm => 'Are you sure you want to archive this tutorial?'}, 
+		:href => url_for(tutorial_params['archive']),:method => :post %>  
+    <%else%> 
+		<%= link_to_remote image_tag("/images/icons/archive.png", :title => 'Remove from Archive', :alt => 'remove from archive', :border => 0), {:url => tutorial_params['archive'],:update => "row#{tutorial.id}", :confirm => 'Are you show you want to remove this tutorial from archive?'}, 
+		:href => url_for(tutorial_params['archive']),:method => :post %>  	
+    <%end%>
+</td>

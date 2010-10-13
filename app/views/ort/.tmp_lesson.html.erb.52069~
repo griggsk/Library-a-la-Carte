@@ -1,0 +1,37 @@
+<%= render :partial => 'ort/top'%>
+<div id="content">
+		
+	<h2 class="no-bar"><%=@unit.title%></h2>
+
+	<div id="topNav">
+		<%=link_to 'Next', {:controller => 'ort', :action => 'previous_lesson', :id =>@tutorial, :uid =>@unit.id,  :mid => @mod, :type => @mod.class}, :class=>'back'%>
+		
+		<%  resources = @unit.resourceables
+				unless resources.blank?  %>
+					<p>
+						 <%resources.each_with_index do |resable, index|
+										res = resable.resource
+										mod = res.mod
+										%>
+						     <%=toc_link_to index+1, :controller => 'ort', :action => 'lesson', :id =>@tutorial, :uid =>@unit.id,  :mid => mod, :type => mod.class%>
+						 <%end%>
+				   </p>
+				<%end%>
+		<%=link_to 'Next', {:controller => 'ort', :action => 'next_lesson', :id =>@tutorial, :uid =>@unit.id,  :mid => @mod, :type => @mod.class}, :class=>'next'%>
+	</div>
+	
+	<div id="content-column1">
+			 <%=show_mod(@mod)%> 
+	<!-- end content-column1 -->
+	</div>
+	
+	<div id="content-column1">
+				<div id="botNav">
+					<%=link_to 'Back', {:controller => 'ort', :action => 'previous_lesson', :id =>@tutorial, :uid =>@unit.id,  :mid => @mod, :type => @mod.class}, :class=>'back'%>
+					<%=link_to 'Next', {:controller => 'ort', :action => 'next_lesson', :id =>@tutorial, :uid =>@unit.id,  :mid => @mod, :type => @mod.class}, :class=>'next'%>
+				</div>
+	<!-- end content-column1 -->
+	</div>
+
+<!-- end content -->
+<div class="bot"><div></div></div></div>

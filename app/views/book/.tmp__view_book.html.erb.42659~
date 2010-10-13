@@ -1,0 +1,33 @@
+<!--Library a la Carte Tool (TM).-->
+<!--Copyright (C) 2007 Oregon State University-->
+<!--See license-notice.txt for full license notice-->
+						
+				       <%unless book.image_id.blank?%>
+						  <span title="ISBN:<%=book.image_id%>" class="gbs-thumbnail gbs-remove-on-failure"></span>
+						  <span title="OCLC:<%=book.image_id%>" class="gbs-thumbnail gbs-remove-on-failure"></span>
+					   <%end%>
+					   <span class="book_info">
+					   	<%if !book.catalog_results.blank?%>
+							<%book.catalog_results.each do |r| %>
+						     <div class="results">
+						     <span class="item_title"><a href="<%=r[:url]%>"><%= r[:title] %></a></span> 
+						     <%if !r[:author].blank?%> <span class="call_num">Author: <%= r[:author] %> </span> <%end%>
+						     <%if book.location == true%> <span class="call_num">Call #: <%= r[:availability]%> </span><%end%> 
+						  </div>
+  						<% end %>
+						 <%else%>  
+						   	<%if !book.url.blank? and !(book.url == "http://") %>
+						   		<a href = "<%=book.url%>"><%= book.label.blank? ? h(book.url) : h(book.label) %></a>
+						   <%elsif !book.label.blank?%>
+						   		<%=  h(book.label) %> 
+						   <%end%>
+					   <%end%>
+					
+						<%unless book.description.blank?%>  <%=book.description%><%end%>
+						<%if !book.image_id.blank?%>
+						  <span title="ISBN:<%=book.image_id%>" class="gbs-link-to-preview gbs-if-partial-or-full gbs-remove-on-failure">Read at Google</span>
+						  <span title="OCLC:<%=book.image_id%>" class="gbs-link-to-preview gbs-if-partial-or-full gbs-remove-on-failure">Read at Google</span>
+						<%end%>
+						</span>
+						<div class="clearer"><br /></div>	
+						

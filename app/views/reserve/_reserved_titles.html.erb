@@ -5,7 +5,8 @@
 		  <div id="reserved_titles">
 		   <label for="mod_course_reserves" >Course Reserves
 		    <span class = 'more_help' onMouseover="fixedtooltip('Course Reserves Search results', this, event, '');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
-		    <%=link_to_remote('Select a different course',:update => "returns", :loading => "Element.show('spinner_select')", :complete => "Element.hide('spinner_select')",:url =>{ :controller => 'reserve', :action => 'edit_reserves', :id => @mod} , :update => "returns")%>
+		    <%=link_to_remote('Select a different course',:update => "returns", :loading => "Element.show('spinner_select')", :complete => "Element.hide('spinner_select')",
+							:url =>{ :controller => 'reserve', :action => 'edit_reserves', :id => @mod} , :update => "returns")%>
 			<%= image_tag "spinner.gif", :id => "spinner_select", :class => 'image', :alt => "Spinner", :style => 'display:none;'%>
 			</label>
 		      <div class="reserves_results">
@@ -18,7 +19,8 @@
 			      <ul class="undeco">
 			        <% @reserves.each do |r| %>
 			          <% course = r[:course].scan(/\>(.*?)\</) %>
-			          <li><%= link_to_remote course, :loading => "Element.show('spinner_ambig')", :complete => "Element.hide('spinner_ambig')", :url => {:controller => 'reserve', :action => :retrieve_reserves, :title => r[:course]}, :update => "reserved_titles" %></li>
+			          <li><%= link_to_remote course, :loading => "Element.show('spinner_ambig')", :complete => "Element.hide('spinner_ambig')",
+							 :url => {:controller => 'reserve', :action => :retrieve_reserves, :title => r[:course]}, :update => "reserved_titles" %></li>
 			        <% end %>
 			      </ul>
 			    </div>

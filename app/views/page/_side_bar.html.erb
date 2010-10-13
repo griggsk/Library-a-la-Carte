@@ -8,6 +8,7 @@
 	     <%= link_to 'Add Modules', {:controller => 'tab', :action => 'page_add_modules',  :id => @page.id, :sort => 'name'}, :class =>@amcurrent%> 
 		 <%= link_to 'Share Page', {:controller => 'page', :action => 'share',  :id => @page.id }, :class =>@scurrent%>
 		 <%= link_to 'Send URL', {:controller => 'page', :action => 'send_url',  :id => @page.id }, :class =>@sucurrent%>
+		 <%=link_to 'Create New Page', :controller => 'page', :action => 'new'%>
    </div>
 </div>  
 <%end%>

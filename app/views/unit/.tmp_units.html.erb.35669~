@@ -1,0 +1,90 @@
+<fieldset>
+<h3 class = 'title'><%=render :partial => 'tutorial/title_actions'%></h3>
+<h4>Units</h4>
+	<div id ='share'>
+		<fieldset>
+		<h4>
+		    <%= link_to image_tag("/images/icons/add.png", :title => 'Add Units', :alt => 'Add', :border => 0)+'Add Units', {:controller => 'unit', :action => 'add'}%>
+	   </h4>	
+	   
+	<% unless @units.blank? %> 
+		<ul id = "full">
+				<%@units.each do |uz| 
+					unit = uz.unit 
+					resources = unit.resourceables%>
+			       <li id = "item_<%=uz.id%>" class = "list-item">
+			           <span class="list-title" ><%=truncate(h(unit.title) ,:length => 40) %></span> 
+					   <span>
+					   	 <span class = 'more_help' onMouseover="fixedtooltip('Slug Title: <%= unit.slug%> <br \/>Last Update: <%= unit.updated_at.to_date%> <br\/>Tagged with: <% unit.tag_list.each do |tag|%> <%= tag %><%end%>', this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+						 |
+					   	 <%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this Unit', :alt => 'Edit', :border => 0), { :controller =>'unit', :action => 'update', :id => unit} %> |
+						<%= link_to image_tag("/images/icons/remove.png", :title => 'Remove this Unit from Tutorial', :alt => 'Delete', :border => 0), {:controller =>'unit', :action => 'remove_unit', :id => unit }, :confirm => 'Are you sure you want to remove this Unit from the Tutorial?', :method => :post %>
+						</span>
+											  
+					     <span class = 'handle'>
+					     	 <%=image_tag("/images/icons/move.png", :title => 'Drag and Drop', :alt => 'Drag and Drop', :border => 0)%>  </span>
+			          
+					  <div id="detail_<%=unit.id%>" style="display:block">
+					 <%=unit.description%>
+					 <% unless resources.blank?  %>
+					  <ul class="top_indent" id = "full<%=unit.id.to_s%>">
+						<%resources.each do |resable|
+								res = resable.resource
+								mod = res.mod
+								%>
+								       <li id = "item_<%=resable.id%>" class = "list-item">
+								           <span class="list-title" ><%=truncate(h(mod.module_title) ,:length => 40) %></span>   <span class = 'handle'><%=image_tag("/images/icons/move.png", :title => 'Drag and Drop', :alt => 'Drag and Drop', :border => 0)%>  </span>
+								           <br />
+										    <span class = 'more_help' onMouseover="fixedtooltip('Label: <%=mod.label%> <br \/> Last update: <%=mod.updated_at.to_date%>', this, event, '125');" onMouseout="delayhidetip();"><%= image_tag("/images/icons/small_help.png", :alt => 'Tip', :border => 0)%></span>
+				                             |
+								             <%= link_to image_tag("/images/icons/edit.png", :title => 'Edit this module', :alt => 'Edit', :border => 0), { :controller =>'module', :action => 'edit_content', :id => mod, :type => mod.class} %> |
+								             <%= link_to image_tag("/images/icons/document_preview.png", :title => 'View this Module', :alt => 'View Module', :border => 0),{ :controller => 'module', :action => 'view', :id => mod, :type => mod.class}, :popup => ['', 'height=500,width=400,toolbar=yes, scrollbars =yes,resizable=yes'] %>|
+											 <%= link_to image_tag("/images/icons/remove.png", :title => 'Delete this module from lesson', :alt => 'Delete', :border => 0), {:controller => 'unit',:action => 'remove_module', :rid => res, :id => unit.id }, :confirm => 'Are you sure you want to remove this module from the lesson?', :method => :post %>
+								        </li>
+								<% end %>	
+						</ul>				
+								<%= sortable_element 'full'+unit.id.to_s, 
+					                :url => {:controller => 'unit', :action => "sort_mods" }, 
+					                :complete => visual_effect(:highlight, 'full'+unit.id.to_s), 
+					                :handle => 'handle',
+					                :containment => ['full'+unit.id.to_s], 
+					                :constraint => false %>	
+						<%else%>
+							<p> Unit does not have any modules.</p>
+							<br />
+						<%end%>
+					 
+					 
+					 
+					 
+					 </div>
+					   <div class="top_space">
+					   	  <%=link_to_function("Hide Details", nil, :id => 'full_link_'+unit.id.to_s) do |page|
+											   page.visual_effect(:toggle_blind,"detail_#{unit.id}")
+											   page << "if($('detail_#{unit.id}').visible()){"
+											   page.replace_html 'full_link_'+unit.id.to_s, "Show Details"
+											   page << '}else{'
+											   page.replace_html 'full_link_'+unit.id.to_s,  "Hide Details"
+											   page << '}'
+											  end%> 
+						   | <%= link_to image_tag("/images/icons/add.png", :title => 'Add Modules', :alt => 'Add', :border => 0)+'Add Modules', { :controller =>'unit', :action => 'add_modules', :id => unit} %> 
+					   </div>
+			              </li>
+			    <% end %>
+			</ul>	
+			<span class="clear"></span>
+	
+		<%= sortable_element 'full', 
+		                :url => {:controller => 'unit', :action => "sort" }, 
+		                :complete => visual_effect(:highlight, 'full'), 
+		                :handle => 'handle',
+		                :containment => ['full'], 
+		                :constraint => false %>
+	<%else%>
+		<p> This tutorial does not have any units. </p>
+	<%end%>
+	</fieldset>
+	</div>
+						
+</fieldset>
+ <%=render :partial => 'tutorial/side_bar'%>
